@@ -3,63 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PRAXIS MAGISTER • PRO v17.0 | Ingeniería Didáctica y Bitácoras SEP</title>
+  <title>ALTUS EDUFIS • NEM | Sistema Integral de Planeación y Gestión en Educación Física</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#d1fae5 100%); color:#0f172a; min-height:100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     .hero-gradient { background: linear-gradient(125deg,#0f172a 0%,#1e1b4b 38%,#065f46 78%,#0284c7 100%); }
-    .card-box { background:#fff; border-radius:1.25rem; box-shadow:0 15px 35px -12px rgba(15,23,42,0.14); border:2px solid #cbd5e1; }
-    .btn-gen { background: linear-gradient(135deg,#059669 0%,#0284c7 50%,#4f46e5 100%); }
-    .print-sheet { background:#fff; border:2px solid #cbd5e1; border-radius:1rem; padding:1.25rem; margin-bottom:1.25rem; page-break-inside:avoid; }
-    @media print {
-      @page { size: letter portrait; margin: 10mm 12mm; }
-      body { background:#fff !important; font-size:9pt; }
+    .card-box { background:#ffffff; border-radius:1.25rem; box-shadow:0 15px 35px -12px rgba(15,23,42,0.14); border:2px solid #cbd5e1; }
+    .btn-gen { background: linear-gradient(135deg,#059669 0%,#0284c7 50%,#4f46e5 100%); transition: all 0.2s ease; }
+    .btn-gen:hover { transform: translateY(-1px); box-shadow: 0 12px 24px -6px rgba(2,132,199,0.45); }
+
+    .board-expanded-view {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 9999 !important;
+      background: #0f172a !important;
+      color: #ffffff !important;
+      padding: 1rem !important;
+      overflow-y: auto !important;
+      border-radius: 0 !important;
+    }
+
+    .print-sheet {
+      background:#ffffff;
+      border:2px solid #cbd5e1;
+      border-radius:0.85rem;
+      padding:1.1rem;
+      margin-bottom:1.25rem;
+      page-break-inside:avoid;
+    }
+
+    @    @media print {
+      @page {
+        size: letter portrait;
+        margin: 6mm 8mm;
+      }
+      body {
+        background:#ffffff !important;
+        color:#000000 !important;
+        font-size:7.6pt !important;
+        line-height:1.16 !important;
+      }
       .no-print { display:none !important; }
-      .print-sheet { box-shadow:none !important; border:1.5px solid #334155 !important; margin-bottom:8mm !important; break-inside:avoid; }
+      .print-sheet {
+        box-shadow:none !important;
+        border:1.5px solid #1e293b !important;
+        border-radius:0.35rem !important;
+        padding:4.5mm 6mm !important;
+        margin:0 !important;
+        height:auto !important;
+        max-height:248mm !important;
+        box-sizing:border-box !important;
+        display:flex !important;
+        flex-direction:column !important;
+        justify-content:space-between !important;
+        overflow:hidden !important;
+        page-break-after:always !important;
+        break-after:page !important;
+        page-break-inside:avoid !important;
+        break-inside:avoid !important;
+      }
+      .print-sheet p, .print-sheet div {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+      .print-sheet:last-child {
+        page-break-after:auto !important;
+        break-after:auto !important;
+      }
+      .eval-table th, .eval-table td {
+        padding: 1px 3px !important;
+        font-size: 6.8pt !important;
+        line-height: 1.05 !important;
+      }
     }
   </style>
 </head>
 <body class="antialiased">
 
-  <!-- ENCABEZADO -->
+  <!-- ========================================================== -->
+  <!-- ENCABEZADO COMERCIAL                                       -->
+  <!-- ========================================================== -->
   <header class="hero-gradient text-white sticky top-0 z-40 shadow-xl border-b border-white/15 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-3">
+        <!-- 5 clics rápidos aquí para abrir el Panel Maestro -->
         <button id="secretTriggerBtn" onclick="handleSecretCreatorClick()"
-          class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-cyan-500 to-indigo-600 flex items-center justify-center font-display font-black text-lg text-white shadow-lg select-none">
-          PM
+          class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-cyan-500 to-indigo-600 flex items-center justify-center font-display font-black text-base text-white shadow-lg select-none active:scale-95 transition">
+          AEF
         </button>
         <div>
           <div class="flex items-center flex-wrap gap-1.5">
-            <span class="font-display font-extrabold text-base md:text-lg">PRAXIS MAGISTER • PRO v17.0</span>
-            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/40">SEP • NEM 2026-2027</span>
-            <span id="vipBadgeStatus" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/40">CRÉDITOS PDF: 0</span>
+            <span class="font-display font-extrabold text-base md:text-lg tracking-tight">ALTUS EDUFIS • NEM</span>
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/40">SEP • CICLO 2026-2027</span>
+            <span id="vipBadgeStatus" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/40">DESCARGAS PLAN: 0</span>
           </div>
-          <p class="text-[11px] text-slate-300">Planeación por API + Bitácoras SEP con Redacción Jurídico-Normativa Asistida</p>
+          <p class="text-[11px] text-slate-300">Ingeniería Didáctica, Praxiología Motriz, Bitácoras Normativas SEP y Simulador Táctico</p>
         </div>
       </div>
 
       <nav class="flex flex-wrap items-center gap-1.5">
-        <button onclick="switchMainTab('planner')" id="tabBtn-planner" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-cyan-500 text-white">1. Consola Planeación</button>
+        <button onclick="switchMainTab('planner')" id="tabBtn-planner" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow">1. Planeación Didáctica</button>
         <button onclick="switchMainTab('bitacoras')" id="tabBtn-bitacoras" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 text-slate-200">2. Las 2 Bitácoras SEP</button>
         <button onclick="switchMainTab('board')" id="tabBtn-board" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 text-slate-200">3. Pizarra Táctica</button>
-        <button onclick="switchMainTab('clinic')" id="tabBtn-clinic" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 text-slate-200">4. Clínica de Patio</button>
-        <button onclick="openUnlockModal()" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-amber-400 text-slate-950">🔑 Canjear Código</button>
-        <button id="creatorTopBtn" onclick="openMasterCreatorModal()" class="hidden px-3 py-1.5 rounded-xl text-xs font-extrabold bg-fuchsia-500 text-white">⚙️ Panel Maestro</button>
+        <button onclick="switchMainTab('clinic')" id="tabBtn-clinic" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 text-slate-200">4. Clínica de Patio (30)</button>
+        <button onclick="openUnlockModal()" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-amber-400 hover:bg-amber-300 text-slate-950 shadow">🔑 Canjear Código</button>
+        <button id="creatorTopBtn" onclick="openMasterCreatorModal()" class="hidden px-3 py-1.5 rounded-xl text-xs font-extrabold bg-fuchsia-500 text-white shadow">⚙️ Panel Maestro</button>
       </nav>
     </div>
   </header>
 
   <main class="max-w-7xl mx-auto px-3 py-5">
-    <!-- MÓDULO 1: CONSOLA DE PLANEACIÓN -->
+
+    <!-- ========================================================== -->
+    <!-- MÓDULO 1: CONSOLA DE PLANEACIÓN EN EDUCACIÓN FÍSICA        -->
+    <!-- ========================================================== -->
     <section id="view-planner" class="space-y-6">
       <div class="card-box p-4 md:p-6 no-print">
         <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-200">
           <div>
-            <h1 class="font-display font-black text-xl md:text-2xl text-slate-900">Consola de Ingeniería Didáctica y Praxiológica NEM</h1>
-            <p class="text-xs text-slate-600">Cascada metodológica sincronizada con el calendario escolar oficial SEP 2026-2027.</p>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-900">Sistema Metodológico Oficial • Ciclo Escolar 2026-2027</span>
+            <h1 class="font-display font-black text-xl md:text-2xl text-slate-900 mt-1">1. Consola de Planeación Didáctica y Praxiológica NEM</h1>
+            <p class="text-xs text-slate-600">Configura los parámetros curriculares y metodológicos para estructurar tu expediente pedagógico en vista previa, PDF o Word.</p>
           </div>
           <div class="flex flex-wrap gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
             <button onclick="selectSessionPackage(8)" id="pkgBtn-8" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-indigo-600 to-cyan-600 text-white shadow">8 Sesiones • $100</button>
@@ -69,57 +135,67 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-          <!-- COLUMNA A -->
+          <!-- COLUMNA A: DATOS INSTITUCIONALES + 3 FIRMAS + CALENDARIO -->
           <div class="lg:col-span-4 space-y-4">
             <div class="rounded-2xl p-4 bg-sky-50/70 border-2 border-sky-200 space-y-2.5 text-xs">
-              <h2 class="font-display font-extrabold text-xs uppercase text-sky-900">A1. Datos Institucionales Oficiales</h2>
+              <h2 class="font-display font-extrabold text-xs uppercase text-sky-900">A1. Datos Institucionales y Firmas Oficiales</h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div><label class="font-bold block mb-1">Docente de E.F.</label><input id="inpDocente" type="text" value="Prof. Educación Física" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
                 <div><label class="font-bold block mb-1">Escuela / Plantel</label><input id="inpEscuela" type="text" value="Escuela Primaria Oficial" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
-                <div><label class="font-bold block mb-1">CCT y Zona</label><input id="inpCCT" type="text" value="CCT: 09DPR0000X • Zona 04" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
-                <div><label class="font-bold block mb-1">Grado y Grupo</label><input id="inpGrupo" type="text" value="5° y 6° • Grupo A" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
-                <div class="sm:col-span-2"><label class="font-bold block mb-1">Autoridad / Dirección (Firma)</label><input id="inpDirector" type="text" value="Vo. Bo. Dirección del Plantel" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
+                <div><label class="font-bold block mb-1">CCT y Zona Escolar</label><input id="inpCCT" type="text" value="CCT: 09DPR0000X • Zona 04" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
+                <div><label class="font-bold block mb-1">Grado, Grupo y Turno</label><input id="inpGrupo" type="text" value="5° y 6° • Grupo A • Matutino" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
+                <div><label class="font-bold block mb-1">Dirección Escolar (Firma)</label><input id="inpDirector" type="text" value="Vo. Bo. Dirección del Plantel" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
+                <div><label class="font-bold block mb-1">Supervisión de E.F. (Firma)</label><input id="inpSupervisor" type="text" value="Vo. Bo. Supervisión de Educación Física" class="w-full rounded-xl border border-sky-300 bg-white px-2.5 py-1.5 font-semibold" /></div>
               </div>
             </div>
 
             <div class="rounded-2xl p-4 bg-emerald-50/70 border-2 border-emerald-200 space-y-2.5 text-xs">
-              <h2 class="font-display font-extrabold text-xs uppercase text-emerald-900">A2. Calendario SEP 2026-2027</h2>
-              <div><label class="font-bold block mb-1">Inicio de Secuencia (Sesión 1)</label><input id="inpStartDate" type="date" value="2026-10-26" onchange="updateCalendarPreview()" class="w-full rounded-xl border border-emerald-300 bg-white px-2.5 py-1.5 font-bold" /></div>
-              <div class="flex flex-wrap gap-1.5">
-                <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="1" checked onchange="updateCalendarPreview()"> Lun</label>
-                <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="2" onchange="updateCalendarPreview()"> Mar</label>
-                <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="3" checked onchange="updateCalendarPreview()"> Mié</label>
-                <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="4" onchange="updateCalendarPreview()"> Jue</label>
-                <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="5" onchange="updateCalendarPreview()"> Vie</label>
+              <h2 class="font-display font-extrabold text-xs uppercase text-emerald-900">A2. Calendario Escolar Vigente SEP 2026-2027</h2>
+              <div><label class="font-bold block mb-1">Fecha de Inicio (Sesión 1)</label><input id="inpStartDate" type="date" value="2026-10-26" onchange="updateCalendarPreview()" class="w-full rounded-xl border border-emerald-300 bg-white px-2.5 py-1.5 font-bold" /></div>
+              <div>
+                <label class="font-bold block mb-1">Días de Sesión con el Grupo</label>
+                <div class="flex flex-wrap gap-1.5">
+                  <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="1" checked onchange="updateCalendarPreview()"> Lun</label>
+                  <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="2" onchange="updateCalendarPreview()"> Mar</label>
+                  <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="3" onchange="updateCalendarPreview()"> Mié</label>
+                  <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="4" onchange="updateCalendarPreview()"> Jue</label>
+                  <label class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-emerald-300 font-bold"><input type="checkbox" class="day-check" value="5" onchange="updateCalendarPreview()"> Vie</label>
+                </div>
               </div>
-              <div id="calendarRangePreview" class="p-2 rounded-lg bg-emerald-900/10 text-emerald-950 font-extrabold text-[11px]"></div>
+              <div class="p-2 rounded-lg bg-emerald-900/10 text-emerald-950 text-[11px]">
+                <strong>Filtro Oficial Activo:</strong> Omite automáticamente días festivos, CTE y vacaciones SEP 2026-2027.
+                <div id="calendarRangePreview" class="font-extrabold mt-1"></div>
+              </div>
             </div>
           </div>
 
-          <!-- COLUMNA B: METODOLOGÍA EN CASCADA -->
+          <!-- COLUMNA B: CASCADA METODOLÓGICA -->
           <div class="lg:col-span-4 space-y-3">
             <div class="rounded-2xl p-4 bg-violet-50/70 border-2 border-violet-200 space-y-2.5 text-xs">
-              <h2 class="font-display font-extrabold text-xs uppercase text-violet-900">B. Cascada Metodológica Invariable</h2>
+              <h2 class="font-display font-extrabold text-xs uppercase text-violet-900">B. Currículo NEM y Metodología</h2>
               <div class="p-2 rounded-xl bg-amber-100 border border-amber-400">
-                <label class="font-extrabold text-amber-950 block mb-1">🎖️ Entorno / Modalidad:</label>
+                <label class="font-extrabold text-amber-950 block mb-1">🎖️ Entorno / Modalidad de las Sesiones:</label>
                 <select id="selEntornoSesion" onchange="onMethodologyCascadeChange()" class="w-full rounded-lg border border-amber-500 bg-white px-2 py-1.5 font-extrabold text-amber-950">
                   <option value="PATIO">1. Patio Escolar (100% Motriz y Praxiológico)</option>
                   <option value="ESCOLTA">🎖️ Especial Escolta Cívica y Concurso Oficial</option>
                   <option value="AULA_VS">2. Aula Vida Saludable y Corporeidad</option>
+                  <option value="MIXTO">3. Secuencia Híbrida (Patio + Escolta + Aula)</option>
                 </select>
               </div>
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="font-bold block mb-1">Estructura</label>
+                  <label class="font-bold block mb-1">Estructura Didáctica</label>
                   <select id="selModalidad" class="w-full rounded-xl border border-violet-300 bg-white px-2 py-1.5 font-bold">
                     <option value="Unidad Didáctica">Unidad Didáctica</option>
-                    <option value="Aprendizaje Servicio">Aprendizaje Servicio</option>
+                    <option value="Proyecto Aprendizaje Servicio (AS)">Aprendizaje Servicio (AS)</option>
                     <option value="Deporte Educativo">Deporte Educativo</option>
+                    <option value="Taller de Escolta Cívica">Taller de Escolta Cívica</option>
                   </select>
                 </div>
                 <div>
                   <label class="font-bold block mb-1">Fase y Grado NEM</label>
                   <select id="selFase" onchange="updateStaticCurriculum()" class="w-full rounded-xl border border-violet-300 bg-white px-2 py-1.5 font-bold">
+                    <option value="f2_pre">Fase 2 • Preescolar</option>
                     <option value="f3_1">Fase 3 • 1° Primaria</option>
                     <option value="f3_2">Fase 3 • 2° Primaria</option>
                     <option value="f4_3">Fase 4 • 3° Primaria</option>
@@ -127,16 +203,19 @@
                     <option value="f5_5">Fase 5 • 5° Primaria</option>
                     <option value="f5_6" selected>Fase 5 • 6° Primaria</option>
                     <option value="f6_1">Fase 6 • 1° Secundaria</option>
+                    <option value="f6_2">Fase 6 • 2° Secundaria</option>
+                    <option value="f6_3">Fase 6 • 3° Secundaria</option>
                   </select>
                 </div>
               </div>
               <div>
-                <label class="font-bold block mb-1">Contenido Sintético NEM</label>
+                <label class="font-bold block mb-1">Contenido del Programa Sintético NEM</label>
                 <select id="selContenido" onchange="updateStaticCurriculum()" class="w-full rounded-xl border border-violet-300 bg-white px-2.5 py-1.5 font-bold">
                   <option value="0">1. Capacidades, habilidades y destrezas motrices</option>
-                  <option value="1">2. Posibilidades cognitivas, expresivas y motrices</option>
+                  <option value="1">2. Posibilidades cognitivas, expresivas, motrices y de relación</option>
                   <option value="2">3. Estilos de vida activos y saludables</option>
-                  <option value="3">4. Pensamiento lúdico y estratégico</option>
+                  <option value="3">4. Pensamiento lúdico, divergente y estratégico</option>
+                  <option value="4">5. Interacción motriz y cultura de paz</option>
                 </select>
               </div>
               <div class="p-2.5 rounded-xl bg-white border-2 border-violet-300">
@@ -145,196 +224,356 @@
               </div>
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="font-bold text-indigo-950 block mb-1">1° Modelo Base</label>
+                  <label class="font-bold text-indigo-950 block mb-1">1° Modelo Pedagógico</label>
                   <select id="selModelo" onchange="onMethodologyCascadeChange()" class="w-full rounded-xl border-2 border-violet-400 bg-white px-2 py-1.5 font-bold text-indigo-950">
-                    <option value="PRAX">Praxiología Motriz (Parlebas)</option>
-                    <option value="TGFU">TGfU • Táctica (Bunker/Thorpe)</option>
-                    <option value="MRPS">MRPS • Ética (Hellison)</option>
-                    <option value="COOP">Cooperativo (Velázquez)</option>
+                    <option value="PRAX">Praxiología Motriz (Parlebas/Lavega)</option>
+                    <option value="TGFU">TGfU • Comprensión Táctica (Bunker/Thorpe)</option>
+                    <option value="MRPS">MRPS • Responsabilidad Social (Hellison)</option>
+                    <option value="COOP">Aprendizaje Cooperativo (Velázquez)</option>
+                    <option value="EDDEP">Educación Deportiva (Siedentop)</option>
                   </select>
                 </div>
                 <div>
-                  <label class="font-bold text-fuchsia-950 block mb-1">2° Modelo Hibridación</label>
+                  <label class="font-bold text-fuchsia-950 block mb-1">2° Modelo Complementario</label>
                   <select id="selModeloSecundario" class="w-full rounded-xl border-2 border-fuchsia-400 bg-fuchsia-50 px-2 py-1.5 font-bold text-fuchsia-950">
-                    <option value="+ MRPS (Responsabilidad Social)">+ MRPS (Social)</option>
+                    <option value="+ MRPS (Responsabilidad Personal y Social)">+ MRPS (Social)</option>
                     <option value="+ Aprendizaje Cooperativo">+ Cooperativo</option>
-                    <option value="Modelo Puro">Modelo Puro (Sin hibridar)</option>
+                    <option value="+ TGfU (Comprensión Táctica)">+ TGfU (Táctica)</option>
+                    <option value="Modelo Puro (Sin hibridar)">Modelo Puro</option>
                   </select>
                 </div>
               </div>
               <div>
-                <label class="font-bold block mb-1">Dominio de Acción [CAI]</label>
+                <label class="font-bold block mb-1">Dominio de Acción Motriz [CAI]</label>
                 <select id="selDominioCAI" class="w-full rounded-xl border border-violet-300 bg-white px-2 py-1.5 font-bold text-slate-800"></select>
               </div>
               <div>
-                <label class="font-bold block mb-1">Conflicto Táctico / Lógica Interna</label>
+                <label class="font-bold block mb-1">Enfoque Táctico / Lógica Interna</label>
                 <select id="selConflicto" class="w-full rounded-xl border border-violet-300 bg-white px-2.5 py-1.5 font-bold text-slate-800"></select>
               </div>
             </div>
           </div>
 
-          <!-- COLUMNA C -->
+          <!-- COLUMNA C: CONTEXTO Y EXPORTACIÓN PDF / WORD -->
           <div class="lg:col-span-4 flex flex-col justify-between space-y-4">
             <div class="rounded-2xl p-4 bg-amber-50/70 border-2 border-amber-300 space-y-2.5 text-xs">
-              <h2 class="font-display font-extrabold text-xs uppercase text-amber-950">C. Contexto, Evaluación y PDF</h2>
+              <h2 class="font-display font-extrabold text-xs uppercase text-amber-950">C. Diagnóstico, Evaluación y Descarga</h2>
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="font-bold block mb-1">Ejes Articuladores</label>
+                  <label class="font-bold block mb-1">Ejes Articuladores NEM</label>
                   <select id="selEje" class="w-full rounded-xl border border-amber-300 bg-white px-2 py-1.5 font-bold">
                     <option value="Vida Saludable + Inclusión">Vida Saludable + Inclusión</option>
-                    <option value="Pensamiento Crítico + Igualdad">Pensamiento Crítico + Igualdad</option>
+                    <option value="Pensamiento Crítico + Igualdad de Género">Pensamiento Crítico + Igualdad</option>
+                    <option value="Interculturalidad Crítica + Artes">Interculturalidad Crítica</option>
                   </select>
                 </div>
                 <div>
-                  <label class="font-bold block mb-1">Instrumento</label>
+                  <label class="font-bold block mb-1">Instrumento Evaluación</label>
                   <select id="selInstrumento" class="w-full rounded-xl border border-amber-300 bg-white px-2 py-1.5 font-bold">
-                    <option value="Rúbrica Praxiológica">Rúbrica Praxiológica</option>
+                    <option value="Rúbrica Praxiológica de Conductas Motrices">Rúbrica Praxiológica</option>
                     <option value="Lista de Cotejo Táctico-Postural">Lista de Cotejo</option>
+                    <option value="Escala Estimativa de Co-evaluación MRPS">Escala Estimativa MRPS</option>
                   </select>
                 </div>
               </div>
+
               <div>
-                <label class="font-bold block mb-1">Diagnóstico del Grupo y Materiales</label>
-                <textarea id="inpProblematica" rows="3" class="w-full rounded-xl border border-amber-300 bg-white p-2 font-medium text-slate-800">Grupo de 30 alumnos en patio escolar; conos, aros, paliacates y pelotas de vinil. Alta densidad motora sin filas de espera e inclusión DUA.</textarea>
+                <label class="font-bold block mb-1">Instalaciones y Materiales Disponibles</label>
+                <input id="inpProblematica" type="text" value="Patio escolar 25x15m; 30 alumnos; conos, aros, paliacates, pelotas de vinil y bastones." class="w-full rounded-xl border border-amber-300 bg-white px-2.5 py-1.5 font-medium text-slate-800" />
               </div>
+
+              <div class="p-2.5 rounded-xl bg-white border-2 border-amber-400 space-y-1">
+                <div class="flex items-center justify-between">
+                  <label class="font-extrabold text-amber-950 block">📋 Observaciones Particulares del Grupo a Integrar:</label>
+                  <button onclick="switchMainTab('clinic')" class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-900 hover:bg-amber-200">+ Agregar de Clínica</button>
+                </div>
+                <textarea id="inpDetallesInformalesPlan" rows="3" class="w-full rounded-lg border border-amber-200 bg-amber-50/40 p-2 font-medium text-slate-800 text-[11px]"
+                  placeholder="Anota características del grupo, necesidades específicas o situaciones a trabajar en estas sesiones...">El grupo tiende a concentrarse detrás del balón sin ocupar espacios libres; se requiere fortalecer el respeto a las reglas, el control postural y la inclusión de todos los alumnos.</textarea>
+              </div>
+
               <div class="p-3 rounded-xl bg-slate-900 text-white space-y-1">
                 <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-bold text-cyan-300">Vigencia de Código VIP:</span>
-                  <span id="licenseStatusText" class="text-xs font-extrabold text-amber-400">SIN CRÉDITOS PDF</span>
+                  <span class="text-[11px] font-bold text-cyan-300">Estado de Licencia:</span>
+                  <span id="licenseStatusText" class="text-xs font-extrabold text-amber-400">REQUIERE CÓDIGO ACTIVO</span>
                 </div>
-                <p class="text-[10px] text-slate-300">La exportación en PDF consume <strong>1 crédito</strong> de tu licencia activa (aplica para Planeación y Bitácoras).</p>
+                <p id="bitacoraStatusSubtext" class="text-[10px] text-slate-300">Cada código incluye 3 descargas de planeación y libera el uso ilimitado de las Bitácoras Oficiales SEP.</p>
               </div>
             </div>
 
             <div class="space-y-2">
               <button id="btnGenerateAI" onclick="generateSessionsWithAI()" class="w-full py-3 px-4 rounded-2xl font-display font-black text-xs md:text-sm text-white btn-gen shadow-lg">
-                ⚡ 1. DISEÑAR SESIONES IRREPETIBLES CON API
+                ⚡ 1. GENERAR VISTA PREVIA DE PLANEACIÓN
               </button>
-              <button id="btnDownloadPDF" onclick="consumeCreditAndPrintPDF()" class="w-full py-3 px-4 rounded-2xl font-display font-black text-xs md:text-sm bg-slate-900 text-amber-300 border-2 border-amber-400 shadow-lg">
-                🖨️ 2. EXPORTAR EXPEDIENTE PDF (-1 CRÉDITO)
-              </button>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button id="btnDownloadPDF" onclick="consumeCreditAndPrintPDF()" class="py-3 px-3 rounded-2xl font-display font-black text-xs bg-slate-900 hover:bg-slate-800 text-amber-300 border-2 border-amber-400 shadow-lg">
+                  🖨️ 2. IMPRIMIR / PDF (-1)
+                </button>
+                <button id="btnDownloadWord" onclick="consumeCreditAndDownloadWord()" class="py-3 px-3 rounded-2xl font-display font-black text-xs bg-blue-700 hover:bg-blue-600 text-white border-2 border-blue-400 shadow-lg">
+                  📄 3. DESCARGAR WORD (-1)
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="planOutputContainer" class="space-y-5"></div>
+      <!-- ENCABEZADO DE VISTA PREVIA -->
+      <div class="card-box p-3.5 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-2 no-print">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-display font-extrabold text-xs uppercase tracking-wider text-emerald-300">Vista Previa en Vivo del Expediente de Planeación</span>
+        </div>
+        <span class="text-[11px] text-slate-300">Revisa aquí tu planeación antes de descargarla en PDF o Word (.doc)</span>
+      </div>
+
+      <!-- SALIDA DEL EXPEDIENTE EN VISTA PREVIA E IMPRESIÓN -->
+      <div id="planOutputContainer" class="space-y-5">
+        <div class="card-box p-8 text-center text-xs text-slate-500 no-print">
+          Presiona el botón <strong>«⚡ 1. GENERAR VISTA PREVIA DE PLANEACIÓN»</strong> para visualizar aquí el expediente completo antes de descargarlo en PDF o Word.
+        </div>
+      </div>
     </section>
 
-    <!-- MÓDULO 2: LAS 2 BITÁCORAS SEP (PROTEGIDAS POR CÓDIGO VIP) -->
-    <section id="view-bitacoras" class="hidden space-y-4">
-      <div class="card-box p-5 space-y-3 text-xs">
+    <!-- ========================================================== -->
+    <!-- MÓDULO 2: LAS 2 BITÁCORAS OFICIALES SEP (ILIMITADAS POST-COMPRA) -->
+    <!-- ========================================================== -->
+    <section id="view-bitacoras" class="hidden space-y-5">
+      <div class="card-box p-5 space-y-4 text-xs no-print">
         <div class="flex flex-wrap justify-between items-center gap-3 border-b pb-3">
           <div>
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800">Módulo Normativo Oficial AEFCM / DGOSE</span>
-            <h2 class="font-display font-black text-lg text-slate-900 mt-1">Generador de las 2 Bitácoras SEP con Redacción Jurídica Asistida</h2>
-            <p class="text-slate-600">Escribe tus notas informales; la plataforma procesa automáticamente la redacción técnica, legal y normativa requerida.</p>
+            <span id="bitacoraAccessPill" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-900">Requiere Activación de Compra • Formatos AEFCM / DGOSE</span>
+            <h2 class="font-display font-black text-lg md:text-xl text-slate-900 mt-1">2. Las 2 Bitácoras Oficiales SEP (Espacios/Cobertura e Incidencias)</h2>
+            <p class="text-slate-600">Una vez activado tu código de compra, la descarga e impresión de las 2 Bitácoras Oficiales SEP queda <strong>liberada de manera ilimitada</strong> (en PDF y Word) sin descontar tus créditos de planeación.</p>
           </div>
-          <button onclick="consumeCreditAndPrintBitacoras()" class="px-4 py-2 rounded-xl bg-slate-900 text-amber-300 font-display font-black text-xs border border-amber-400">
-            🖨️ Imprimir / Exportar Bitácoras PDF (-1 Crédito)
-          </button>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="switchMainTab('clinic')" class="px-3.5 py-2 rounded-xl bg-indigo-100 hover:bg-indigo-200 text-indigo-950 font-extrabold text-xs">
+              🧪 Inyectar Caso de Clínica (30)
+            </button>
+            <button id="btnFormalizeBitacorasAI" onclick="formalizeBitacorasWithAI()" class="px-4 py-2 rounded-xl text-white font-display font-black text-xs btn-gen shadow">
+              ✨ 1. Estructurar Redacción Oficial SEP
+            </button>
+            <button onclick="printBitacorasUnlimitedAfterPurchase()" class="px-3.5 py-2 rounded-xl bg-slate-900 text-amber-300 font-display font-black text-xs border border-amber-400 shadow">
+              🖨️ 2. Imprimir PDF (Ilimitado)
+            </button>
+            <button onclick="downloadBitacorasWordUnlimited()" class="px-3.5 py-2 rounded-xl bg-blue-700 text-white font-display font-black text-xs border border-blue-400 shadow">
+              📄 3. Descargar Word (Ilimitado)
+            </button>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Entrada Bitácora 1 -->
-          <div class="p-4 rounded-xl bg-sky-50/70 border-2 border-sky-200 space-y-2">
-            <h3 class="font-extrabold text-sky-950 uppercase">Formato 1: Notas sobre Espacios, Horarios y Cobertura</h3>
-            <div>
-              <label class="font-bold block mb-1">Fecha del Registro</label>
-              <input id="b1Fecha" type="date" value="2026-10-26" onchange="renderBitacorasSEP()" class="w-full rounded-lg border px-3 py-1.5 font-bold bg-white" />
+          <!-- Captura Formato 1 -->
+          <div class="p-4 rounded-xl bg-sky-50/70 border-2 border-sky-200 space-y-2.5">
+            <h3 class="font-display font-extrabold text-sky-950 uppercase">Formato 1: Observación de la Comunidad, Espacios y Cobertura</h3>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-bold block mb-1">Fecha del Registro</label>
+                <input id="b1Fecha" type="date" value="2026-10-26" onchange="renderBitacorasSEP()" class="w-full rounded-lg border px-2.5 py-1.5 font-bold bg-white" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Hora</label>
+                <input id="b1Hora" type="time" value="09:30" onchange="renderBitacorasSEP()" class="w-full rounded-lg border px-2.5 py-1.5 font-bold bg-white" />
+              </div>
             </div>
             <div>
-              <label class="font-bold block mb-1">Redacción informal de la situación en cancha o espacios:</label>
-              <textarea id="b1Raw" rows="3" oninput="renderBitacorasSEP()" class="w-full rounded-lg border p-2 bg-white" placeholder="Ej. Nos quitaron la mitad de la cancha para junta y tuve que adaptar a los 30 niños en un espacio reducido..."></textarea>
+              <label class="font-bold block mb-1">Docente Titular de Grupo / Tutor (Para Firma)</label>
+              <input id="b1Titular" type="text" value="Prof(a). Titular del Grupo" oninput="renderBitacorasSEP()" class="w-full rounded-lg border px-2.5 py-1.5 bg-white font-semibold" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">📋 Descripción de la situación (Espacios, horarios o cobertura):</label>
+              <textarea id="b1Raw" rows="3" oninput="renderBitacorasSEP()" class="w-full rounded-lg border p-2 bg-white"
+                placeholder="Describe brevemente lo sucedido...">Dos grupos coincidieron en la cancha central y el docente titular se retiró unos minutos, por lo que se delimitó media cancha con conos para salvaguardar la integridad física del alumnado.</textarea>
+            </div>
+          </div>
+
+          <!-- Captura Formato 2 -->
+          <div class="p-4 rounded-xl bg-amber-50/70 border-2 border-amber-200 space-y-2.5">
+            <h3 class="font-display font-extrabold text-amber-950 uppercase">Formato 2: Acta Descriptiva de Incidencia, Salvaguarda y Convivencia</h3>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-bold block mb-1">Fecha del Registro</label>
+                <input id="b2Fecha" type="date" value="2026-10-26" onchange="renderBitacorasSEP()" class="w-full rounded-lg border px-2.5 py-1.5 font-bold bg-white" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Hora</label>
+                <input id="b2Hora" type="time" value="10:15" onchange="renderBitacorasSEP()" class="w-full rounded-lg border px-2.5 py-1.5 font-bold bg-white" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-bold block mb-1">Iniciales de Estudiantes Involucrados</label>
+                <input id="b2Alumnos" type="text" value="Alumnos L.M.R. y J.A.P." oninput="renderBitacorasSEP()" class="w-full rounded-lg border px-2.5 py-1.5 bg-white font-semibold" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Madre, Padre o Tutor (Para Firma)</label>
+                <input id="b2Tutor" type="text" value="Nombre y Firma de Madre/Padre o Tutor" oninput="renderBitacorasSEP()" class="w-full rounded-lg border px-2.5 py-1.5 bg-white font-semibold" />
+              </div>
+            </div>
+            <div>
+              <label class="font-bold block mb-1">📋 Descripción de los hechos (Incidencia o convivencia):</label>
+              <textarea id="b2Raw" rows="3" oninput="renderBitacorasSEP()" class="w-full rounded-lg border p-2 bg-white"
+                placeholder="Describe brevemente el incidente...">Durante el juego de invasión dos alumnos disputaron el balón con contacto físico; se detuvo la actividad, se verificó que no existieran lesiones, se modificó la regla a pases sin contacto y se establecieron acuerdos de respeto.</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista Previa e Impresión de los 2 Formatos Oficiales -->
+      <div id="bitacorasOutput" class="space-y-6"></div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MÓDULO 3: PIZARRA TÁCTICA INTERACTIVA (30 ESCENARIOS)      -->
+    <!-- ========================================================== -->
+    <section id="view-board" class="hidden space-y-5">
+      <div id="tacticalBoardContainer" class="card-box p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-cyan-100 text-cyan-900">Simulador Táctico y Praxiológico en Vivo • 30 Escenarios</span>
+            <h2 class="font-display font-black text-lg md:text-2xl mt-0.5">3. Pizarra Táctica Interactiva: Problema en Cancha vs. Solución Óptima</h2>
+            <p class="text-xs opacity-80">Visualiza dinámicamente las 30 situaciones reales de patio, aula y escolta cívica y su resolución espacial óptima.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button id="btnExpandBoard" onclick="toggleCleanPresentationMode()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-display font-black text-xs shadow flex items-center gap-1.5">
+              🔍 Modo Presentación Amplia
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+          <div class="lg:col-span-4 space-y-3 text-xs bg-slate-100 text-slate-900 p-4 rounded-2xl border border-slate-300">
+            <div>
+              <label class="font-extrabold text-slate-800 block mb-1">1. Selecciona Situación o Juego (30):</label>
+              <select id="selBoardScenario" onchange="loadBoardScenario()" class="w-full rounded-xl border-2 border-indigo-300 bg-white px-3 py-2 font-bold text-slate-900"></select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button id="btnBoardModeProblem" onclick="setBoardSimulationMode('problem')"
+                class="py-2.5 px-3 rounded-xl font-display font-black text-xs bg-rose-600 text-white shadow">
+                ⚠️ 1. Situación Real
+              </button>
+              <button id="btnBoardModeSolution" onclick="setBoardSimulationMode('solution')"
+                class="py-2.5 px-3 rounded-xl font-display font-black text-xs bg-slate-200 text-slate-800 hover:bg-emerald-500 hover:text-white transition">
+                ✅ 2. Solución Óptima
+              </button>
+            </div>
+
+            <div id="boardExplanationCard" class="p-3.5 rounded-xl bg-slate-900 text-white space-y-2 border-l-4 border-rose-500">
+              <div id="boardStateBadge" class="text-[10px] font-extrabold uppercase text-rose-400">ESTADO ACTUAL: SITUACIÓN PROBLEMA</div>
+              <h3 id="boardScenarioTitle" class="font-display font-black text-sm text-white"></h3>
+              <p id="boardScenarioDesc" class="text-[11px] text-slate-300 leading-relaxed"></p>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="injectSelectedScenarioToPlan()" class="flex-1 py-2 px-3 rounded-xl bg-indigo-600 text-white font-extrabold text-[11px]">
+                ⚡ Enviar a Planeación
+              </button>
+              <button onclick="injectSelectedScenarioToBitacora()" class="flex-1 py-2 px-3 rounded-xl bg-amber-400 text-slate-950 font-extrabold text-[11px]">
+                📋 Enviar a Bitácora SEP
+              </button>
             </div>
           </div>
 
-          <!-- Entrada Bitácora 2 -->
-          <div class="p-4 rounded-xl bg-amber-50/70 border-2 border-amber-200 space-y-2">
-            <h3 class="font-extrabold text-amber-950 uppercase">Formato 2: Notas sobre Incidencias y Convivencia</h3>
-            <div>
-              <label class="font-bold block mb-1">Fecha del Registro</label>
-              <input id="b2Fecha" type="date" value="2026-10-26" onchange="renderBitacorasSEP()" class="w-full rounded-lg border px-3 py-1.5 font-bold bg-white" />
-            </div>
-            <div>
-              <label class="font-bold block mb-1">Redacción informal del incidente o conflicto:</label>
-              <textarea id="b2Raw" rows="3" oninput="renderBitacorasSEP()" class="w-full rounded-lg border p-2 bg-white" placeholder="Ej. Dos niños discutieron fuerte por el balón en el partido, se empujaron pero los calmé y aplicamos diálogo restaurativo..."></textarea>
+          <div class="lg:col-span-8 flex flex-col items-center">
+            <div class="w-full bg-slate-950 p-3 rounded-2xl border-2 border-slate-800 shadow-2xl">
+              <div class="flex justify-between items-center text-[11px] text-slate-300 mb-2 px-1">
+                <span>🟢 Equipo A / Vanguardia | 🔵 Equipo B / Retaguardia | 🟡 Móvil / Abanderado</span>
+                <span class="font-mono text-cyan-400">Toca la cancha para desplazar la jugada</span>
+              </div>
+              <canvas id="tacticalCanvas" width="760" height="420" class="w-full h-auto rounded-xl cursor-pointer bg-emerald-900"></canvas>
             </div>
           </div>
         </div>
       </div>
-
-      <div id="bitacorasOutput" class="space-y-4"></div>
     </section>
 
-    <!-- MÓDULO 3: PIZARRA TÁCTICA -->
-    <section id="view-board" class="hidden">
-      <div class="card-box p-5 text-xs space-y-3">
-        <h2 class="font-display font-black text-lg">Pizarra Táctica de Espacios Sociomotrices [CAI] y Escolta Cívica</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="p-4 rounded-xl bg-slate-900 text-white border border-cyan-500"><strong>1. Escolta Oficial (6 Elementos):</strong> Vanguardia (GI, AB, GD, CM) a 1 intervalo lateral; Retaguardia (RI, RD) a 3 pasos libres. Cadencia: 120 ppm.</div>
-          <div class="p-4 rounded-xl bg-slate-900 text-white border border-emerald-500"><strong>2. Cuadrantes Praxiológicos:</strong> Subdivisión de cancha en 4 zonas para 4v4 simultáneo (>70% de compromiso motor sin filas).</div>
-          <div class="p-4 rounded-xl bg-slate-900 text-white border border-violet-500"><strong>3. Red de Roles:</strong> Transición Portador → Apoyo sin balón → Recuperador mediante lectura de praxemas.</div>
+    <!-- ========================================================== -->
+    <!-- MÓDULO 4: CLÍNICA DE PATIO Y AULA (30 CASOS REALES)        -->
+    <!-- ========================================================== -->
+    <section id="view-clinic" class="hidden space-y-5">
+      <div class="card-box p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-3">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-900">Catálogo de Intervención Pedagógica • 30 Casos</span>
+            <h2 class="font-display font-black text-lg md:text-2xl text-slate-900 mt-0.5">4. Clínica de Patio y Aula: 30 Problemáticas y Soluciones Aplicadas</h2>
+            <p class="text-xs text-slate-600">Integra cualquiera de estas 30 problemáticas y soluciones directamente en tu Planeación o en las Bitácoras Oficiales SEP.</p>
+          </div>
+          <div class="flex gap-1.5 text-xs">
+            <button onclick="filterClinicCases('ALL')" class="px-3 py-1.5 rounded-xl font-extrabold bg-slate-900 text-white">Todos (30)</button>
+            <button onclick="filterClinicCases('PATIO')" class="px-3 py-1.5 rounded-xl font-extrabold bg-emerald-100 text-emerald-900">Patio y Cancha (22)</button>
+            <button onclick="filterClinicCases('AULA')" class="px-3 py-1.5 rounded-xl font-extrabold bg-amber-100 text-amber-900">Aula, BAP y Cobertura (8)</button>
+          </div>
         </div>
+
+        <div id="clinicCasesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs"></div>
       </div>
     </section>
 
-    <!-- MÓDULO 4: CLÍNICA -->
-    <section id="view-clinic" class="hidden">
-      <div class="card-box p-5 text-xs space-y-3">
-        <h2 class="font-display font-black text-lg">Clínica de Patio: Dosificación Fisiológica y Ajustes DUA/BAP</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-300"><strong>Control de Carga (EPInfant):</strong> Intensidad objetivo RPE 4-7, pausas de rehidratación y mayéutica cada 12 min.</div>
-          <div class="p-4 rounded-xl bg-sky-50 border border-sky-300"><strong>Ajustes Razonables BAP:</strong> Modificación de espacio (zonas protegidas), tiempo de posesión y dimensión del móvil para éxito motor equitativo.</div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- MODAL CLIENTE: CANJEAR CÓDIGO -->
+  <!-- ========================================================== -->
+  <!-- MODAL CLIENTE: CANJEAR CÓDIGO VIP                          -->
+  <!-- ========================================================== -->
   <div id="unlockModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-center justify-center p-4 no-print">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 border-2 border-amber-400 space-y-4">
       <div class="flex justify-between items-center">
-        <h3 class="font-display font-black text-lg">🔑 Activar Licencia VIP</h3>
+        <h3 class="font-display font-black text-lg">🔑 Activar Código de Compra</h3>
         <button onclick="closeUnlockModal()" class="font-bold text-slate-500">✕</button>
       </div>
-      <p class="text-xs text-slate-600">Ingresa tu código firmado para habilitar las descargas de expedientes y bitácoras en PDF.</p>
-      <input id="inpClientCode" type="text" placeholder="PMX-08S-02P-XXXX-XXXX" class="w-full rounded-xl border-2 border-slate-300 px-3 py-2.5 font-mono font-bold text-center uppercase text-xs" />
-      <button onclick="redeemClientCode()" class="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-display font-black text-xs">VALIDAR CÓDIGO Y ACTIVAR CRÉDITOS</button>
+      <p class="text-xs text-slate-600">Ingresa tu código adquirido. Activa <strong>3 descargas para tu Planeación</strong> (en PDF o Word) y libera de manera <strong>ilimitada las 2 Bitácoras Oficiales SEP</strong>.</p>
+      <input id="inpClientCode" type="text" placeholder="PMX-08S-03P-XXXX-XXXX" class="w-full rounded-xl border-2 border-slate-300 px-3 py-2.5 font-mono font-bold text-center uppercase text-xs" />
+      <button onclick="redeemClientCode()" class="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-display font-black text-xs">ACTIVAR CÓDIGO Y LIBERAR BITÁCORAS ILIMITADAS</button>
     </div>
   </div>
 
-  <!-- MODAL CREADOR: PANEL MAESTRO -->
+  <!-- ========================================================== -->
+  <!-- MODAL OCULTO DEL ADMINISTRADOR (5 CLICS EN AEF)            -->
+  <!-- ========================================================== -->
   <div id="masterModal" class="fixed inset-0 bg-slate-950/90 z-50 hidden items-center justify-center p-4 no-print">
     <div class="bg-slate-900 text-white rounded-3xl max-w-3xl w-full p-5 border-2 border-fuchsia-500 space-y-4 max-h-[90vh] overflow-y-auto text-xs">
       <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-        <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro • Licencias y API</h3>
+        <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro Exclusivo (Oculto al Cliente)</h3>
         <button onclick="closeMasterModal()" class="font-bold text-slate-400">✕</button>
       </div>
-      <div class="p-3 rounded-xl bg-slate-800 border border-cyan-500/40 space-y-2">
-        <label class="font-extrabold text-cyan-300 uppercase block">1. Clave API de Gemini</label>
-        <div class="flex gap-2">
-          <input id="inpMasterApiKey" type="password" placeholder="AIzaSy..." class="flex-1 rounded-lg bg-slate-950 border border-slate-700 px-3 py-1.5 font-mono text-white" />
-          <button onclick="saveMasterApiKey()" class="px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-extrabold">Guardar API</button>
+
+      <div class="p-3.5 rounded-xl bg-slate-800 border border-cyan-500/40 space-y-2.5">
+        <label class="font-extrabold text-cyan-300 uppercase block">1. Configuración Permanente del Motor (Se guarda una sola vez)</label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <select id="selAiProvider" class="rounded-lg bg-slate-950 border border-slate-700 px-3 py-2 font-bold text-cyan-300">
+            <option value="AUTO">Automático</option>
+            <option value="DEEPSEEK">Motor A (sk-...)</option>
+            <option value="GEMINI">Motor B (AIzaSy...)</option>
+          </select>
+          <input id="inpMasterApiKey" type="password" placeholder="Pega tu llave una sola vez aquí..." class="sm:col-span-2 rounded-lg bg-slate-950 border border-slate-700 px-3 py-2 font-mono text-white" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button onclick="saveMasterApiKey()" class="py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold">
+            ✅ Guardar Permanentemente en Navegador
+          </button>
+          <button onclick="exportHtmlWithEmbeddedKey()" class="py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold">
+            💾 Descargar HTML con Llave Pre-Incrustada
+          </button>
         </div>
       </div>
-      <div class="p-3 rounded-xl bg-slate-800 border border-fuchsia-500/40 space-y-2">
-        <label class="font-extrabold text-fuchsia-300 uppercase block">2. Cambiar Clave Maestra del Panel (Mín. 10 caracteres)</label>
+
+      <div class="p-3.5 rounded-xl bg-slate-800 border border-fuchsia-500/40 space-y-2">
+        <label class="font-extrabold text-fuchsia-300 uppercase block">2. Cambiar Contraseña de este Panel Maestro (Mín. 10 caracteres)</label>
         <div class="flex gap-2">
-          <input id="inpNewMasterPass" type="text" placeholder="Nueva Clave Maestra segura..." class="flex-1 rounded-lg bg-slate-950 border border-slate-700 px-3 py-1.5 font-mono text-white" />
-          <button onclick="updateMasterPassword()" class="px-3 py-1.5 rounded-lg bg-fuchsia-500 text-white font-extrabold">Cambiar Clave</button>
+          <input id="inpNewMasterPass" type="text" placeholder="Nueva contraseña del panel..." class="flex-1 rounded-lg bg-slate-950 border border-slate-700 px-3 py-1.5 font-mono text-white" />
+          <button onclick="updateMasterPassword()" class="px-3 py-1.5 rounded-lg bg-fuchsia-500 text-white font-extrabold">Actualizar Clave</button>
         </div>
       </div>
-      <div class="p-3 rounded-xl bg-slate-800 border border-emerald-500/40 space-y-3">
-        <label class="font-extrabold text-emerald-300 uppercase block">3. Emitir Código VIP con Vigencia por Descargas PDF</label>
+
+      <div class="p-3.5 rounded-xl bg-slate-800 border border-emerald-500/40 space-y-3">
+        <label class="font-extrabold text-emerald-300 uppercase block">3. Emitir Código VIP (3 Impresiones de Planeación + Bitácoras Ilimitadas)</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <select id="selVipMaxSessions" class="rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 font-bold text-white">
             <option value="08">Paquete 8 Sesiones ($100)</option>
             <option value="20">Paquete 20 Sesiones ($200)</option>
             <option value="40">Paquete 40 Sesiones ($300)</option>
           </select>
-          <input id="inpVipPdfLimit" type="number" min="1" max="99" value="2" class="rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 font-bold text-amber-300" />
-          <button onclick="issueSignedVipCode()" class="py-2 rounded-lg bg-emerald-500 text-slate-950 font-extrabold">🎲 Generar Código VIP</button>
+          <input id="inpVipPdfLimit" type="number" min="1" max="99" value="3" class="rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 font-bold text-amber-300" title="Impresiones de Planeación (Por defecto: 3)" />
+          <button onclick="issueSignedVipCode()" class="py-2 rounded-lg bg-emerald-500 text-slate-950 font-extrabold">🎲 Generar Código (3 Créditos)</button>
         </div>
         <div id="newlyGeneratedCodeBox" class="hidden p-2.5 rounded-lg bg-emerald-950 border border-emerald-400 flex items-center justify-between">
           <span id="newlyGeneratedCodeText" class="font-mono font-black text-sm text-white"></span>
@@ -346,38 +585,188 @@
   </div>
 
   <script>
+    const PRE_EMBEDDED_ENGINE_KEY = "";
+    const PRE_EMBEDDED_PROVIDER = "AUTO";
+
+    // =========================================================================
+    // 1. CURRÍCULO NEM INVARIABLE Y CASCADA METODOLÓGICA
+    // =========================================================================
     const STATIC_NEM_CURRICULUM = {
-      f3_1: ["Explora sus posibilidades motrices al utilizar patrones básicos de movimiento en juegos individuales y colectivos."],
-      f3_2: ["Combina diversos patrones básicos de movimiento para actuar con base en las características de cada juego."],
-      f4_3: ["Adapta sus movimientos, de acuerdo con los elementos básicos de los juegos, para responder a las condiciones."],
-      f4_4: ["Pone en práctica sus habilidades motrices en situaciones lúdicas, individuales y colectivas."],
-      f5_5: ["Reconoce posibilidades y límites al participar en situaciones de juego e iniciación deportiva."],
-      f5_6: ["Aplica sus capacidades, habilidades y destrezas motrices al organizar y participar en juegos e iniciación deportiva."],
-      f6_1: ["Explora las capacidades, habilidades y destrezas motrices, para enriquecer y ampliar el potencial propio y de las demás personas."]
+      f2_pre: [
+        "Explora movimientos de locomoción, manipulación y estabilidad en juegos colectivos para reconocer sus posibilidades motrices.",
+        "Representa corporalmente emociones, situaciones e historias mediante gestos, posturas y desplazamientos rítmicos.",
+        "Participa en juegos activos e identifica sensaciones corporales asociadas al bienestar y la hidratación.",
+        "Propone variantes sencillas a los juegos y resuelve retos motores en colaboración con sus pares.",
+        "Interactúa con respeto y acuerda reglas básicas de seguridad y convivencia durante las actividades motrices."
+      ],
+      f3_1: [
+        "Explora sus posibilidades motrices al utilizar patrones básicos de movimiento en juegos individuales y colectivos.",
+        "Reconoce sus posibilidades expresivas y motrices al representar situaciones y emociones.",
+        "Participa en diferentes juegos para explorar alternativas que le permitan mantener una vida activa.",
+        "Busca distintas soluciones ante una misma situación de juego o cotidiana.",
+        "Colabora en la definición de normas básicas de convivencia para reconocer su influencia en la interacción."
+      ],
+      f3_2: [
+        "Combina diversos patrones básicos de movimiento para actuar con base en las características de cada juego.",
+        "Explora el control postural y respiratorio en actividades y juegos con intención expresiva.",
+        "Reconoce propuestas lúdicas o expresivas que fomentan su disfrute y práctica cotidiana.",
+        "Propone soluciones ante retos y conflictos que se presentan en juegos y actividades.",
+        "Reflexiona acerca de las normas básicas de convivencia en el juego y las actividades cotidianas."
+      ],
+      f4_3: [
+        "Adapta sus movimientos, de acuerdo con los elementos básicos de los juegos, para responder a las condiciones que se presentan.",
+        "Elabora propuestas de códigos de comunicación por medio del cuerpo, para otorgarle una intención a sus movimientos.",
+        "Socializa actividades físicas que practica de manera cotidiana, con la intención de valorar su incidencia en el bienestar.",
+        "Toma decisiones estratégicas a partir de las características de las situaciones de juego y cotidianas.",
+        "Establece acuerdos ante situaciones de juego y cotidianas, a partir de la interacción, para valorar su aplicación."
+      ],
+      f4_4: [
+        "Pone en práctica sus habilidades motrices en situaciones lúdicas, individuales y colectivas, para valorar la diversidad.",
+        "Reconoce sus capacidades y habilidades motrices, al representar con el cuerpo situaciones e historias.",
+        "Organiza juegos y otras actividades físicas, para analizar avances y logros personales o grupales en favor de la vida saludable.",
+        "Diseña estrategias para atender situaciones o resolver problemas y conflictos que se presentan en el juego.",
+        "Experimenta situaciones caracterizadas por la cooperación y oposición, con el fin de reconocer sus implicaciones."
+      ],
+      f5_5: [
+        "Reconoce posibilidades y límites al participar en situaciones de juego e iniciación deportiva, individuales y colectivas.",
+        "Integra sus capacidades y habilidades en situaciones lúdicas y expresivas para lograr mayor seguridad y confianza.",
+        "Plantea alternativas de actividades físicas que puede practicar dentro y fuera de la escuela para su bienestar.",
+        "Planifica e implementa estrategias ante situaciones de juego y cotidianas, para contar con opciones que incrementen la efectividad.",
+        "Promueve ambientes de participación en situaciones de juego, iniciación deportiva y cotidianas, para valorar posibles interacciones."
+      ],
+      f5_6: [
+        "Aplica sus capacidades, habilidades y destrezas motrices al organizar y participar en situaciones de juego e iniciación deportiva.",
+        "Diseña propuestas de actividades lúdicas y expresivas a partir de sus intereses, capacidades y habilidades, para fortalecer su imagen corporal.",
+        "Evalúa los factores que limitan la práctica constante de actividades físicas, para implementar opciones que permitan superarlos.",
+        "Emplea el pensamiento estratégico y divergente ante situaciones de juego o cotidianas, para valorar la actuación individual y colectiva.",
+        "Organiza e implementa situaciones de juego e iniciación deportiva, para favorecer la convivencia en la escuela y la comunidad."
+      ],
+      f6_1: [
+        "Explora las capacidades, habilidades y destrezas motrices, para enriquecer y ampliar el potencial propio y de las demás personas.",
+        "Toma decisiones individuales y colectivas en situaciones de juego (defensivas u ofensivas), con el propósito de valorar su efectividad.",
+        "Implementa acciones que le permiten mantenerse físicamente activo en diferentes momentos del día.",
+        "Desarrolla soluciones tácticas y estratégicas en juegos modificados de cancha dividida, invasión y blanco y diana.",
+        "Promueve relaciones asertivas e inclusivas en la práctica de juegos deportivos y escolares."
+      ],
+      f6_2: [
+        "Integra sus capacidades, habilidades y destrezas motrices, para poner a prueba el potencial individual y de conjunto.",
+        "Valora las estrategias de juego que utiliza ante distintas condiciones que se presentan, para reestructurarlas e incrementar su efectividad.",
+        "Reflexiona acerca de los factores que afectan la práctica sistemática de la actividad física, para proponer acciones que contribuyan a modificarlos.",
+        "Ajusta sus desempeños motores al analizar los roles de cooperación-oposición y la lógica interna de las situaciones motrices.",
+        "Toma acuerdos a favor de la cultura de paz y el juego limpio en torneos y prácticas motrices."
+      ],
+      f6_3: [
+        "Valora las capacidades, habilidades y destrezas propias y de las demás personas, para mostrar mayor disponibilidad corporal y autonomía motriz.",
+        "Reestructura sus estrategias de juego al participar en situaciones de iniciación deportiva y deporte educativo, propuestas por él o por sus compañeros.",
+        "Diseña, organiza y participa en actividades recreativas, de iniciación deportiva y deporte educativo, con la intención de fomentar el bienestar personal y social.",
+        "Autogestiona proyectos motrices y deportivos aplicando principios de la lógica interna y responsabilidad personal y social.",
+        "Lidera la resolución pacífica de conflictos motrices mediante el consenso reglamentario."
+      ]
     };
 
     const METHODOLOGY_CASCADE = {
       PRAX: {
-        nombre: "Praxiología Motriz (Parlebas / Pere Lavega)",
-        dominios: ["[C-A] Sociomotriz de Cooperación-Oposición", "[C] Cooperación Pura", "[A] Oposición", "[0] Psicomotriz"],
-        conflictos: ["Lectura de espacios libres y desmarque", "Comunicación motriz y relevos", "Pacto de reglas y lógica interna"]
+        nombre: "Praxiología Motriz (Pierre Parlebas / Pere Lavega)",
+        dominios: [
+          "[C-A] Sociomotriz de Cooperación-Oposición en espacio estable",
+          "[C] Sociomotriz de Cooperación Pura y Sincronía",
+          "[A] Sociomotriz de Oposición (Duelos simétricos/asimétricos)",
+          "[0] Psicomotriz sin interacción (Control postural y cadencia)"
+        ],
+        conflictos: [
+          "Decodificación de praxemas, lectura de espacios libres y transición de rol",
+          "Red de comunicación motriz (pase/relevo) vs. contracomunicación (intercepción)",
+          "Pacto de reglas y modificación de la lógica interna (espacio, tiempo, móvil)",
+          "Sincronización rítmica (120 ppm), alineación geométrica y voces de mando"
+        ]
       },
       TGFU: {
-        nombre: "TGfU • Comprensión Táctica (Bunker & Thorpe)",
-        dominios: ["[C-A] Invasión", "[C-A] Cancha Dividida"],
-        conflictos: ["Conservar el móvil y progresar a meta", "Ataque al espacio vacío"]
+        nombre: "TGfU • Comprensión Táctica del Juego (Bunker & Thorpe)",
+        dominios: [
+          "[C-A] Juegos Modificados de Invasión de Cancha",
+          "[C-A] Juegos Modificados de Cancha Dividida y Muro",
+          "[C-A] Juegos Modificados de Campo y Bate",
+          "[0 / A] Juegos Modificados de Blanco y Diana"
+        ],
+        conflictos: [
+          "Conservar el móvil, progresar hacia la meta y atacar el espacio vacío",
+          "Superioridad numérica (3v2 / 4v3), desmarque de apoyo y ruptura",
+          "Colocación del móvil lejos del oponente y recuperación de la posición base"
+        ]
       },
       MRPS: {
-        nombre: "MRPS • Responsabilidad Social (Hellison)",
-        dominios: ["[C-A] Arbitraje Autogestionado", "[C] Retos de Ayuda Mutua"],
-        conflictos: ["Respeto y esfuerzo activo", "Autonomía y resolución pacífica"]
+        nombre: "MRPS • Responsabilidad Personal y Social (Don Hellison)",
+        dominios: [
+          "[C-A] Situaciones Sociomotrices con Arbitraje Autogestionado",
+          "[C] Retos Motores de Ayuda Mutua y Liderazgo Positivo",
+          "[A] Duelos Motores con Pacto de Honor y Autocontrol Emocional"
+        ],
+        conflictos: [
+          "Niveles 1 y 2: Respeto a los derechos de los demás y esfuerzo activo",
+          "Nivel 3: Autonomía motriz y trabajo sin supervisión externa",
+          "Niveles 4 y 5: Ayuda a compañeros con BAP y transferencia al aula"
+        ]
       },
       COOP: {
-        nombre: "Aprendizaje Cooperativo (Velázquez)",
-        dominios: ["[C] Cooperación Pura e Interdependencia"],
-        conflictos: ["Reto grupal sin eliminación", "Sincronía colectiva"]
+        nombre: "Aprendizaje Cooperativo en E.F. (Velázquez Callado)",
+        dominios: [
+          "[C] Cooperación Pura con Interdependencia Positiva de Meta y Recursos",
+          "[C] Marcador Colectivo Acumulativo sin Eliminación"
+        ],
+        conflictos: [
+          "Superar un reto motor grupal donde nadie gana si un integrante queda atrás",
+          "Sincronización motriz y relevos encadenados con roles rotativos"
+        ]
+      },
+      EDDEP: {
+        nombre: "Educación Deportiva (Siedentop)",
+        dominios: [
+          "[C-A] Temporada de Deporte Educativo con Roles (Jugador, Árbitro, Técnico)",
+          "[C] Afiliación de Equipos Mixtos e Inclusivos"
+        ],
+        conflictos: [
+          "Gestión autónoma del reglamento modificado, arbitraje formativo y juego limpio",
+          "Diseño de estrategias colectivas desde el rol de capitán táctico"
+        ]
       }
     };
+
+    // =========================================================================
+    // 2. CLÍNICA DE PATIO Y AULA (30 PROBLEMÁTICAS Y SOLUCIONES REALES)
+    // =========================================================================
+    const CLINIC_30_CONFLICTS = [
+      { id: 1, tipo: "PATIO", visualMode: "swarm", titulo: "1. Efecto Enjambre (Amontonamiento tras el móvil)", problema: "Los 30 alumnos corren detrás de una sola pelota sin ocupar el espacio libre, generando choques fortuitos y nula lectura táctica.", solucion: "Subdividir la cancha en 4 cuadrantes (4v4 simultáneo) e imponer la regla de 'Cuadrantes de Cristal': máximo 2 jugadores por zona y prohibido botar.", bitacoraTarget: 2 },
+      { id: 2, tipo: "PATIO", visualMode: "monopoly", titulo: "2. Monopolio del Móvil y Exclusión por Habilidad", problema: "2 o 3 alumnos con mayor destreza acaparan los pases y excluyen sistemáticamente a compañeros con menor competencia motriz.", solucion: "Modificar la Lógica Interna (Red de Comunicación): el punto solo es válido si todos los integrantes del equipo tocaron el móvil antes de anotar.", bitacoraTarget: 2 },
+      { id: 3, tipo: "PATIO", visualMode: "escolta", titulo: "3. Asimetría en Conversión de Escolta Cívica", problema: "Durante las conversiones de 90° o 180°, la vanguardia pierde la alineación lateral porque el eje y el extremo caminan a la misma amplitud de paso.", solucion: "Biomecánica diferencial: el elemento eje marca paso en su lugar (pivote), centrales acortan zancada a 35 cm y el extremo alarga paso manteniendo cadencia de 120 ppm.", bitacoraTarget: 1 },
+      { id: 4, tipo: "PATIO", visualMode: "queues", titulo: "4. Baja Densidad Motora por Filas de Espera", problema: "Organización en hileras largas donde 2 alumnos participan y 28 esperan sentados, provocando dispersión e indisciplina.", solucion: "Eliminar filas mediante estaciones paralelas multi-móvil y retos cooperativos simultáneos (>75% de compromiso motor efectivo).", bitacoraTarget: 1 },
+      { id: 5, tipo: "PATIO", visualMode: "contact", titulo: "5. Contacto Físico Brusco en Juegos de Invasión", problema: "Fricción interpersonal, empujones y reclamos airados al intentar arrebatar el implemento de las manos del portador.", solucion: "Regla de 'Escudo Espacial de 1 Metro' y uso de paliacate en cintura (flag) para interceptar sin contacto corporal directo + Pacto MRPS.", bitacoraTarget: 2 },
+      { id: 6, tipo: "AULA", visualMode: "shared", titulo: "6. Uso Simultáneo e Invasión del Patio Escolar", problema: "Otro grupo o actividad escolar ocupa la cancha asignada en el horario de Educación Física, reduciendo el área segura de trabajo.", solucion: "Delimitación perimetral inmediata con conos de seguridad, ajuste a juegos de espacio reducido y acuerdo escrito en Bitácora 1 conforme a Guía Operativa.", bitacoraTarget: 1 },
+      { id: 7, tipo: "AULA", visualMode: "shared", titulo: "7. Ausencia Temporal del Docente Titular (Cobertura)", problema: "El docente titular no se presenta a la entrega/recepción puntual del grupo o solicita retiro temporal durante la sesión.", solucion: "Protocolo de Salvaguarda Continua: nunca dejar al grupo sin supervisión presencial y asentar acuerdo de corresponsabilidad en Bitácora 1.", bitacoraTarget: 1 },
+      { id: 8, tipo: "PATIO", visualMode: "swarm", titulo: "8. Frustración y Abandono al Perder en Duelos [A]", problema: "Alumnos que lloran, se enojan o abandonan la cancha cuando su equipo va abajo en el marcador.", solucion: "Transición a 'Marcador Colectivo Cooperativo contra el Tiempo' o reinicio de marcador cada 3 minutos con cambio de roles tácticos.", bitacoraTarget: 2 },
+      { id: 9, tipo: "AULA", visualMode: "bap", titulo: "9. Barrera Motriz o Movilidad Reducida (BAP)", problema: "Alumno con limitación motriz o en silla de ruedas queda rezagado en tareas de persecución de alta velocidad.", solucion: "Diseño Universal (DUA): asignar rol táctico de 'Comodín Distribuidor en Zona Protegida' por donde obligatoriamente debe pasar el móvil para duplicar puntos.", bitacoraTarget: 2 },
+      { id: 10, tipo: "AULA", visualMode: "bap", titulo: "10. Sobrecarga Sensorial (TEA / Neurodivergencia)", problema: "Alumno con hipersensibilidad auditiva presenta bloqueo ante silbatazos estridentes y gritos masivos en patio.", solucion: "Sustituir silbato por códigos visuales (tarjetas de colores o levantamiento de conos) y habilitar zona de autorregulación respiratoria.", bitacoraTarget: 2 },
+      { id: 11, tipo: "PATIO", visualMode: "escolta", titulo: "11. Pérdida de Distancia en Retaguardia de Escolta", problema: "Los retaguardias pisan los talones de los guardias o se abren lateralmente al ejecutar 'Paso Redoblado' y 'Alto'.", solucion: "Referencia kinestésica con bastones de 1.80 m (3 pasos reglamentarios) y conteo rítmico interno en el desplante con pierna izquierda.", bitacoraTarget: 1 },
+      { id: 12, tipo: "PATIO", visualMode: "monopoly", titulo: "12. Segregación por Género en Elección de Equipos", problema: "Al formar equipos libres, niños y niñas se separan y rechazan integrarse en tareas sociomotrices.", solucion: "Agrupamiento aleatorio mediante juegos de códigos numéricos ('Barcos y Náufragos') y regla de paridad en subroles ofensivos.", bitacoraTarget: 2 },
+      { id: 13, tipo: "AULA", visualMode: "shared", titulo: "13. Contingencia Ambiental o Lluvia (Sesión en Aula)", problema: "Imposibilidad de usar el patio por radiación solar extrema, contingencia atmosférica o lluvia.", solucion: "Activar protocolo de 'Aula de Vida Saludable y Corporeidad': retos de coordinación óculo-manual por filas de bancas, postura e hidratación.", bitacoraTarget: 1 },
+      { id: 14, tipo: "PATIO", visualMode: "contact", titulo: "14. Uso Inseguro de Bastones, Aros o Implementos", problema: "Los alumnos utilizan los bastones o conos para jugar a las espadas o lanzarlos sin control espacial.", solucion: "Regla de 'Implemento Anclado al Suelo' antes de cada consigna y pérdida temporal del móvil al equipo que infrinja seguridad.", bitacoraTarget: 2 },
+      { id: 15, tipo: "PATIO", visualMode: "swarm", titulo: "15. Estaticidad del Compañero sin Balón (Falta de Desmarque)", problema: "Cuando un alumno tiene la pelota, sus compañeros se quedan quietos esperando el pase detrás de los defensores.", solucion: "Regla TGfU: 'Prohibido recibir pase estando estático'; el pase solo vale si se recibe en movimiento dentro de un aro o zona vacía.", bitacoraTarget: 1 },
+      { id: 16, tipo: "AULA", visualMode: "bap", titulo: "16. Fatiga Prematura o Deshidratación en Patio", problema: "Disminución brusca de la atención y coordinación motriz tras 20 minutos bajo el sol.", solucion: "Dosificación intermitente RPE 4-6 (Escala EPInfant) con micro-pausas de hidratación y diálogo mayéutico cada 12 minutos.", bitacoraTarget: 1 },
+      { id: 17, tipo: "PATIO", visualMode: "contact", titulo: "17. Controversia por Reglas y Acusaciones de Trampa", problema: "El juego se detiene constantemente porque los alumnos discuten si la pelota salió o si hubo toque válido.", solucion: "Implementar 'Círculo de Paz de 30 Segundos' (MRPS Nivel 4) y designar Árbitros Formativos rotativos con facultad de consenso.", bitacoraTarget: 2 },
+      { id: 18, tipo: "PATIO", visualMode: "escolta", titulo: "18. Voz de Mando Débil o Destiempo del Comandante", problema: "El comandante de la escolta emite la voz ejecutiva en el pie incorrecto, desfasando a los 6 integrantes.", solucion: "Entrenamiento de prosodia diafragmática (voz preventiva prolongada y voz ejecutiva seca sobre el apoyo del pie izquierdo).", bitacoraTarget: 1 },
+      { id: 19, tipo: "AULA", visualMode: "shared", titulo: "19. Escasez Crítica de Material Didáctico", problema: "Solo se cuenta con 4 o 5 pelotas para un grupo de 35 alumnos.", solucion: "Construcción de móviles alternativos (paliacates anudados / pelotas de papel reciclado) y juegos de relevos tácticos por oleadas cortas.", bitacoraTarget: 1 },
+      { id: 20, tipo: "AULA", visualMode: "bap", titulo: "20. Hiperactividad Post-Recreo y Dificultad en Traslados", problema: "El grupo llega del recreo con sobreactivación simpática, corriendo en pasillos y sin escuchar consignas.", solucion: "Ritual de entrada con 'Tarea de Foco Perceptivo Inmediato' (respiración vagal 4-4 y reto de equilibrio estático en silencio).", bitacoraTarget: 2 },
+      // 10 NUEVOS CONFLICTOS DE PATIO ESCOLAR (21 AL 30)
+      { id: 21, tipo: "PATIO", visualMode: "contact", titulo: "21. Eliminación Temprana en Juegos de Persecución", problema: "En juegos tradicionales de 'quemados' o 'encantados', los alumnos con menor velocidad quedan fuera en los primeros 30 segundos y no vuelven a moverse.", solucion: "Reemplazar la eliminación por 'Cambio de Rol Inmediato' (quien es tocado pasa a ser perseguidor con paliacate o realiza 3 saltos en un aro de reactivación para seguir en juego).", bitacoraTarget: 2 },
+      { id: 22, tipo: "PATIO", visualMode: "swarm", titulo: "22. Choque entre Subgrupos por Cruce de Trayectorias", problema: "En tareas de carreras o relevos de ida y vuelta, los alumnos que regresan impactan de frente con los que salen por falta de carriles definidos.", solucion: "Diseño espacial de 'Circuito Unidireccional en Sentido Antihorario': salida por carril central y retorno obligatorio por pasillos laterales delimitados con conos.", bitacoraTarget: 2 },
+      { id: 23, tipo: "PATIO", visualMode: "monopoly", titulo: "23. Rechazo al Rol Defensivo o de Recuperador", problema: "Todos los alumnos quieren únicamente anotar o atacar, dejando desprotegida su zona y culpando a un solo compañero cuando reciben puntos.", solucion: "Regla de 'Rotación Funcional por Tiempo o Punto': cada 90 segundos suena señal visual y las líneas ofensiva y defensiva permutan obligatoriamente su subrol.", bitacoraTarget: 2 },
+      { id: 24, tipo: "PATIO", visualMode: "contact", titulo: "24. Lanzamiento Descontrolado de Móviles hacia la Cara", problema: "Durante juegos de blanco y diana o pases largos, algunos alumnos lanzan pelotas con fuerza excesiva a la altura de la cabeza de sus compañeros.", solucion: "Modificar la Lógica Interna del móvil y reglamento: 'Pase Picado Obligatorio' (el balón debe botar al menos una vez en el suelo antes de ser recibido) y tope de altura a la cintura.", bitacoraTarget: 2 },
+      { id: 25, tipo: "PATIO", visualMode: "queues", titulo: "25. Dispersión en los Bordes del Patio (Alumnos Espectadores)", problema: "Un subgrupo de 5 o 6 alumnos se repliega a las orillas o sombra del patio simulando participar pero evitando intervenir en la jugada.", solucion: "Crear 'Zonas Laterales de Comodines Asistentes': los bordes se convierten en bandas activas desde donde es obligatorio dar el pase final para que el punto valga doble.", bitacoraTarget: 1 },
+      { id: 26, tipo: "PATIO", visualMode: "escolta", titulo: "26. Oscilación del Asta y Pérdida de Verticalidad en Escolta", problema: "El abanderado inclina el asta hacia adelante o los lados durante la marcha y las conversiones, perdiendo solemnidad y control postural.", solucion: "Corrección biomecánica de pinza escapular y trípode de sujeción: codo derecho a 90° pegado al tronco, mano a la altura del hombro y mirada fija al horizonte.", bitacoraTarget: 1 },
+      { id: 27, tipo: "PATIO", visualMode: "swarm", titulo: "27. Pérdida de Tiempo en la Transición entre Actividades", problema: "Al cambiar de la Fase Inicial a la Fase Medular, el grupo tarda más de 6 minutos en recoger material y volver a formarse.", solucion: "Técnica de 'Arquitectura de Patio Pre-Montada': los conos de la Fase Inicial ya están colocados exactamente en las esquinas de los cuadrantes de la Fase Medular.", bitacoraTarget: 1 },
+      { id: 28, tipo: "PATIO", visualMode: "monopoly", titulo: "28. Burlas o Sarcasmo ante el Error Motor de un Compañero", problema: "Cuando un alumno falla una recepción o cae, surgen risas y comentarios descalificadores que inhiben su disponibilidad corporal.", solucion: "Intervención inmediata MRPS (Nivel 1 y 4): regla de 'Punto Solidario' donde el equipo suma bonificación al brindar retroalimentación positiva y apoyo técnico al compañero.", bitacoraTarget: 2 },
+      { id: 29, tipo: "PATIO", visualMode: "shared", titulo: "29. Superficie del Patio Resbaladiza, Irregular o con Obstáculos", problema: "El patio presenta zonas con polvo suelto, desniveles, charcos o columnas cercanas que incrementan el riesgo de caídas en carrera veloz.", solucion: "Delimitación de 'Perímetro de Amortiguación de 2 Metros' alrededor de zonas de riesgo y modificación de la locomoción (prohibido correr a máxima velocidad; desplazamiento en paso deslizado o marcha rápida).", bitacoraTarget: 1 },
+      { id: 30, tipo: "PATIO", visualMode: "swarm", titulo: "30.Incomprensión de la Consigna por Explicaciones Verbales Largas", problema: "El docente explica durante más de 5 minutos las reglas en el centro del patio; el ruido ambiental impide escuchar y el grupo inicia jugando sin entender.", solucion: "Regla de 'Consigna en 45 Segundos + Demostración Visual Modelo': explicar máximo 3 reglas clave en semicírculo cerrado de espaldas al sol y lanzar acción motriz inmediata.", bitacoraTarget: 1 }
+    ];
 
     const SEP_HOLIDAYS_2026_2027 = new Set([
       "2026-09-16","2026-09-25","2026-10-30","2026-11-02","2026-11-16","2026-11-27",
@@ -388,15 +777,37 @@
     let secretClickCount = 0;
     let secretClickTimer = null;
     let currentGeneratedSessions = [];
+    let currentDiagnosticSummary = "";
+    let currentRubricData = null;
+
+    let formalizedBitacora1 = null;
+    let formalizedBitacora2 = null;
+
+    let currentBoardScenarioId = 1;
+    let currentBoardMode = "problem";
+    let boardParticles = [];
 
     const CRYPTO_SALT = "PRAXIS_MAGISTER_RPP_2026_SIG";
+
     const STORAGE_KEYS = {
-      MASTER_PASS: "pm_master_pass_v17",
-      GEMINI_KEY: "pm_gemini_api_key_v17",
-      VIP_DB: "pm_vip_codes_db_v17",
-      ACTIVE_CODE: "pm_active_client_code_v17",
-      EXHAUSTED_CODES: "pm_exhausted_codes_v17"
+      MASTER_PASS: "altus_permanent_master_pass",
+      AI_PROVIDER: "altus_permanent_ai_provider",
+      API_KEY: "altus_permanent_api_key",
+      VIP_DB: "altus_permanent_vip_db",
+      ACTIVE_CODE: "altus_permanent_active_code",
+      EXHAUSTED_CODES: "altus_permanent_exhausted_codes",
+      PURCHASE_UNLOCKED_BITACORAS: "altus_permanent_bitacoras_unlocked"
     };
+
+    function migratePreviousKeysIfNeeded() {
+      if (!localStorage.getItem(STORAGE_KEYS.API_KEY)) {
+        const oldKey = localStorage.getItem("pm_api_key_v18") || localStorage.getItem("pm_gemini_api_key_v17") || localStorage.getItem("pm_gemini_api_key_v165") || localStorage.getItem("pm_gemini_api_key_v16") || PRE_EMBEDDED_ENGINE_KEY;
+        if (oldKey) localStorage.setItem(STORAGE_KEYS.API_KEY, oldKey);
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.AI_PROVIDER) && PRE_EMBEDDED_PROVIDER) {
+        localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, PRE_EMBEDDED_PROVIDER);
+      }
+    }
 
     function computeCodeSignature(pkgStr, pdfStr, nonceStr) {
       const raw = `${pkgStr}-${pdfStr}-${nonceStr}-${CRYPTO_SALT}`;
@@ -409,21 +820,85 @@
     }
 
     function initApp() {
+      migratePreviousKeysIfNeeded();
       if (!localStorage.getItem(STORAGE_KEYS.MASTER_PASS)) {
         localStorage.setItem(STORAGE_KEYS.MASTER_PASS, "Praxis#Magister$2026!RPP");
       }
       if (!localStorage.getItem(STORAGE_KEYS.VIP_DB)) {
-        const sig = computeCodeSignature("08", "02", "7K9M");
-        const code = `PMX-08S-02P-7K9M-${sig}`;
-        localStorage.setItem(STORAGE_KEYS.VIP_DB, JSON.stringify({ [code]: { maxSessions: 8, pdfCredits: 2 } }));
+        const sig = computeCodeSignature("08", "03", "7K9M");
+        const code = `PMX-08S-03P-7K9M-${sig}`;
+        localStorage.setItem(STORAGE_KEYS.VIP_DB, JSON.stringify({ [code]: { maxSessions: 8, pdfCredits: 3 } }));
       }
       updateStaticCurriculum();
       onMethodologyCascadeChange();
       updateCalendarPreview();
       refreshLicenseUI();
       renderBitacorasSEP();
+      initClinicAndBoard();
     }
 
+    // =========================================================================
+    // 3. MOTOR DE GENERACIÓN EN TIEMPO REAL (SIN BANCO DE ACTIVIDADES)
+    // =========================================================================
+    async function callInternalPedagogicalEngine(systemInstruction, userPrompt) {
+      const apiKey = (localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY || "").trim();
+      if (!apiKey) {
+        throw new Error("El motor metodológico requiere activación inicial en el Panel Maestro.");
+      }
+      let provider = localStorage.getItem(STORAGE_KEYS.AI_PROVIDER) || PRE_EMBEDDED_PROVIDER || "AUTO";
+      if (provider === "AUTO") {
+        provider = apiKey.startsWith("sk-") ? "DEEPSEEK" : "GEMINI";
+      }
+
+      if (provider === "DEEPSEEK") {
+        const res = await fetch("https://api.deepseek.com/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: "deepseek-chat",
+            messages: [
+              { role: "system", content: systemInstruction },
+              { role: "user", content: userPrompt }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.75
+          })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error("Servicio temporalmente ocupado. Intente nuevamente.");
+        const raw = data?.choices?.[0]?.message?.content;
+        if (!raw) throw new Error("Sin respuesta del servidor.");
+        return parseCleanJSON(raw);
+      } else {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: `${systemInstruction}\n\n${userPrompt}` }] }],
+            generationConfig: { temperature: 0.75, responseMimeType: "application/json" }
+          })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error("Servicio temporalmente ocupado. Verifique su conexión.");
+        const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!raw) throw new Error("Sin respuesta del servidor.");
+        return parseCleanJSON(raw);
+      }
+    }
+
+    function parseCleanJSON(raw) {
+      let clean = raw.trim();
+      if (clean.startsWith("```json")) clean = clean.replace(/^```json/, "").replace(/```$/, "").trim();
+      else if (clean.startsWith("```")) clean = clean.replace(/^```/, "").replace(/```$/, "").trim();
+      return JSON.parse(clean);
+    }
+
+    // =========================================================================
+    // 4. NAVEGACIÓN, CASCADA Y CALENDARIO ESCOLAR 2026-2027
+    // =========================================================================
     function updateStaticCurriculum() {
       const fase = document.getElementById("selFase").value;
       const idx = parseInt(document.getElementById("selContenido").value, 10) || 0;
@@ -439,8 +914,11 @@
       const confSelect = document.getElementById("selConflicto");
 
       if (entorno === "ESCOLTA") {
-        domSelect.innerHTML = `<option value="[C] Sincronía y Cooperación (Escolta)">[C] Sincronía y Cooperación (Escolta)</option>`;
-        confSelect.innerHTML = `<option value="Cadencia 120 ppm, alineación geométrica y voces de mando">Cadencia 120 ppm, alineación y voces de mando</option>`;
+        domSelect.innerHTML = `<option value="[C] Sociomotriz de Cooperación Pura y Sincronía Reglamentaria (Escolta)">[C] Sincronía y Cooperación Reglamentaria (Escolta 6 elementos)</option>`;
+        confSelect.innerHTML = `
+          <option value="Cadencia 120 ppm, alineación geométrica de vanguardia/retaguardia y voces de mando">Cadencia 120 ppm, alineación y voces de mando</option>
+          <option value="Conversiones (derecha/izquierda), columna por uno/dos y relevo de abanderado">Conversiones, columnas y protocolo de abanderado</option>
+        `;
         return;
       }
       domSelect.innerHTML = data.dominios.map(d => `<option value="${d}">${d}</option>`).join("");
@@ -454,6 +932,7 @@
           ? "px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow"
           : "px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 text-slate-200";
       });
+      if (tab === "board") loadBoardScenario();
     }
 
     function selectSessionPackage(num) {
@@ -473,7 +952,7 @@
       const dates = [];
       let cursor = new Date(startInput + "T12:00:00");
       let safety = 0;
-      while (dates.length < total && safety < 650) {
+      while (dates.length < total && safety < 750) {
         safety++;
         const iso = cursor.toISOString().slice(0, 10);
         const d = cursor.getDay();
@@ -488,10 +967,13 @@
       const dates = computeSchoolDates(selectedPackageSessions);
       if (dates.length) {
         document.getElementById("calendarRangePreview").textContent =
-          `📅 ${selectedPackageSessions} sesiones hábiles SEP: Inicia ${dates[0]} • Termina ${dates[dates.length - 1]}`;
+          `📅 ${selectedPackageSessions} sesiones hábiles SEP: Inicia ${dates[0]} • Finaliza ${dates[dates.length - 1]}`;
       }
     }
 
+    // =========================================================================
+    // 5. PANEL MAESTRO, CÓDIGOS DE 3 IMPRESIONES Y BITÁCORAS ILIMITADAS POST-PAGO
+    // =========================================================================
     function getVipDatabase() {
       try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.VIP_DB)) || {}; } catch { return {}; }
     }
@@ -508,16 +990,17 @@
       if (secretClickCount >= 5) {
         secretClickCount = 0;
         const storedPass = localStorage.getItem(STORAGE_KEYS.MASTER_PASS);
-        const inputPass = prompt("🔐 PANEL MAESTRO\nIngresa tu Clave Maestra:");
+        const inputPass = prompt("🔐 PANEL MAESTRO\nIngresa tu Clave de Administrador:");
         if (inputPass && inputPass === storedPass) {
           document.getElementById("creatorTopBtn").classList.remove("hidden");
           openMasterCreatorModal();
-        } else if (inputPass !== null) alert("❌ Clave Maestra incorrecta.");
+        } else if (inputPass !== null) alert("❌ Clave incorrecta.");
       }
     }
 
     function openMasterCreatorModal() {
-      document.getElementById("inpMasterApiKey").value = localStorage.getItem(STORAGE_KEYS.GEMINI_KEY) || "";
+      document.getElementById("inpMasterApiKey").value = localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY || "";
+      document.getElementById("selAiProvider").value = localStorage.getItem(STORAGE_KEYS.AI_PROVIDER) || PRE_EMBEDDED_PROVIDER || "AUTO";
       renderVipCodesTable();
       document.getElementById("masterModal").classList.remove("hidden");
       document.getElementById("masterModal").classList.add("flex");
@@ -528,21 +1011,45 @@
     }
     function saveMasterApiKey() {
       const k = document.getElementById("inpMasterApiKey").value.trim();
-      if (!k) return alert("Ingresa una API Key válida.");
-      localStorage.setItem(STORAGE_KEYS.GEMINI_KEY, k);
-      alert("✅ API Key guardada.");
+      const prov = document.getElementById("selAiProvider").value;
+      if (!k) return alert("Ingresa una llave válida.");
+      localStorage.setItem(STORAGE_KEYS.API_KEY, k);
+      localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, prov);
+      alert("✅ Llave guardada de forma permanente en este navegador.");
     }
+
+    function exportHtmlWithEmbeddedKey() {
+      const k = document.getElementById("inpMasterApiKey").value.trim();
+      const prov = document.getElementById("selAiProvider").value;
+      if (!k) return alert("Primero pega tu llave en el recuadro 1.");
+      localStorage.setItem(STORAGE_KEYS.API_KEY, k);
+      localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, prov);
+
+      let fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_ENGINE_KEY = ".*?";/, `const PRE_EMBEDDED_ENGINE_KEY = "${k}";`);
+      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_PROVIDER = ".*?";/, `const PRE_EMBEDDED_PROVIDER = "${prov}";`);
+
+      const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "index.html";
+      a.click();
+      URL.revokeObjectURL(url);
+      alert("✅ Se descargó tu archivo 'index.html' con la llave pre-incrustada permanentemente.");
+    }
+
     function updateMasterPassword() {
       const p = document.getElementById("inpNewMasterPass").value.trim();
       if (p.length < 10) return alert("⚠️ Usa al menos 10 caracteres.");
       localStorage.setItem(STORAGE_KEYS.MASTER_PASS, p);
       document.getElementById("inpNewMasterPass").value = "";
-      alert("✅ Clave Maestra actualizada.");
+      alert("✅ Contraseña del Panel Maestro actualizada.");
     }
 
     function issueSignedVipCode() {
       const pkgStr = document.getElementById("selVipMaxSessions").value;
-      const pdfLimit = Math.min(99, Math.max(1, parseInt(document.getElementById("inpVipPdfLimit").value, 10) || 2));
+      const pdfLimit = Math.min(99, Math.max(1, parseInt(document.getElementById("inpVipPdfLimit").value, 10) || 3));
       const pdfStr = String(pdfLimit).padStart(2, "0");
       const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
       let nonce = "";
@@ -573,7 +1080,7 @@
       const keys = Object.keys(db);
       box.innerHTML = keys.length ? keys.map(c => `
         <div class="flex justify-between items-center bg-slate-900 px-2.5 py-1.5 rounded border border-slate-800">
-          <span><strong class="text-emerald-400 font-mono">${c}</strong> • ${db[c].maxSessions} ses. • <strong class="text-amber-300">PDFs: ${db[c].pdfCredits}</strong></span>
+          <span><strong class="text-emerald-400 font-mono">${c}</strong> • ${db[c].maxSessions} ses. • <strong class="text-amber-300">Impresiones Plan: ${db[c].pdfCredits}</strong></span>
           <button onclick="deleteVipCode('${c}')" class="text-rose-400 font-bold">Eliminar</button>
         </div>
       `).join("") : `<p class="text-slate-500 text-center">Sin códigos.</p>`;
@@ -591,22 +1098,34 @@
     function redeemClientCode() {
       const code = document.getElementById("inpClientCode").value.trim().toUpperCase();
       const exhausted = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXHAUSTED_CODES) || "[]");
-      if (exhausted.includes(code)) return alert("⚠️ Este código ya agotó sus descargas.");
+      if (exhausted.includes(code)) return alert("⚠️ Este código ya agotó sus 3 impresiones de planeación autorizadas.");
       const db = getVipDatabase();
       if (!db[code]) {
         const m = code.match(/^PMX-(08|20|40)S-(\d{2})P-([A-Z0-9]{4})-([A-Z0-9]{4})$/);
         if (!m) return alert("❌ Formato de código inválido.");
         const [, pkgStr, pdfStr, nonceStr, sig] = m;
-        if (sig !== computeCodeSignature(pkgStr, pdfStr, nonceStr)) return alert("❌ Código alterado o apócrifo.");
+        if (sig !== computeCodeSignature(pkgStr, pdfStr, nonceStr)) return alert("❌ Código no válido.");
         db[code] = { maxSessions: parseInt(pkgStr, 10), pdfCredits: parseInt(pdfStr, 10) };
         saveVipDatabase(db);
       }
-      if (db[code].pdfCredits <= 0) return alert("⚠️ Sin créditos PDF.");
+      if (db[code].pdfCredits <= 0) return alert("⚠️ Sin descargas de planeación disponibles.");
       localStorage.setItem(STORAGE_KEYS.ACTIVE_CODE, code);
+      // Liberar Bitácoras SEP de manera ilimitada y permanente tras la compra
+      localStorage.setItem(STORAGE_KEYS.PURCHASE_UNLOCKED_BITACORAS, "TRUE");
       selectSessionPackage(db[code].maxSessions);
       refreshLicenseUI();
       closeUnlockModal();
-      alert(`✅ Código activado: ${db[code].pdfCredits} descargas de PDF disponibles.`);
+      alert(`✅ Código activado con éxito:\n• Tienes ${db[code].pdfCredits} descargas disponibles para tu Planeación.\n• Tus 2 Bitácoras Oficiales SEP han quedado liberadas de manera ILIMITADA.`);
+    }
+
+    function hasActivePlanCredits() {
+      const code = localStorage.getItem(STORAGE_KEYS.ACTIVE_CODE);
+      const db = getVipDatabase();
+      return Boolean(code && db[code] && db[code].pdfCredits > 0);
+    }
+
+    function hasUnlimitedBitacorasAccess() {
+      return localStorage.getItem(STORAGE_KEYS.PURCHASE_UNLOCKED_BITACORAS) === "TRUE" || hasActivePlanCredits();
     }
 
     function refreshLicenseUI() {
@@ -614,263 +1133,1058 @@
       const db = getVipDatabase();
       const badge = document.getElementById("vipBadgeStatus");
       const txt = document.getElementById("licenseStatusText");
-      if (code && db[code] && db[code].pdfCredits > 0) {
-        badge.textContent = `CRÉDITOS PDF: ${db[code].pdfCredits}`;
-        txt.textContent = `${db[code].pdfCredits} DESCARGAS PDF RESTANTES`;
+      const bitPill = document.getElementById("bitacoraAccessPill");
+
+      if (hasActivePlanCredits()) {
+        badge.textContent = `DESCARGAS PLAN: ${db[code].pdfCredits} | BITÁCORAS: ∞`;
+        txt.textContent = `${db[code].pdfCredits} DESCARGAS PLAN (${db[code].maxSessions} SES.) • BITÁCORAS ILIMITADAS`;
         txt.className = "text-xs font-extrabold text-emerald-400";
+      } else if (hasUnlimitedBitacorasAccess()) {
+        badge.textContent = `DESCARGAS PLAN: 0 | BITÁCORAS: ∞`;
+        txt.textContent = `0 DESCARGAS PLAN • BITÁCORAS SEP ILIMITADAS ACTIVAS`;
+        txt.className = "text-xs font-extrabold text-cyan-300";
       } else {
-        badge.textContent = `CRÉDITOS PDF: 0`;
-        txt.textContent = `SIN CRÉDITOS PDF ACTIVOS`;
+        badge.textContent = `DESCARGAS PLAN: 0`;
+        txt.textContent = `REQUIERE CÓDIGO ACTIVO`;
         txt.className = "text-xs font-extrabold text-amber-400";
       }
+
+      if (bitPill) {
+        if (hasUnlimitedBitacorasAccess()) {
+          bitPill.textContent = "✅ Acceso Ilimitado Activado • Formatos Oficiales AEFCM / DGOSE";
+          bitPill.className = "px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-900";
+        } else {
+          bitPill.textContent = "🔒 Requiere Activación de Compra • Formatos Oficiales AEFCM / DGOSE";
+          bitPill.className = "px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-900";
+        }
+      }
+    }
+
+    // Descuenta 1 de las 3 impresiones/descargas de Planeación
+    function deductOnePlanningCredit() {
+      const code = localStorage.getItem(STORAGE_KEYS.ACTIVE_CODE);
+      const db = getVipDatabase();
+      db[code].pdfCredits -= 1;
+      if (db[code].pdfCredits <= 0) {
+        const ex = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXHAUSTED_CODES) || "[]");
+        ex.push(code);
+        localStorage.setItem(STORAGE_KEYS.EXHAUSTED_CODES, JSON.stringify(ex));
+      }
+      saveVipDatabase(db);
     }
 
     function consumeCreditAndPrintPDF() {
-      if (!currentGeneratedSessions.length) return alert("⚠️ Primero genera las sesiones con el botón 1.");
+      if (!currentGeneratedSessions.length) return alert("⚠️ Primero genera la vista previa de tu planeación con el botón 1.");
+      if (!hasActivePlanCredits()) {
+        openUnlockModal();
+        return alert("🔒 Para descargar o imprimir la planeación, ingresa un Código VIP con créditos disponibles.");
+      }
       const code = localStorage.getItem(STORAGE_KEYS.ACTIVE_CODE);
       const db = getVipDatabase();
-      if (!code || !db[code] || db[code].pdfCredits <= 0) {
-        openUnlockModal();
-        return alert("🔒 Activa un Código VIP con créditos de descarga PDF vigentes.");
+      if (selectedPackageSessions > db[code].maxSessions) {
+        return alert(`⚠️ Tu código cubre paquetes de hasta ${db[code].maxSessions} sesiones.`);
       }
-      db[code].pdfCredits -= 1;
-      if (db[code].pdfCredits <= 0) {
-        const ex = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXHAUSTED_CODES) || "[]");
-        ex.push(code);
-        localStorage.setItem(STORAGE_KEYS.EXHAUSTED_CODES, JSON.stringify(ex));
-      }
-      saveVipDatabase(db);
+      deductOnePlanningCredit();
       setTimeout(() => window.print(), 250);
     }
 
-    // CONSUMO DE CRÉDITO PARA IMPRIMIR LAS BITÁCORAS
-    function consumeCreditAndPrintBitacoras() {
+    // Exportación a Word (.doc) para Planeación (consume 1 de las 3 descargas de planeación)
+    function consumeCreditAndDownloadWord() {
+      if (!currentGeneratedSessions.length) return alert("⚠️ Primero genera la vista previa de tu planeación con el botón 1.");
+      if (!hasActivePlanCredits()) {
+        openUnlockModal();
+        return alert("🔒 Para descargar la planeación en Word (.doc), ingresa un Código VIP con créditos disponibles.");
+      }
       const code = localStorage.getItem(STORAGE_KEYS.ACTIVE_CODE);
       const db = getVipDatabase();
-      if (!code || !db[code] || db[code].pdfCredits <= 0) {
-        openUnlockModal();
-        return alert("🔒 El acceso a las Bitácoras SEP requiere un Código VIP con créditos vigentes.");
+      if (selectedPackageSessions > db[code].maxSessions) {
+        return alert(`⚠️ Tu código cubre paquetes de hasta ${db[code].maxSessions} sesiones.`);
       }
-      db[code].pdfCredits -= 1;
-      if (db[code].pdfCredits <= 0) {
-        const ex = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXHAUSTED_CODES) || "[]");
-        ex.push(code);
-        localStorage.setItem(STORAGE_KEYS.EXHAUSTED_CODES, JSON.stringify(ex));
-      }
-      saveVipDatabase(db);
-      setTimeout(() => window.print(), 250);
+      deductOnePlanningCredit();
+      const content = document.getElementById("planOutputContainer").innerHTML;
+      exportHtmlToWordDoc(content, `Planeacion_Educacion_Fisica_${selectedPackageSessions}_Sesiones.doc`);
     }
 
-    // GENERADOR DE PLANEACIÓN VÍA API GEMINI CON PORTADA OFICIAL
+    // Bitácoras SEP: 100% ILIMITADAS después de haber activado la compra (no descuentan créditos)
+    function printBitacorasUnlimitedAfterPurchase() {
+      if (!hasUnlimitedBitacorasAccess()) {
+        openUnlockModal();
+        return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
+      }
+      window.print();
+    }
+
+    function downloadBitacorasWordUnlimited() {
+      if (!hasUnlimitedBitacorasAccess()) {
+        openUnlockModal();
+        return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
+      }
+      const content = document.getElementById("bitacorasOutput").innerHTML;
+      exportHtmlToWordDoc(content, "Bitacoras_Oficiales_SEP_Educacion_Fisica.doc");
+    }
+
+    function exportHtmlToWordDoc(innerHtml, filename) {
+      const wordDoc = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset="utf-8">
+          <style>
+            @page { size: 21.59cm 27.94cm; margin: 1.2cm 1.4cm; }
+            body { font-family: Arial, sans-serif; font-size: 9.5pt; color: #000; line-height: 1.25; }
+            .print-sheet { page-break-after: always; border: 1px solid #333; padding: 10px; margin-bottom: 12px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+            th, td { border: 1px solid #444; padding: 3px 5px; font-size: 8pt; }
+            h1, h2, h3 { margin: 4px 0; }
+          </style>
+        </head>
+        <body>${innerHtml}</body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff', wordDoc], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // =========================================================================
+    // 6. GENERACIÓN DE LA PLANEACIÓN EN VISTA PREVIA (SIN REVELAR ESTRUCTURA INTERNA)
+    // =========================================================================
     async function generateSessionsWithAI() {
-      const apiKey = localStorage.getItem(STORAGE_KEYS.GEMINI_KEY);
-      if (!apiKey) return alert("⚠️ Configura tu API Key de Gemini en el Panel Maestro (5 clics en PM).");
-
       const btn = document.getElementById("btnGenerateAI");
       const output = document.getElementById("planOutputContainer");
+      const modeloKey = document.getElementById("selModelo").value;
       const meta = {
         docente: document.getElementById("inpDocente").value,
         escuela: document.getElementById("inpEscuela").value,
         cct: document.getElementById("inpCCT").value,
         grupo: document.getElementById("inpGrupo").value,
         director: document.getElementById("inpDirector").value,
+        supervisor: document.getElementById("inpSupervisor").value,
         modalidad: document.getElementById("selModalidad").value,
         entorno: document.getElementById("selEntornoSesion").options[document.getElementById("selEntornoSesion").selectedIndex].text,
         fase: document.getElementById("selFase").options[document.getElementById("selFase").selectedIndex].text,
         contenido: document.getElementById("selContenido").options[document.getElementById("selContenido").selectedIndex].text,
         pda: document.getElementById("pdaDisplayBox").textContent,
-        modeloBase: document.getElementById("selModelo").value,
+        modeloBase: METHODOLOGY_CASCADE[modeloKey].nombre,
         modeloSec: document.getElementById("selModeloSecundario").value,
         dominioCAI: document.getElementById("selDominioCAI").value,
         conflicto: document.getElementById("selConflicto").value,
         eje: document.getElementById("selEje").value,
         instrumento: document.getElementById("selInstrumento").value,
-        problematica: document.getElementById("inpProblematica").value
+        problematica: document.getElementById("inpProblematica").value,
+        apuntesContexto: document.getElementById("inpDetallesInformalesPlan").value
       };
       const dates = computeSchoolDates(selectedPackageSessions);
 
       btn.disabled = true;
-      btn.textContent = `⏳ DISEÑANDO EXPEDIENTE Y PORTADA...`;
-      output.innerHTML = `<div class="card-box p-6 text-center font-bold text-sm">Construyendo ${selectedPackageSessions} sesiones y portada institucional...</div>`;
+      btn.textContent = `⏳ GENERANDO VISTA PREVIA (${selectedPackageSessions} SESIONES)...`;
+      output.innerHTML = `<div class="card-box p-6 text-center font-bold text-sm">Estructurando las ${selectedPackageSessions} sesiones pedagógicas en vista previa...</div>`;
 
-      const prompt = `Actúa como Doctor en Cultura Física, experto en Praxiología Motriz (Parlebas/Lavega) y NEM 2026-2027.
-Diseña exactamente ${selectedPackageSessions} sesiones de Educación Física TOTALMENTE DIFERENTES Y PROGRESIVAS (PROHIBIDO repetir juegos).
-Parámetros fijos:
+      const systemPrompt = "Eres Doctor en Ciencias de la Cultura Física, experto en Praxiología Motriz (Parlebas/Lavega) y Nueva Escuela Mexicana 2026-2027. Responde EXCLUSIVAMENTE con un objeto JSON válido.";
+      const userPrompt = `Diseña el expediente técnico completo de Educación Física con exactamente ${selectedPackageSessions} sesiones TOTALMENTE DIFERENTES Y PROGRESIVAS (PROHIBIDO repetir juegos entre sesiones).
+
+DATOS CURRICULARES:
 - Estructura: ${meta.modalidad} | Entorno: ${meta.entorno}
 - Nivel: ${meta.fase} (${meta.grupo}) | Contenido: ${meta.contenido}
-- PDA: ${meta.pda}
-- Metodología: ${meta.modeloBase} ${meta.modeloSec}
-- Dominio [CAI]: ${meta.dominioCAI} | Conflicto: ${meta.conflicto}
-- Contexto: ${meta.problematica}
+- PDA Oficial: ${meta.pda}
+- Hibridación Metodológica: ${meta.modeloBase} ${meta.modeloSec}
+- Dominio [CAI]: ${meta.dominioCAI} | Conflicto Táctico: ${meta.conflicto}
+- Ejes Articuladores: ${meta.eje} | Instrumento: ${meta.instrumento}
+- Instalaciones y Materiales: ${meta.problematica}
 
-Devuelve SOLO un arreglo JSON válido con ${selectedPackageSessions} objetos con las llaves exactas:
-[{"numero":1,"titulo_tactico":"...","inicial":"Juego inédito + reglas y biomecánica (mín 50 palabras)","medular":"Situación motriz + lógica interna detallada (espacio, tiempo, móvil, roles, subroles y variante táctica, mín 90 palabras)","cierre":"Vuelta a la calma + pregunta mayéutica (mín 40 palabras)","adecuacion_bap":"Ajuste DUA","indicador_evaluacion":"Indicador observable"}]`;
+OBSERVACIONES DEL GRUPO PROPORCIONADAS POR EL DOCENTE (REDÁCTALAS CON RIGOR CIENTÍFICO, PEDAGÓGICO Y NORMATIVO E INTÉGRALAS EN EL DIAGNÓSTICO Y EN LAS SESIONES):
+"${meta.apuntesContexto}"
+
+Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
+{
+  "diagnostico_formalizado": "Párrafo técnico-pedagógico de 75 a 100 palabras que integra el contexto del grupo.",
+  "rubrica": {
+    "criterio_1": { "indicador": "Desempeño Motriz y Ajuste Postural", "destacado": "Descripción nivel 4", "satisfactorio": "Descripción nivel 3", "en_proceso": "Descripción nivel 2", "requiere_apoyo": "Descripción nivel 1" },
+    "criterio_2": { "indicador": "Comprensión Táctica y Lógica Interna [CAI]", "destacado": "Descripción nivel 4", "satisfactorio": "Descripción nivel 3", "en_proceso": "Descripción nivel 2", "requiere_apoyo": "Descripción nivel 1" },
+    "criterio_3": { "indicador": "Interacción Sociomotriz y Cultura de Paz (MRPS)", "destacado": "Descripción nivel 4", "satisfactorio": "Descripción nivel 3", "en_proceso": "Descripción nivel 2", "requiere_apoyo": "Descripción nivel 1" }
+  },
+  "sesiones": [
+    {
+      "numero": 1,
+      "titulo_tactico": "Título técnico progresivo",
+      "inicial": "Nombre inédito del juego + organización espacial, reglas y activación perceptivo-motriz (50 a 65 palabras)",
+      "medular": "Nombre inédito de la situación sociomotriz + desglose completo de Lógica Interna (espacio, tiempo, móvil, roles, subroles y variante táctica) (85 a 110 palabras)",
+      "cierre": "Nombre inédito de vuelta a la calma + pregunta mayéutica (35 a 50 palabras)",
+      "adecuacion_bap": "Ajuste razonable DUA específico",
+      "indicador_evaluacion": "Indicador observable vinculado al PDA"
+    }
+  ]
+}`;
 
       try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.78, responseMimeType: "application/json" }
-          })
-        });
-        const data = await res.json();
-        const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!raw) throw new Error("Verifica tu API Key.");
-        currentGeneratedSessions = JSON.parse(raw);
-        renderFullExpediente(currentGeneratedSessions, dates, meta);
+        const parsed = await callInternalPedagogicalEngine(systemPrompt, userPrompt);
+        currentDiagnosticSummary = parsed.diagnostico_formalizado || "Diagnóstico psicopedagógico y praxiológico estructurado conforme al Programa Sintético NEM.";
+        currentRubricData = parsed.rubrica || null;
+        currentGeneratedSessions = Array.isArray(parsed.sesiones) ? parsed.sesiones : [];
+        renderFullExpediente(currentGeneratedSessions, dates, meta, currentDiagnosticSummary, currentRubricData);
       } catch (e) {
-        output.innerHTML = `<div class="card-box p-4 bg-rose-50 text-rose-900 text-xs font-bold">❌ Error API: ${e.message}</div>`;
+        output.innerHTML = `<div class="card-box p-4 bg-rose-50 text-rose-900 text-xs font-bold">⚠️ ${e.message}</div>`;
       } finally {
         btn.disabled = false;
-        btn.textContent = `⚡ 1. DISEÑAR SESIONES IRREPETIBLES CON API`;
+        btn.textContent = `⚡ 1. GENERAR VISTA PREVIA DE PLANEACIÓN`;
       }
     }
 
-    function renderFullExpediente(sessions, dates, meta) {
+    function renderThreeSignaturesBlock(meta) {
+      return `
+        <div class="pt-4 border-t border-slate-400 grid grid-cols-3 gap-4 text-center text-[9.5px] leading-tight">
+          <div>
+            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
+            <strong>${meta.docente}</strong><br>Docente de Educación Física
+          </div>
+          <div>
+            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
+            <strong>${meta.director}</strong><br>Dirección del Plantel
+          </div>
+          <div>
+            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
+            <strong>${meta.supervisor}</strong><br>Supervisión de Educación Física
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFullExpediente(sessions, dates, meta, diagFormal, rubric) {
+      const r = rubric || {
+        criterio_1: { indicador: "Capacidad Motriz y Control Corporal", destacado: "Adapta con fluidez sus patrones motores ante cambios de la lógica interna.", satisfactorio: "Ejecuta patrones motores básicos con control postural estable.", en_proceso: "Presenta ajustes motores intermitentes durante las tareas.", requiere_apoyo: "Requiere acompañamiento kinestésico y ajuste de implemento." },
+        criterio_2: { indicador: "Toma de Decisiones y Táctica [CAI]", destacado: "Decodifica espacios libres, se desmarca y resuelve problemas tácticos en equipo.", satisfactorio: "Identifica espacios y colabora en la conservación del móvil.", en_proceso: "Participa siguiendo al portador con lectura espacial incipiente.", requiere_apoyo: "Requiere apoyos visuales para ubicarse en subespacios." },
+        criterio_3: { indicador: "Convivencia, Reglas e Inclusión (MRPS)", destacado: "Promueve el juego limpio, incluye a sus pares y autorregula conflictos.", satisfactorio: "Respeta las reglas pactadas y colabora con diversos compañeros.", en_proceso: "Acepta acuerdos grupales con mediación ocasional del docente.", requiere_apoyo: "Requiere contención formativa para gestionar la frustración." }
+      };
+
+      let rows30Html = "";
+      for (let i = 1; i <= 15; i++) {
+        const j = i + 15;
+        rows30Html += `
+          <tr class="border-b border-slate-300">
+            <td class="border-r border-slate-300 text-center font-bold">${i}</td>
+            <td class="border-r border-slate-300"></td>
+            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
+            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
+            <td class="border-r-2 border-slate-800 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
+            <td class="border-r border-slate-300 text-center font-bold">${j}</td>
+            <td class="border-r border-slate-300"></td>
+            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
+            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
+            <td class="text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
+          </tr>
+        `;
+      }
+
       let html = `
-        <!-- PORTADA OFICIAL DE PRESENTACIÓN -->
-        <article class="print-sheet space-y-6 flex flex-col justify-between" style="min-height: 240mm;">
-          <div class="space-y-4 text-center">
-            <div class="text-xs font-extrabold uppercase tracking-widest text-slate-600">AUTORIDAD EDUCATIVA FEDERAL • NUEVA ESCUELA MEXICANA 2026-2027</div>
-            <h1 class="font-display font-black text-2xl md:text-3xl text-slate-900">EXPEDIENTE TÉCNICO DE INGENIERÍA DIDÁCTICA Y PRAXIOLÓGICA EN EDUCACIÓN FÍSICA</h1>
-            <div class="w-24 h-1 bg-emerald-600 mx-auto rounded-full"></div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs bg-slate-50 p-6 rounded-2xl border-2 border-slate-200">
-            <div><strong>Escuela / Plantel:</strong> ${meta.escuela}</div>
-            <div><strong>CCT y Zona Escolar:</strong> ${meta.cct}</div>
-            <div><strong>Docente Titular:</strong> ${meta.docente}</div>
-            <div><strong>Grado y Grupo:</strong> ${meta.grupo}</div>
-            <div><strong>Estructura Metodológica:</strong> ${meta.modalidad}</div>
-            <div><strong>Modelo Pedagógico:</strong> ${meta.modeloBase} ${meta.modeloSec}</div>
-            <div><strong>Contenido Sintético:</strong> ${meta.contenido}</div>
-            <div><strong>Eje Articulador:</strong> ${meta.eje}</div>
-            <div class="md:col-span-2"><strong>PDA Oficial Vinculado:</strong> <em>${meta.pda}</em></div>
-          </div>
-
-          <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-xs text-emerald-950 text-center font-bold">
-            📁 Secuencia de ${sessions.length} sesiones abarcando del <strong>${dates[0] || ""}</strong> al <strong>${dates[dates.length - 1] || ""}</strong>.
-          </div>
-
-          <div class="pt-8 border-t grid grid-cols-2 gap-12 text-center text-xs">
-            <div>
-              <div class="border-b border-slate-400 w-3/4 mx-auto mb-2"></div>
-              <strong>${meta.docente}</strong><br>Docente de Educación Física
+        <article class="print-sheet space-y-2.5">
+          <div class="space-y-2">
+            <div class="border-b-2 border-slate-900 pb-2 text-center">
+              <div class="text-[9px] font-extrabold uppercase tracking-widest text-slate-600">SECRETARÍA DE EDUCACIÓN PÚBLICA • NUEVA ESCUELA MEXICANA • CICLO ESCOLAR 2026-2027</div>
+              <h1 class="font-display font-black text-base md:text-lg text-slate-900">PLANEACIÓN DIDÁCTICA Y PRAXIOLÓGICA EN EDUCACIÓN FÍSICA</h1>
+              <div class="text-[10px] font-bold text-emerald-800">CAMPO FORMATIVO: DE LO HUMANO Y LO COMUNITARIO</div>
             </div>
-            <div>
-              <div class="border-b border-slate-400 w-3/4 mx-auto mb-2"></div>
-              <strong>${meta.director}</strong><br>Sello y Validación Directiva
+
+            <div class="grid grid-cols-3 gap-2 text-[10.5px] bg-slate-50 p-2.5 rounded-xl border border-slate-300">
+              <div><strong>Escuela / Plantel:</strong> ${meta.escuela}</div>
+              <div><strong>CCT y Zona:</strong> ${meta.cct}</div>
+              <div><strong>Docente:</strong> ${meta.docente}</div>
+              <div><strong>Fase y Grupo:</strong> ${meta.fase} (${meta.grupo})</div>
+              <div><strong>Periodo SEP:</strong> ${dates[0] || ""} al ${dates[dates.length - 1] || ""}</div>
+              <div><strong>Sesiones:</strong> ${sessions.length} sesiones efectivas</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 text-[10.5px]">
+              <div class="p-2.5 rounded-xl bg-violet-50 border border-violet-300 space-y-1">
+                <div class="font-display font-extrabold text-violet-950 uppercase text-[10px]">Elementos Curriculares NEM</div>
+                <div><strong>Estructura:</strong> ${meta.modalidad} (${meta.entorno})</div>
+                <div><strong>Contenido:</strong> ${meta.contenido}</div>
+                <div><strong>PDA Vinculado:</strong> <em>${meta.pda}</em></div>
+                <div><strong>Ejes Articuladores:</strong> ${meta.eje}</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-300 space-y-1">
+                <div class="font-display font-extrabold text-sky-950 uppercase text-[10px]">Fundamentación Metodológica y Praxiológica</div>
+                <div><strong>Modelos Pedagógicos:</strong> ${meta.modeloBase} ${meta.modeloSec}</div>
+                <div><strong>Dominio [CAI]:</strong> ${meta.dominioCAI}</div>
+                <div><strong>Lógica Interna:</strong> ${meta.conflicto}</div>
+                <div><strong>Evaluación Formativa:</strong> ${meta.instrumento}</div>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-amber-50/90 border-l-4 border-amber-600 text-[10.5px] leading-snug space-y-1">
+              <strong class="text-amber-950 uppercase block">Contextualización y Diagnóstico Socioeducativo del Grupo:</strong>
+              <p class="text-slate-900 text-justify">${diagFormal}</p>
+              <div class="text-[10px] text-slate-700"><strong>Recursos e Instalaciones:</strong> ${meta.problematica}</div>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-[10px] space-y-1">
+              <strong class="uppercase text-slate-900 block">Cronograma Oficial de Sesiones (Calendario SEP 2026-2027):</strong>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-1 text-[9px]">
+                ${sessions.slice(0, 20).map((s, idx) => `
+                  <div class="p-1 rounded bg-white border border-slate-200 truncate">
+                    <strong>S${idx + 1} (${dates[idx] || ""}):</strong> ${s.titulo_tactico}
+                  </div>
+                `).join("")}
+              </div>
             </div>
           </div>
+
+          ${renderThreeSignaturesBlock(meta)}
         </article>
       `;
 
-      // SESIONES
       html += sessions.map((s, i) => `
-        <article class="print-sheet space-y-3">
-          <div class="border-b-2 border-slate-900 pb-2 flex justify-between items-center">
-            <h2 class="font-display font-black text-base">SESIÓN ${s.numero || i + 1} DE ${sessions.length}: ${s.titulo_tactico}</h2>
-            <span class="text-xs font-bold bg-slate-100 px-2.5 py-1 rounded border">FECHA: ${dates[i] || ""}</span>
+        <article class="print-sheet space-y-2">
+          <div class="space-y-2">
+            <div class="border-b-2 border-slate-900 pb-1.5 flex justify-between items-center">
+              <div>
+                <div class="text-[9px] font-extrabold uppercase text-slate-500">EXPEDIENTE DIDÁCTICO NEM 2026-2027 • ${meta.escuela} (${meta.cct})</div>
+                <h2 class="font-display font-black text-sm md:text-base text-slate-900">SESIÓN ${s.numero || i + 1} DE ${sessions.length}: ${s.titulo_tactico}</h2>
+              </div>
+              <span class="text-[10.5px] font-extrabold bg-slate-100 px-2.5 py-1 rounded border border-slate-400">FECHA: ${dates[i] || ""}</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1.5 text-[10px] bg-slate-50 p-2 rounded-xl border border-slate-300">
+              <div><strong>Docente:</strong> ${meta.docente}</div>
+              <div><strong>Grado y Grupo:</strong> ${meta.grupo}</div>
+              <div><strong>Metodología:</strong> ${meta.modalidad} • ${meta.modeloBase}</div>
+              <div><strong>Dominio [CAI]:</strong> ${meta.dominioCAI}</div>
+              <div><strong>Eje Articulador:</strong> ${meta.eje}</div>
+              <div><strong>Lógica Interna:</strong> ${meta.conflicto}</div>
+              <div class="col-span-3"><strong>PDA Oficial:</strong> <em>${meta.pda}</em></div>
+            </div>
+
+            <div class="space-y-2 text-[10.5px] leading-snug">
+              <div class="p-2.5 rounded-xl bg-sky-50 border-l-4 border-sky-700">
+                <strong class="text-sky-950 uppercase block mb-0.5">1. Fase Inicial • Activación Morfofuncional y Perceptiva (10 min):</strong>
+                <p class="text-justify">${s.inicial}</p>
+              </div>
+              <div class="p-2.5 rounded-xl bg-emerald-50 border-l-4 border-emerald-700">
+                <strong class="text-emerald-950 uppercase block mb-0.5">2. Fase Medular • Praxis Sociomotriz, Lógica Interna y Variantes (30 min):</strong>
+                <p class="text-justify">${s.medular}</p>
+              </div>
+              <div class="p-2.5 rounded-xl bg-violet-50 border-l-4 border-violet-700">
+                <strong class="text-violet-950 uppercase block mb-0.5">3. Fase Cierre • Vuelta a la Calma, Mayéutica y Consenso (10 min):</strong>
+                <p class="text-justify">${s.cierre}</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-[10px] bg-amber-50 p-2 rounded-xl border border-amber-300">
+              <div><strong>Ajuste Razonable (DUA / BAP):</strong> ${s.adecuacion_bap}</div>
+              <div><strong>Indicador de Evaluación (${meta.instrumento}):</strong> ${s.indicador_evaluacion}</div>
+            </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-1.5 text-[11px] bg-slate-50 p-2.5 rounded-xl border">
-            <div><strong>Plantel:</strong> ${meta.escuela} (${meta.cct})</div>
-            <div><strong>Docente:</strong> ${meta.docente} | <strong>Grupo:</strong> ${meta.grupo}</div>
-            <div><strong>Dominio [CAI]:</strong> ${meta.dominioCAI}</div>
-            <div class="md:col-span-3"><strong>Conflicto Motor:</strong> ${meta.conflicto}</div>
-          </div>
-          <div class="space-y-2 text-xs leading-relaxed">
-            <div class="p-3 rounded-xl bg-sky-50 border-l-4 border-sky-700"><strong>1. Fase Inicial (10 min):</strong> ${s.inicial}</div>
-            <div class="p-3 rounded-xl bg-emerald-50 border-l-4 border-emerald-700"><strong>2. Fase Medular • Lógica Interna (30 min):</strong> ${s.medular}</div>
-            <div class="p-3 rounded-xl bg-violet-50 border-l-4 border-violet-700"><strong>3. Fase Cierre y Mayéutica (10 min):</strong> ${s.cierre}</div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] bg-amber-50 p-2 rounded-lg border border-amber-300">
-            <div><strong>Adecuación DUA/BAP:</strong> ${s.adecuacion_bap}</div>
-            <div><strong>Evaluación (${meta.instrumento}):</strong> ${s.indicador_evaluacion}</div>
-          </div>
-          <div class="pt-4 border-t grid grid-cols-2 gap-6 text-center text-[11px]">
-            <div><div class="border-b border-slate-400 w-3/4 mx-auto mb-1"></div><strong>${meta.docente}</strong></div>
-            <div><div class="border-b border-slate-400 w-3/4 mx-auto mb-1"></div><strong>${meta.director}</strong></div>
-          </div>
+
+          ${renderThreeSignaturesBlock(meta)}
         </article>
       `).join("");
+
+      html += `
+        <article class="print-sheet space-y-2">
+          <div class="space-y-1.5">
+            <div class="border-b-2 border-slate-900 pb-1 flex justify-between items-center">
+              <div>
+                <h2 class="font-display font-black text-sm text-slate-900 uppercase">INSTRUMENTO DE EVALUACIÓN FORMATIVA Y REGISTRO DE DESEMPEÑO</h2>
+                <div class="text-[9.5px] text-slate-600"><strong>Plantel:</strong> ${meta.escuela} (${meta.cct}) | <strong>Grupo:</strong> ${meta.grupo} | <strong>PDA:</strong> ${meta.pda}</div>
+              </div>
+              <span class="text-[9.5px] font-extrabold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded border border-emerald-400">EVALUACIÓN FORMATIVA</span>
+            </div>
+
+            <table class="w-full border-collapse border border-slate-400 text-[8.5px] leading-tight">
+              <thead>
+                <tr class="bg-slate-900 text-white">
+                  <th class="border border-slate-400 p-1 text-left w-1/5">Criterio / Dimensión</th>
+                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 4: Destacado</th>
+                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 3: Satisfactorio</th>
+                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 2: En Proceso</th>
+                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 1: Requiere Apoyo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-slate-400 p-1 font-bold bg-slate-50">C1. ${r.criterio_1.indicador}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_1.destacado}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_1.satisfactorio}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_1.en_proceso}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_1.requiere_apoyo}</td>
+                </tr>
+                <tr>
+                  <td class="border border-slate-400 p-1 font-bold bg-slate-50">C2. ${r.criterio_2.indicador}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_2.destacado}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_2.satisfactorio}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_2.en_proceso}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_2.requiere_apoyo}</td>
+                </tr>
+                <tr>
+                  <td class="border border-slate-400 p-1 font-bold bg-slate-50">C3. ${r.criterio_3.indicador}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_3.destacado}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_3.satisfactorio}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_3.en_proceso}</td>
+                  <td class="border border-slate-400 p-1">${r.criterio_3.requiere_apoyo}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="pt-1">
+              <div class="text-[9px] font-extrabold uppercase text-slate-800 mb-0.5">Registro Nominal de Desempeño del Alumnado (Marque Nivel 4, 3, 2 o 1):</div>
+              <table class="eval-table w-full border-collapse border border-slate-400 text-[8px]">
+                <thead>
+                  <tr class="bg-slate-200 text-slate-900">
+                    <th class="border border-slate-400 w-6">N°</th>
+                    <th class="border border-slate-400 text-left">Nombre del Alumno(a)</th>
+                    <th class="border border-slate-400 w-12">C1</th>
+                    <th class="border border-slate-400 w-12">C2</th>
+                    <th class="border-r-2 border-slate-800 w-12">C3</th>
+                    <th class="border border-slate-400 w-6">N°</th>
+                    <th class="border border-slate-400 text-left">Nombre del Alumno(a)</th>
+                    <th class="border border-slate-400 w-12">C1</th>
+                    <th class="border border-slate-400 w-12">C2</th>
+                    <th class="border border-slate-400 w-12">C3</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows30Html}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          ${renderThreeSignaturesBlock(meta)}
+        </article>
+      `;
 
       document.getElementById("planOutputContainer").innerHTML = html;
     }
 
-    // RENDERIZADO DE LAS 2 BITÁCORAS SEP CON REDACCIÓN FORMAL ASISTIDA
-    function renderBitacorasSEP() {
+    // =========================================================================
+    // 7. LAS 2 BITÁCORAS OFICIALES SEP
+    // =========================================================================
+    async function formalizeBitacorasWithAI() {
+      const btn = document.getElementById("btnFormalizeBitacorasAI");
+      const raw1 = document.getElementById("b1Raw").value;
+      const raw2 = document.getElementById("b2Raw").value;
+
+      btn.disabled = true;
+      btn.textContent = "⏳ Estructurando redacción jurídico-normativa SEP...";
+
+      const sys = "Eres especialista en Normatividad de la SEP (AEFCM / DGOSE), Guía Operativa vigente y Ley General de los Derechos de Niñas, Niños y Adolescentes (LGDNNA). Devuelve EXCLUSIVAMENTE un objeto JSON.";
+      const usr = `Transforma estos dos reportes de un docente de Educación Física en redacción institucional, cronológica, objetiva, neutral y sin juicios de valor:
+
+REPORTE FORMATO 1 (Espacios, Horarios y Cobertura):
+"${raw1}"
+
+REPORTE FORMATO 2 (Incidencia Estudiantil, Salvaguarda y Convivencia):
+"${raw2}"
+
+Devuelve EXCLUSIVAMENTE un JSON con esta estructura:
+{
+  "f1_hechos": "Descripción objetiva, cronológica y formal para el numeral 2 del Formato 1 (mín. 55 palabras).",
+  "f1_acuerdo": "Acuerdo específico de gestión escolar fundamentado en la Guía Operativa para el numeral 3 del Formato 1.",
+  "f2_narracion": "Narración objetiva, neutral y cronológica de los hechos para el numeral 2 del Formato 2, protegiendo el interés superior de la niñez (mín. 60 palabras).",
+  "f2_compromiso": "Compromiso reparador, mediación praxiológica y seguimiento institucional para el numeral 3 del Formato 2."
+}`;
+
+      try {
+        const res = await callInternalPedagogicalEngine(sys, usr);
+        formalizedBitacora1 = { hechos: res.f1_hechos, acuerdo: res.f1_acuerdo };
+        formalizedBitacora2 = { narracion: res.f2_narracion, compromiso: res.f2_compromiso };
+        renderBitacorasSEP();
+        alert("✅ Las 2 Bitácoras Oficiales SEP se estructuraron con lenguaje normativo institucional.");
+      } catch (e) {
+        alert("⚠️ " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✨ 1. Estructurar Redacción Oficial SEP";
+      }
+    }
+
+    function autoFormalizeFallbackEspacios(raw) {
+      return `En cumplimiento de las disposiciones de observación y gestión escolar, se hace constar de manera objetiva y cronológica lo siguiente: derivado de la condición operativa observada (${raw}), se procedió a adecuar la distribución espacial y los protocolos de acompañamiento presencial del estudiantado. Por lo anterior, se efectuó la delimitación preventiva del área motriz con implementos de señalización, garantizando en todo momento la salvaguarda de la integridad física de las y los alumnos y la continuidad del servicio educativo sin riesgos asociados al uso simultáneo de instalaciones.`;
+    }
+
+    function autoFormalizeFallbackIncidencia(raw) {
+      return `En apego a los principios de objetividad y salvaguarda del interés superior de la niñez, se asienta de manera descriptiva y libre de juicios de valor que durante el desarrollo de la situación motriz se registró lo siguiente: (${raw}). De forma inmediata, el docente de Educación Física detuvo la actividad, verificó el estado físico y socioemocional del alumnado involucrado, aplicó contención formativa mediante diálogo reflexivo (Feedback Interrogativo) y reestructuró la Lógica Interna de la sesión hacia reglas de cooperación pura, restableciendo la convivencia pacífica.`;
+    }
+
+        function renderBitacorasSEP() {
       const doc = document.getElementById("inpDocente")?.value || "Prof. Educación Física";
       const esc = document.getElementById("inpEscuela")?.value || "Escuela Primaria Oficial";
-      const cct = document.getElementById("inpCCT")?.value || "09DPR0000X";
-      const grupo = document.getElementById("inpGrupo")?.value || "5° y 6° A";
-      const dir = document.getElementById("inpDirector")?.value || "Dirección del Plantel";
+      const cct = document.getElementById("inpCCT")?.value || "CCT: 09DPR0000X • Zona 04";
+      const grupo = document.getElementById("inpGrupo")?.value || "5° y 6° • Grupo A • Matutino";
+      const dir = document.getElementById("inpDirector")?.value || "Vo. Bo. Dirección Escolar";
+      const sup = document.getElementById("inpSupervisor")?.value || "Vo. Bo. Supervisión E.F.";
 
       const f1 = document.getElementById("b1Fecha")?.value || "2026-10-26";
-      const r1 = document.getElementById("b1Raw")?.value || "Sin reportes informales ingresados.";
-      const f2 = document.getElementById("b2Fecha")?.value || "2026-10-26";
-      const r2 = document.getElementById("b2Raw")?.value || "Sin incidencias reportadas.";
+      const h1 = document.getElementById("b1Hora")?.value || "09:30";
+      const tit1 = document.getElementById("b1Titular")?.value || "Docente Titular del Grupo";
+      const r1 = document.getElementById("b1Raw")?.value || "";
 
-      document.getElementById("bitacorasOutput").innerHTML = `
-        <!-- FORMATO 1 SEP -->
-        <article class="print-sheet space-y-4 text-xs">
-          <div class="text-center border-b pb-2">
-            <strong class="text-[10px] uppercase text-slate-600 block">AUTORIDAD EDUCATIVA FEDERAL EN LA CIUDAD DE MÉXICO • DGOSE</strong>
-            <h3 class="font-display font-black text-sm text-slate-900 mt-0.5">FORMATO 1: BITÁCORA DOCENTE DE OBSERVACIÓN DE LA COMUNIDAD ESCOLAR, ESPACIOS Y COBERTURA</h3>
-          </div>
-          <div class="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl border">
-            <div><strong>Escuela:</strong> ${esc} (${cct})</div>
-            <div><strong>Grupo:</strong> ${grupo}</div>
-            <div><strong>Fecha:</strong> ${f1}</div>
-          </div>
-          <div class="space-y-2">
-            <div class="p-3 rounded-lg bg-sky-50/80 border border-sky-200">
-              <strong>1. Ámbito de Observación y Gestión Escolar:</strong> Asignación de espacios y salvaguarda de cobertura en patio escolar.
+      const f2 = document.getElementById("b2Fecha")?.value || "2026-10-26";
+      const h2 = document.getElementById("b2Hora")?.value || "10:15";
+      const alum2 = document.getElementById("b2Alumnos")?.value || "Estudiantes involucrados";
+      const tut2 = document.getElementById("b2Tutor")?.value || "Madre, Padre o Tutor";
+      const r2 = document.getElementById("b2Raw")?.value || "";
+
+      const textoHechos1 = formalizedBitacora1?.hechos || autoFormalizeFallbackEspacios(r1);
+      const textoAcuerdo1 = formalizedBitacora1?.acuerdo || "Se establece acuerdo colegiado para respetar la asignación horaria de canchas y garantizar el acompañamiento presencial en entrega-recepción de grupos conforme a la Guía Operativa vigente.";
+
+      const textoNarracion2 = formalizedBitacora2?.narracion || autoFormalizeFallbackIncidencia(r2);
+      const textoCompromiso2 = formalizedBitacora2?.compromiso || "Valoración física y emocional inmediata, mediación mediante Círculo de Diálogo (MRPS) y compromiso de autorregulación y respeto a las reglas pactadas en seguimiento con la familia.";
+
+      // Detección inteligente del tipo de conflicto según la descripción de los hechos
+      const txt1Lower = (r1 + " " + textoHechos1).toLowerCase();
+      const isCobertura1 = /ausencia|retir|titular|cobertura|solo|entrega|recepci|traslado|supervisi/.test(txt1Lower);
+      const isEspacio1 = /cancha|patio|espacio|simult|horario|lluvia|sol|contingencia|material|superficie|resbal/.test(txt1Lower) || !isCobertura1;
+
+      const txt2Lower = (r2 + " " + textoNarracion2).toLowerCase();
+      const isAccidente2 = /caída|caida|tropez|resbal|accidental|fortuito|lesi|rodilla|impacto involuntario/.test(txt2Lower);
+      const isReglaPacto2 = /regla|trampa|marcador|discusi|desacuerdo|arbitr|pacto|turno|perder/.test(txt2Lower);
+      const isInterpersonal2 = /empuj|pelea|grit|burla|exclusi|roce|contacto|agresi|disputa|choque|monopolio/.test(txt2Lower) || (!isAccidente2 && !isReglaPacto2);
+
+      // Etiqueta dinámica exacta del conflicto detectado
+      let etiquetaConflictoF2 = "Conflicto interpersonal, disputa o exclusión en la acción motriz";
+      if (isAccidente2 && !isInterpersonal2) etiquetaConflictoF2 = "Incidente accidental fortuito propio de la acción motriz";
+      else if (isReglaPacto2 && !isInterpersonal2) etiquetaConflictoF2 = "Controversia reglamentaria y ajuste de la Lógica Interna";
+      else if (isInterpersonal2 && isReglaPacto2) etiquetaConflictoF2 = "Conflicto interpersonal y controversia reglamentaria en el juego";
+
+      const container = document.getElementById("bitacorasOutput");
+      if (!container) return;
+
+      container.innerHTML = `
+        <article class="print-sheet space-y-2 text-xs">
+          <div class="space-y-1.5">
+            <div class="text-center border-b-2 border-slate-900 pb-1">
+              <div class="font-extrabold text-[10px] uppercase">AUTORIDAD EDUCATIVA FEDERAL EN LA CIUDAD DE MÉXICO</div>
+              <div class="font-bold text-[9px] uppercase text-slate-700">DIRECCIÓN GENERAL DE OPERACIÓN DE SERVICIOS EDUCATIVOS</div>
+              <div class="font-bold text-[9px] uppercase text-emerald-800">CAMPO FORMATIVO: DE LO HUMANO Y LO COMUNITARIO • EDUCACIÓN FÍSICA</div>
+              <h3 class="font-display font-black text-xs text-slate-900 pt-0.5">Formato 1: Bitácora Docente de Observación de la Comunidad Escolar, Espacios y Cobertura</h3>
             </div>
-            <div class="p-3 rounded-lg bg-white border border-slate-300">
-              <strong>2. Descripción Institucional (Traducción Normativa de tus Notas):</strong>
-              <p class="mt-1 text-slate-800 leading-relaxed"><em>"${r1}"</em> → Se observa y documenta la incidencia en la gestión de espacios deportivos, requiriendo acuerdo en el colectivo docente para evitar el uso simultáneo que comprometa la integridad física del alumnado conforme a la Guía Operativa vigente.</p>
+
+            <div class="p-2 rounded-xl bg-slate-50 border border-slate-300 grid grid-cols-2 gap-1 text-[10px]">
+              <div><strong>• Escuela / Plantel:</strong> ${esc}</div>
+              <div><strong>• CCT y Zona Escolar:</strong> ${cct}</div>
+              <div><strong>• Grado, Grupo y Turno:</strong> ${grupo}</div>
+              <div><strong>• Fecha del Registro:</strong> ${f1} • <strong>Hora:</strong> ${h1} hrs</div>
+              <div class="col-span-2"><strong>• Docente / Figura Educativa que reporta:</strong> ${doc}</div>
             </div>
-            <div class="p-3 rounded-lg bg-emerald-50/80 border border-emerald-200">
-              <strong>3. Intervención y Acuerdos:</strong> Generar acuerdos por escrito con la dirección para el uso equitativo de instalaciones y salvaguarda continua del estudiantado.
+
+            <div class="space-y-1.5 text-[10px]">
+              <div class="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+                <strong class="uppercase text-slate-900 block">1. ÁMBITO DE OBSERVACIÓN Y GESTIÓN ESCOLAR (SEGÚN HECHOS REPORTADOS)</strong>
+                <div class="${isEspacio1 ? 'font-bold text-slate-950 bg-emerald-50 px-1.5 py-0.5 rounded' : 'text-slate-500'}">
+                  ${isEspacio1 ? '☑' : '☐'} <strong>A. Aprovechamiento, Seguridad y Asignación de Espacios:</strong> Uso compartido de instalaciones (patios, canchas deportivas), condiciones del área y organización de horarios.
+                </div>
+                <div class="${isCobertura1 ? 'font-bold text-slate-950 bg-emerald-50 px-1.5 py-0.5 rounded' : 'text-slate-500'}">
+                  ${isCobertura1 ? '☑' : '☐'} <strong>B. Cobertura y Atención del Estudiantado (Salvaguarda):</strong> Ausencia o retiro temporal de personal titular y supervisión presencial continua durante traslados y sesión.
+                </div>
+              </div>
+
+              <div class="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+                <strong class="uppercase text-slate-900 block">2. DESCRIPCIÓN OBJETIVA DE LA SITUACIÓN (SIN JUICIOS DE VALOR)</strong>
+                <p class="text-slate-800 leading-snug text-justify">${textoHechos1}</p>
+              </div>
+
+              <div class="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+                <strong class="uppercase text-slate-900 block">3. INTERVENCIÓN, ACUERDOS Y ESTRATEGIAS DE GESTIÓN</strong>
+                <div>${isEspacio1 ? '☑' : '☐'} Generar acuerdos por escrito en el colectivo docente sobre el uso equitativo y seguro de las instalaciones deportivas.</div>
+                <div>${isCobertura1 ? '☑' : '☐'} Establecer la estrategia de cobertura y acompañamiento presencial conforme a la Guía Operativa vigente.</div>
+                <div><strong>• Acuerdo Específico Registrado:</strong> ${textoAcuerdo1}</div>
+              </div>
+
+              <div class="p-2 rounded-xl border border-slate-300 bg-white">
+                <strong class="uppercase text-slate-900 block">4. CORRESPONSABILIDAD DE LA COMUNIDAD ESCOLAR (FAMILIAS)</strong>
+                <div>☑ Informar y coordinar con las instancias directivas y familias las acciones de seguimiento a la seguridad escolar.</div>
+              </div>
             </div>
           </div>
-          <div class="pt-6 border-t grid grid-cols-2 gap-8 text-center text-[11px]">
-            <div><div class="border-b border-slate-400 w-3/4 mx-auto mb-1"></div><strong>${doc}</strong><br>Docente de Educación Física</div>
-            <div><div class="border-b border-slate-400 w-3/4 mx-auto mb-1"></div><strong>${dir}</strong><br>Vo. Bo. Dirección</div>
+
+          <div class="space-y-1">
+            <div class="pt-3 border-t border-slate-400 grid grid-cols-4 gap-3 text-center text-[8.5px] leading-tight">
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${doc}</strong><br>Docente de Educación Física</div>
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${dir}</strong><br>Dirección / Subdirección</div>
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${tit1}</strong><br>Docente Titular del Grupo</div>
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${sup}</strong><br>Supervisión de E.F.</div>
+            </div>
+            <div class="text-[8px] text-slate-500 text-center italic">
+              (Fundamentación Normativa: Plan y Programas de Estudio NEM; Guía Operativa para la Organización y Funcionamiento de los Servicios Educativos — Ejes 4 y 6; Ley General de Educación).
+            </div>
           </div>
         </article>
 
-        <!-- FORMATO 2 SEP -->
-        <article class="print-sheet space-y-4 text-xs">
-          <div class="text-center border-b pb-2">
-            <strong class="text-[10px] uppercase text-slate-600 block">AUTORIDAD EDUCATIVA FEDERAL EN LA CIUDAD DE MÉXICO • DGOSE</strong>
-            <h3 class="font-display font-black text-sm text-slate-900 mt-0.5">FORMATO 2: ACTA DESCRIPTIVA Y BITÁCORA DE INCIDENCIA ESTUDIANTIL Y CONVIVENCIA</h3>
-          </div>
-          <div class="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl border">
-            <div><strong>Escuela:</strong> ${esc} (${cct})</div>
-            <div><strong>Grupo:</strong> ${grupo}</div>
-            <div><strong>Fecha:</strong> ${f2}</div>
-          </div>
-          <div class="space-y-2">
-            <div class="p-3 rounded-lg bg-amber-50/80 border border-amber-200">
-              <strong>1. Clasificación de la Incidencia:</strong> Conflicto interpersonal / mediación formativa en la situación motriz.
+        <article class="print-sheet space-y-2 text-xs">
+          <div class="space-y-1.5">
+            <div class="text-center border-b-2 border-slate-900 pb-1">
+              <div class="font-extrabold text-[10px] uppercase">AUTORIDAD EDUCATIVA FEDERAL EN LA CIUDAD DE MÉXICO</div>
+              <div class="font-bold text-[9px] uppercase text-slate-700">DIRECCIÓN GENERAL DE OPERACIÓN DE SERVICIOS EDUCATIVOS</div>
+              <div class="font-bold text-[9px] uppercase text-amber-800">CAMPO FORMATIVO: DE LO HUMANO Y LO COMUNITARIO • EDUCACIÓN FÍSICA</div>
+              <h3 class="font-display font-black text-xs text-slate-900 pt-0.5">Formato 2: Acta Descriptiva y Bitácora de Incidencia Estudiantil, Salvaguarda y Convivencia Escolar</h3>
             </div>
-            <div class="p-3 rounded-lg bg-white border border-slate-300">
-              <strong>2. Narración Jurídico-Objetiva (Traducción Normativa de tus Notas):</strong>
-              <p class="mt-1 text-slate-800 leading-relaxed"><em>"${r2}"</em> → Se registra evento de desacuerdo y fricción interpersonal durante el desarrollo de la tarea motriz. Se interviene de forma inmediata aplicando contención pedagógica, mediación mediante diálogo reflexivo y establecimiento de compromisos de convivencia pacífica.</p>
+
+            <div class="p-2 rounded-xl bg-slate-50 border border-slate-300 grid grid-cols-2 gap-1 text-[10px]">
+              <div><strong>• Escuela / Plantel:</strong> ${esc}</div>
+              <div><strong>• CCT y Zona Escolar:</strong> ${cct}</div>
+              <div><strong>• Grado, Grupo y Turno:</strong> ${grupo}</div>
+              <div><strong>• Fecha del Registro:</strong> ${f2} • <strong>Hora:</strong> ${h2} hrs</div>
+              <div><strong>• Estudiantes / Figuras Involucradas:</strong> ${alum2}</div>
+              <div><strong>• Docente que reporta:</strong> ${doc}</div>
             </div>
-            <div class="p-3 rounded-lg bg-emerald-50/80 border border-emerald-200">
-              <strong>3. Protocolo de Actuación y Acuerdos Reparadores:</strong> Valoración emocional inmediata, feedback interrogativo y compromiso de respeto mutuo.
+
+            <div class="space-y-1.5 text-[10px]">
+              <div class="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+                <div class="flex justify-between items-center">
+                  <strong class="uppercase text-slate-900">1. CLASIFICACIÓN DE LA INCIDENCIA EN LA SESIÓN</strong>
+                  <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-900">Tipología detectada: ${etiquetaConflictoF2}</span>
+                </div>
+                <div class="${isInterpersonal2 ? 'font-bold text-slate-950 bg-amber-50 px-1.5 py-0.5 rounded' : 'text-slate-500'}">
+                  ${isInterpersonal2 ? '☑' : '☐'} Conflicto interpersonal, exclusión o roce físico durante el desarrollo de la situación motriz.
+                </div>
+                <div class="${isAccidente2 ? 'font-bold text-slate-950 bg-amber-50 px-1.5 py-0.5 rounded' : 'text-slate-500'}">
+                  ${isAccidente2 ? '☑' : '☐'} Incidente accidental propio de la acción motriz (caída, contacto fortuito o impacto con implemento).
+                </div>
+                <div class="${isReglaPacto2 ? 'font-bold text-slate-950 bg-amber-50 px-1.5 py-0.5 rounded' : 'text-slate-500'}">
+                  ${isReglaPacto2 ? '☑' : '☐'} Controversia normativa, desacuerdo en reglas, aplicación de contención formativa y modificación de la Lógica Interna.
+                </div>
+              </div>
+
+              <div class="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+                <strong class="uppercase text-slate-900 block">2. NARRACIÓN OBJETIVA Y CRONOLÓGICA DE LOS HECHOS</strong>
+                <p class="text-slate-800 leading-snug text-justify">${textoNarracion2}</p>
+              </div>
+
+              <div class="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+                <strong class="uppercase text-slate-900 block">3. PROTOCOLO DE ACTUACIÓN Y ACUERDOS REPARADORES</strong>
+                <div>☑ Valoración inmediata del estado físico y emocional del alumnado involucrado.</div>
+                <div>☑ Mediación pedagógica mediante diálogo reflexivo (Feedback Interrogativo / Círculos de Diálogo) y establecimiento de compromisos de convivencia pacífica.</div>
+                <div><strong>• Compromiso y Seguimiento Institucional:</strong> ${textoCompromiso2}</div>
+              </div>
             </div>
           </div>
-          <div class="pt-6 border-t grid grid-cols-2 gap-8 text-center text-[11px]">
-            <div><div class="border-b border-slate-400 w-3/4 mx-auto mb-1"></div><strong>${doc}</strong><br>Docente de Educación Física</div>
-            <div><div class="border-b border-slate-400 w-3/4 mx-auto mb-1"></div><strong>${dir}</strong><br>Autoridad Directiva</div>
+
+          <div class="space-y-1">
+            <div class="pt-3 border-t border-slate-400 grid grid-cols-4 gap-3 text-center text-[8.5px] leading-tight">
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${doc}</strong><br>Docente de Educación Física</div>
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${dir}</strong><br>Autoridad Directiva</div>
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${tut2}</strong><br>Madre, Padre o Tutor</div>
+              <div><div class="border-b border-slate-500 w-11/12 mx-auto mb-1 h-3.5"></div><strong>${sup}</strong><br>Supervisión de E.F.</div>
+            </div>
+            <div class="text-[8px] text-slate-500 text-center italic">
+              (Fundamentación Jurídica y Normativa: Art. 3° Constitucional; Ley General de los Derechos de Niñas, Niños y Adolescentes — LGDNNA, Arts. 13, 46 y 57; Protocolos de Prevención, Detección y Actuación en Escuelas de Educación Básica).
+            </div>
           </div>
         </article>
       `;
+    }
+    // =========================================================================
+    // 8. CLÍNICA DE PATIO (30 CONFLICTOS) + PIZARRA TÁCTICA INTERACTIVA
+    // =========================================================================
+    function initClinicAndBoard() {
+      const sel = document.getElementById("selBoardScenario");
+      if (sel) {
+        sel.innerHTML = CLINIC_30_CONFLICTS.map(c => `<option value="${c.id}">${c.titulo}</option>`).join("");
+      }
+      renderClinicCases("ALL");
+      loadBoardScenario();
+      initCanvasInteraction();
+    }
+
+    function filterClinicCases(filter) {
+      renderClinicCases(filter);
+    }
+
+    function renderClinicCases(filter) {
+      const grid = document.getElementById("clinicCasesGrid");
+      if (!grid) return;
+      const list = filter === "ALL" ? CLINIC_30_CONFLICTS : CLINIC_30_CONFLICTS.filter(c => c.tipo === filter);
+      grid.innerHTML = list.map(c => `
+        <div class="p-4 rounded-2xl bg-slate-50 border-2 border-slate-200 flex flex-col justify-between space-y-3">
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${c.tipo === 'PATIO' ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}">${c.tipo}</span>
+              <span class="text-[10px] font-bold text-slate-500">Formato SEP sugerido: Bitácora ${c.bitacoraTarget}</span>
+            </div>
+            <h3 class="font-display font-black text-sm text-slate-900">${c.titulo}</h3>
+            <p class="text-rose-900 bg-rose-50 p-2 rounded-lg border border-rose-200"><strong>⚠️ Problemática:</strong> ${c.problema}</p>
+            <p class="text-emerald-950 bg-emerald-50 p-2 rounded-lg border border-emerald-200"><strong>✅ Solución Pedagógica / Praxiológica:</strong> ${c.solucion}</p>
+          </div>
+          <div class="grid grid-cols-3 gap-1.5 pt-1">
+            <button onclick="openCaseInBoard(${c.id})" class="py-1.5 px-2 rounded-lg bg-slate-900 text-cyan-300 font-extrabold text-[10px]">🎯 Simular en Pizarra</button>
+            <button onclick="injectCaseToPlan(${c.id})" class="py-1.5 px-2 rounded-lg bg-indigo-600 text-white font-extrabold text-[10px]">⚡ A Planeación</button>
+            <button onclick="injectCaseToBitacora(${c.id})" class="py-1.5 px-2 rounded-lg bg-amber-400 text-slate-950 font-extrabold text-[10px]">📋 A Bitácora ${c.bitacoraTarget}</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function injectCaseToPlan(id) {
+      const c = CLINIC_30_CONFLICTS.find(x => x.id === id);
+      if (!c) return;
+      const box = document.getElementById("inpDetallesInformalesPlan");
+      box.value = (box.value ? box.value + " | " : "") + `Atender situación: ${c.problema} Aplicar estrategia: ${c.solucion}`;
+      switchMainTab("planner");
+      alert(`✅ Caso "${c.titulo}" agregado a las observaciones de la Planeación.`);
+    }
+
+    function injectCaseToBitacora(id) {
+      const c = CLINIC_30_CONFLICTS.find(x => x.id === id);
+      if (!c) return;
+      formalizedBitacora1 = null;
+      formalizedBitacora2 = null;
+      if (c.bitacoraTarget === 1) {
+        document.getElementById("b1Raw").value = `Situación observada: ${c.problema} Intervención aplicada: ${c.solucion}`;
+      } else {
+        document.getElementById("b2Raw").value = `Situación observada: ${c.problema} Intervención aplicada: ${c.solucion}`;
+      }
+      renderBitacorasSEP();
+      switchMainTab("bitacoras");
+      alert(`✅ Caso cargado en el Formato ${c.bitacoraTarget} de las Bitácoras SEP.`);
+    }
+
+    function openCaseInBoard(id) {
+      document.getElementById("selBoardScenario").value = String(id);
+      switchMainTab("board");
+      loadBoardScenario();
+    }
+
+    function injectSelectedScenarioToPlan() {
+      injectCaseToPlan(currentBoardScenarioId);
+    }
+
+    function injectSelectedScenarioToBitacora() {
+      injectCaseToBitacora(currentBoardScenarioId);
+    }
+
+    function loadBoardScenario() {
+      const id = parseInt(document.getElementById("selBoardScenario")?.value || "1", 10);
+      currentBoardScenarioId = id;
+      setBoardSimulationMode("problem");
+    }
+
+    function setBoardSimulationMode(mode) {
+      currentBoardMode = mode;
+      const c = CLINIC_30_CONFLICTS.find(x => x.id === currentBoardScenarioId) || CLINIC_30_CONFLICTS[0];
+      const btnProb = document.getElementById("btnBoardModeProblem");
+      const btnSol = document.getElementById("btnBoardModeSolution");
+      const card = document.getElementById("boardExplanationCard");
+      const badge = document.getElementById("boardStateBadge");
+      const title = document.getElementById("boardScenarioTitle");
+      const desc = document.getElementById("boardScenarioDesc");
+
+      title.textContent = c.titulo;
+      if (mode === "problem") {
+        btnProb.className = "py-2.5 px-3 rounded-xl font-display font-black text-xs bg-rose-600 text-white shadow";
+        btnSol.className = "py-2.5 px-3 rounded-xl font-display font-black text-xs bg-slate-200 text-slate-800";
+        card.className = "p-3.5 rounded-xl bg-slate-900 text-white space-y-2 border-l-4 border-rose-500";
+        badge.className = "text-[10px] font-extrabold uppercase text-rose-400";
+        badge.textContent = "⚠️ SIMULANDO PROBLEMA REAL EN CANCHA";
+        desc.textContent = c.problema;
+      } else {
+        btnSol.className = "py-2.5 px-3 rounded-xl font-display font-black text-xs bg-emerald-600 text-white shadow";
+        btnProb.className = "py-2.5 px-3 rounded-xl font-display font-black text-xs bg-slate-200 text-slate-800";
+        card.className = "p-3.5 rounded-xl bg-slate-900 text-white space-y-2 border-l-4 border-emerald-400";
+        badge.className = "text-[10px] font-extrabold uppercase text-emerald-400";
+        badge.textContent = "✅ SIMULANDO SOLUCIÓN PRAXIOLÓGICA ÓPTIMA";
+        desc.textContent = c.solucion;
+      }
+      setupBoardParticles(c.visualMode);
+    }
+
+    let ballTarget = { x: 380, y: 210 };
+
+    function initCanvasInteraction() {
+      const canvas = document.getElementById("tacticalCanvas");
+      if (!canvas) return;
+      canvas.addEventListener("pointerdown", e => {
+        const rect = canvas.getBoundingClientRect();
+        ballTarget.x = ((e.clientX - rect.left) / rect.width) * canvas.width;
+        ballTarget.y = ((e.clientY - rect.top) / rect.height) * canvas.height;
+      });
+      requestAnimationFrame(animateTacticalBoard);
+    }
+
+    function setupBoardParticles(visualMode) {
+      boardParticles = [];
+      if (visualMode === "escolta") {
+        const roles = ["GI", "AB", "GD", "CM", "RI", "RD"];
+        roles.forEach((r, idx) => {
+          boardParticles.push({ role: r, idx, x: 160 + (idx % 4) * 55, y: idx < 4 ? 160 : 250 });
+        });
+        return;
+      }
+      for (let i = 0; i < 16; i++) {
+        const quad = i % 4;
+        const qx = (quad % 2) * 360 + 180;
+        const qy = Math.floor(quad / 2) * 190 + 110;
+        boardParticles.push({
+          id: i,
+          team: i % 2 === 0 ? "A" : "B",
+          quad,
+          x: qx + (Math.random() - 0.5) * 110,
+          y: qy + (Math.random() - 0.5) * 80,
+          homeX: qx + ((i % 4) - 1.5) * 45,
+          homeY: qy + (Math.floor(i / 4) - 1.5) * 35
+        });
+      }
+    }
+
+        function animateTacticalBoard(ts) {
+      const canvas = document.getElementById("tacticalCanvas");
+      if (canvas && !document.getElementById("view-board").classList.contains("hidden")) {
+        const ctx = canvas.getContext("2d");
+        const w = canvas.width, h = canvas.height;
+        const c = CLINIC_30_CONFLICTS.find(x => x.id === currentBoardScenarioId) || CLINIC_30_CONFLICTS[0];
+        const t = (ts || 0) * 0.0022;
+
+        // Fondo de cancha
+        ctx.fillStyle = "#064e3b";
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = "rgba(255,255,255,0.5)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(20, 20, w - 40, h - 40);
+
+        // Etiqueta superior dentro del lienzo para identificar qué se está representando
+        ctx.fillStyle = "rgba(15, 23, 42, 0.78)";
+        ctx.fillRect(28, 28, w - 56, 28);
+        ctx.fillStyle = currentBoardMode === "problem" ? "#fca5a5" : "#6ee7b7";
+        ctx.font = "bold 12px sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(
+          currentBoardMode === "problem"
+            ? `⚠️ PROBLEMA EN PATIO: ${c.titulo}`
+            : `✅ SOLUCIÓN APLICADA: ${c.solucion.slice(0, 78)}...`,
+          38, 46
+        );
+
+        let bx = ballTarget.x + Math.cos(t * 1.6) * 55;
+        let by = ballTarget.y + Math.sin(t * 1.3) * 45;
+
+        // 1. MODO ESCOLTA CÍVICA (Casos 3, 11, 18, 26)
+        if (c.visualMode === "escolta") {
+          const advance = (t * 38) % 280;
+          boardParticles.forEach((p, idx) => {
+            const isRear = idx >= 4;
+            const col = isRear ? (idx === 4 ? 0 : 2) : idx;
+            const jitter = currentBoardMode === "problem" ? Math.sin(t * 4 + idx * 2) * 32 : 0;
+            const px = 150 + advance + (isRear ? -90 : 0) + jitter;
+            const py = 135 + col * 56 + (currentBoardMode === "problem" ? Math.cos(t * 3 + idx) * 24 : 0);
+
+            if (currentBoardMode === "solution") {
+              ctx.strokeStyle = "rgba(56, 189, 248, 0.4)";
+              ctx.strokeRect(px - 22, py - 22, 44, 44);
+            }
+            ctx.beginPath();
+            ctx.arc(px, py, 14, 0, Math.PI * 2);
+            ctx.fillStyle = p.role === "AB" ? "#facc15" : (isRear ? "#38bdf8" : "#10b981");
+            ctx.fill();
+            ctx.strokeStyle = "#fff";
+            ctx.stroke();
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "bold 11px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(p.role, px, py + 4);
+          });
+        }
+        // 2. MODO CONTACTO FÍSICO BRUSCO VS ESCUDO ESPACIAL 1M (Casos 5, 14, 17, 21, 24)
+        else if (c.visualMode === "contact") {
+          boardParticles.forEach((p, i) => {
+            if (currentBoardMode === "problem") {
+              // Choques directos sobre el portador del móvil
+              const targetX = i < 6 ? bx + Math.sin(t * 6 + i) * 14 : p.homeX;
+              const targetY = i < 6 ? by + Math.cos(t * 6 + i) * 14 : p.homeY;
+              p.x += (targetX - p.x) * 0.09;
+              p.y += (targetY - p.y) * 0.09;
+
+              if (i < 4) {
+                ctx.strokeStyle = "rgba(244, 63, 94, 0.85)";
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.arc(bx, by, 22 + (t * 20) % 18, 0, Math.PI * 2);
+                ctx.stroke();
+              }
+            } else {
+              // Solución: Escudo Espacial de 1 Metro (Círculo de protección verde) + Paliacate sin contacto
+              const tx = p.homeX + Math.sin(t * 1.8 + i) * 28;
+              const ty = p.homeY + Math.cos(t * 1.8 + i) * 24;
+              p.x += (tx - p.x) * 0.08;
+              p.y += (ty - p.y) * 0.08;
+
+              ctx.setLineDash([4, 4]);
+              ctx.strokeStyle = "rgba(52, 211, 153, 0.75)";
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, 26, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.setLineDash([]);
+            }
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 11, 0, Math.PI * 2);
+            ctx.fillStyle = p.team === "A" ? "#10b981" : "#38bdf8";
+            ctx.fill();
+            ctx.strokeStyle = "#fff";
+            ctx.stroke();
+          });
+          ctx.beginPath(); ctx.arc(bx, by, 8, 0, Math.PI * 2); ctx.fillStyle = "#facc15"; ctx.fill();
+        }
+        // 3. MODO MONOPOLIO Y EXCLUSIÓN VS RED DE PASES TOTAL (Casos 2, 12, 23, 28)
+        else if (c.visualMode === "monopoly") {
+          boardParticles.forEach((p, i) => {
+            if (currentBoardMode === "problem") {
+              // 3 alumnos acaparan en el centro; los otros 13 quedan excluidos e inmóviles en la orilla inferior
+              const tx = i < 3 ? 340 + Math.cos(t * 2 + i * 2) * 55 : 70 + i * 44;
+              const ty = i < 3 ? 190 + Math.sin(t * 2 + i * 2) * 45 : h - 38;
+              p.x += (tx - p.x) * 0.08;
+              p.y += (ty - p.y) * 0.08;
+              if (i < 2) {
+                ctx.strokeStyle = "rgba(244, 63, 94, 0.8)";
+                ctx.beginPath(); ctx.moveTo(boardParticles[0].x, boardParticles[0].y); ctx.lineTo(boardParticles[1].x, boardParticles[1].y); ctx.stroke();
+              }
+            } else {
+              // Solución: Todos tocan el móvil en red cooperativa antes de anotar
+              const angle = (i / 16) * Math.PI * 2 + t * 0.4;
+              const tx = w / 2 + Math.cos(angle) * 210;
+              const ty = h / 2 + 15 + Math.sin(angle) * 125;
+              p.x += (tx - p.x) * 0.08;
+              p.y += (ty - p.y) * 0.08;
+              const nextP = boardParticles[(i + 1) % boardParticles.length];
+              ctx.strokeStyle = "rgba(250, 204, 21, 0.55)";
+              ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nextP.x, nextP.y); ctx.stroke();
+            }
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 11, 0, Math.PI * 2);
+            ctx.fillStyle = (currentBoardMode === "problem" && i >= 3) ? "#64748b" : (p.team === "A" ? "#10b981" : "#38bdf8");
+            ctx.fill();
+            ctx.strokeStyle = "#fff";
+            ctx.stroke();
+          });
+          const carrier = boardParticles[Math.floor(t * 2) % (currentBoardMode === "problem" ? 3 : 16)];
+          if (carrier) { bx = carrier.x; by = carrier.y; }
+          ctx.beginPath(); ctx.arc(bx, by, 8, 0, Math.PI * 2); ctx.fillStyle = "#facc15"; ctx.fill();
+        }
+        // 4. MODO INVASIÓN DE CANCHA / USO SIMULTÁNEO VS CONOS DE DELIMITACIÓN (Casos 6, 7, 13, 19, 29)
+        else if (c.visualMode === "shared") {
+          if (currentBoardMode === "solution") {
+            // Dibujar línea divisoria de conos naranjas de seguridad
+            for (let cy = 70; cy < h - 30; cy += 38) {
+              ctx.fillStyle = "#f97316";
+              ctx.beginPath();
+              ctx.moveTo(w / 2, cy - 8);
+              ctx.lineTo(w / 2 - 8, cy + 8);
+              ctx.lineTo(w / 2 + 8, cy + 8);
+              ctx.closePath();
+              ctx.fill();
+            }
+          }
+          boardParticles.forEach((p, i) => {
+            if (currentBoardMode === "problem") {
+              // Ambos grupos chocan cruzando por toda la cancha
+              const tx = w / 2 + Math.sin(t * 2.2 + i) * 240;
+              const ty = h / 2 + Math.cos(t * 1.9 + i * 1.5) * 130;
+              p.x += (tx - p.x) * 0.07;
+              p.y += (ty - p.y) * 0.07;
+            } else {
+              // Grupo A seguro a la izquierda de los conos, Grupo B seguro a la derecha
+              const baseSide = p.team === "A" ? 190 : 570;
+              const tx = baseSide + Math.cos(t * 2 + i) * 95;
+              const ty = 225 + Math.sin(t * 2 + i) * 110;
+              p.x += (tx - p.x) * 0.08;
+              p.y += (ty - p.y) * 0.08;
+            }
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 11, 0, Math.PI * 2);
+            ctx.fillStyle = p.team === "A" ? "#10b981" : "#f59e0b";
+            ctx.fill();
+            ctx.strokeStyle = "#fff";
+            ctx.stroke();
+          });
+        }
+        // 5. MODO BAP / ZONA PROTEGIDA DUA (Casos 9, 10, 16, 20)
+        else if (c.visualMode === "bap") {
+          if (currentBoardMode === "solution") {
+            ctx.fillStyle = "rgba(250, 204, 21, 0.18)";
+            ctx.fillRect(w / 2 - 70, 75, 140, h - 105);
+            ctx.strokeStyle = "#facc15";
+            ctx.strokeRect(w / 2 - 70, 75, 140, h - 105);
+            ctx.fillStyle = "#fde047";
+            ctx.font = "bold 11px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("ZONA PROTEGIDA COMODÍN DUA", w / 2, 92);
+          }
+          boardParticles.forEach((p, i) => {
+            if (i === 0) {
+              // Alumno con BAP: en Problema queda rezagado en la esquina; en Solución es Comodín Central
+              const tx = currentBoardMode === "problem" ? 55 : w / 2;
+              const ty = currentBoardMode === "problem" ? h - 45 : h / 2 + 15;
+              p.x += (tx - p.x) * 0.08;
+              p.y += (ty - p.y) * 0.08;
+            } else {
+              const tx = p.homeX + Math.sin(t * 2 + i) * 35;
+              const ty = p.homeY + Math.cos(t * 2 + i) * 28;
+              p.x += (tx - p.x) * 0.08;
+              p.y += (ty - p.y) * 0.08;
+            }
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, i === 0 ? 15 : 11, 0, Math.PI * 2);
+            ctx.fillStyle = i === 0 ? "#facc15" : (p.team === "A" ? "#10b981" : "#38bdf8");
+            ctx.fill();
+            ctx.strokeStyle = "#fff";
+            ctx.stroke();
+          });
+        }
+        // 6. MODOS ENJAMBRE (SWARM) Y FILAS DE ESPERA (QUEUES)
+        else {
+          if (currentBoardMode === "solution") {
+            ctx.setLineDash([8, 6]);
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.7)";
+            ctx.beginPath();
+            ctx.moveTo(w / 2, 60); ctx.lineTo(w / 2, h - 20);
+            ctx.moveTo(20, h / 2 + 15); ctx.lineTo(w - 20, h / 2 + 15);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+          boardParticles.forEach((p, i) => {
+            if (currentBoardMode === "problem") {
+              if (c.visualMode === "queues") {
+                const targetX = 75 + i * 38;
+                const targetY = h / 2 + 20;
+                p.x += (targetX - p.x) * 0.08;
+                p.y += (targetY - p.y) * 0.08;
+              } else {
+                p.x += (bx - p.x) * 0.05 + Math.sin(t * 3 + i) * 1.8;
+                p.y += (by - p.y) * 0.05 + Math.cos(t * 2.5 + i) * 1.8;
+              }
+            } else {
+              const tx = p.homeX + Math.sin(t * 2 + i) * 26;
+              const ty = p.homeY + 15 + Math.cos(t * 2 + i) * 22;
+              p.x += (tx - p.x) * 0.08;
+              p.y += (ty - p.y) * 0.08;
+            }
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 11, 0, Math.PI * 2);
+            ctx.fillStyle = p.team === "A" ? "#10b981" : "#38bdf8";
+            ctx.fill();
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+          });
+          ctx.beginPath(); ctx.arc(bx, by, 8, 0, Math.PI * 2); ctx.fillStyle = "#facc15"; ctx.fill();
+        }
+      }
+      requestAnimationFrame(animateTacticalBoard);
+    }
+
+
+    function toggleCleanPresentationMode() {
+      const boardEl = document.getElementById("tacticalBoardContainer");
+      const btn = document.getElementById("btnExpandBoard");
+      boardEl.classList.toggle("board-expanded-view");
+      if (boardEl.classList.contains("board-expanded-view")) {
+        btn.textContent = "✕ Salir de Modo Presentación";
+      } else {
+        btn.textContent = "🔍 Modo Presentación Amplia";
+      }
     }
 
     window.addEventListener("DOMContentLoaded", initApp);
