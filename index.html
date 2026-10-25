@@ -6,7 +6,7 @@
   <title>ALTUS EDUFIS • NEM | Sistema Integral de Planeación y Gestión en Educación Física</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
-    <style>
+      <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#d1fae5 100%); color:#0f172a; min-height:100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     .hero-gradient { background: linear-gradient(125deg,#0f172a 0%,#1e1b4b 38%,#065f46 78%,#0284c7 100%); }
@@ -34,7 +34,7 @@
       page-break-inside:avoid;
     }
 
-    /* AISLAMIENTO ABSOLUTO PARA IMPRESIÓN PDF */
+    /* REGLA DE IMPRESIÓN CORREGIDA: OCULTA CONSOLAS PERO MANTIENE VISIBLES LAS HOJAS */
     @media print {
       @page {
         size: letter portrait;
@@ -45,44 +45,54 @@
         color:#000000 !important;
         font-size:7.6pt !important;
         line-height:1.16 !important;
+        margin:0 !important;
+        padding:0 !important;
       }
-      header, nav, .no-print, input, select, textarea, button, .card-box {
+      /* Ocultar cabecera principal, modales, elementos marcados con .no-print y las tarjetas de formulario (.card-box) */
+      header, nav, .no-print, #unlockModal, #masterModal, .card-box {
         display: none !important;
       }
-      body > main > section {
+      /* Asegurar que el contenedor principal y la sección activa no tengan márgenes ni estén ocultos */
+      main, section {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+      /* Respetar las pestañas que están ocultas con la clase .hidden de Tailwind */
+      .hidden {
         display: none !important;
       }
-      /* Muestra exclusivamente las hojas impresas limpias */
-      #planOutputContainer, #bitacorasOutput, 
-      #planOutputContainer .print-sheet, #bitacorasOutput .print-sheet {
+      /* Mostrar de forma limpia los contenedores de salida y sus hojas */
+      #planOutputContainer, #bitacorasOutput {
         display: block !important;
-        visibility: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       .print-sheet {
-        box-shadow:none !important;
-        border:1.5px solid #1e293b !important;
-        border-radius:0.35rem !important;
-        padding:4.5mm 6mm !important;
-        margin:0 !important;
-        height:auto !important;
-        max-height:248mm !important;
-        box-sizing:border-box !important;
-        display:flex !important;
-        flex-direction:column !important;
-        justify-content:space-between !important;
-        overflow:hidden !important;
-        page-break-after:always !important;
-        break-after:page !important;
-        page-break-inside:avoid !important;
-        break-inside:avoid !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        box-shadow: none !important;
+        border: 1.5px solid #1e293b !important;
+        border-radius: 0.35rem !important;
+        padding: 4.5mm 6mm !important;
+        margin: 0 !important;
+        height: auto !important;
+        max-height: 248mm !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
       .print-sheet p, .print-sheet div {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
       }
       .print-sheet:last-child {
-        page-break-after:auto !important;
-        break-after:auto !important;
+        page-break-after: auto !important;
+        break-after: auto !important;
       }
       .eval-table th, .eval-table td {
         padding: 1px 3px !important;
@@ -90,7 +100,7 @@
         line-height: 1.05 !important;
       }
     }
-  </style>
+  </style></>
 </head>
 <body class="antialiased">
 
@@ -1222,11 +1232,15 @@
       exportHtmlToWordDoc(cleanHtml, `Planeacion_Educacion_Fisica_${selectedPackageSessions}_Sesiones.doc`);
     }
 
-    function downloadBitacorasWordUnlimited() {
+        function printBitacorasUnlimited() {
       if (!hasUnlimitedBitacorasAccess()) {
         openUnlockModal();
         return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
       }
+      renderBitacorasSEP();
+      setTimeout(() => window.print(), 150);
+    }
+
       
       // Extrae únicamente las hojas limpias de las bitácoras
       const sheets = document.querySelectorAll("#bitacorasOutput .print-sheet");
