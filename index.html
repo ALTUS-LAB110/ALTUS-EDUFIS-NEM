@@ -556,6 +556,19 @@
   <!-- ========================================================== -->
   <!-- MODAL CLIENTE: CANJEAR CÓDIGO VIP                          -->
   <!-- ========================================================== -->
+  <!-- Cuadro Informativo de Paquetes y Licenciamiento -->
+      <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 my-2 text-left space-y-2">
+        <h4 class="font-display font-extrabold text-sky-900 text-xs uppercase tracking-wide text-center">📋 Opciones de Acceso y Paquetes</h4>
+        <div class="grid grid-cols-1 gap-1.5 text-[11px] text-slate-700">
+          <div class="bg-white p-2 rounded-lg border border-sky-100 shadow-sm">
+            <span class="font-bold text-sky-800">• Paquetes por Sesiones (8, 20 o 40):</span> Incluyen descargas de Planeación oficial + Bitácoras SEP ilimitadas.
+          </div>
+          <div class="bg-white p-2 rounded-lg border border-emerald-200 bg-emerald-50/40 shadow-sm">
+            <span class="font-bold text-emerald-800">• Pase Anual Ilimitado ($500):</span> Acceso total por todo el ciclo escolar. <span class="underline font-semibold">Exclusivo y bloqueado para 1 solo dispositivo</span>.
+          </div>
+        </div>
+      </div>
+  
   <div id="unlockModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-center justify-center p-4 no-print">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 border-2 border-amber-400 space-y-4">
       <div class="flex justify-between items-center">
@@ -1148,16 +1161,35 @@
     }
 
     function redeemClientCode() {
-      const code = document.getElementById("inpClientCode").value.trim().toUpperCase();
+      const codeInput = document.getElementById("inpClientCode");
+      if (!codeInput) return;
+      const code = codeInput.value.trim().toUpperCase();
+      if (!code) return alert("⚠️ Por favor, ingresa un código de acceso válido.");
+
       const exhausted = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXHAUSTED_CODES) || "[]");
-      
       if (exhausted.includes(code)) return alert("⚠️ Este código ya agotó sus descargas autorizadas.");
-      
+
+      // --- CONTROL DE DISPOSITIVO ÚNICO (HUELLA DIGITAL) ---
+      let deviceId = localStorage.getItem("altus_device_fingerprint");
+      if (!deviceId) {
+        deviceId = "dev_" + Math.random().toString(36).substring(2) + Date.now().toString(36);
+        localStorage.setItem("altus_device_fingerprint", deviceId);
+      }
+
+      const boundKey = "altus_bound_device_" + code;
+      const registeredDevice = localStorage.getItem(boundKey);
+
+      if (registeredDevice && registeredDevice !== deviceId) {
+        return alert("🔒 Seguridad Bloqueada: Este código ya se encuentra vinculado y activo en otro dispositivo. Cada código está protegido para usarse en un solo equipo.");
+      }
+
+      // Vincular permanentemente al dispositivo actual
+      localStorage.setItem(boundKey, deviceId);
+      // -----------------------------------------------------
+
       const db = getVipDatabase();
-      
-      // Validar si es el Pase Ilimitado Anual de $500 (Debe empezar con el prefijo PASS-500)
-      const isPass500 = code.startsWith("PASS-500");
-      
+      const isPass500 = code.startsWith("PASS-500") || code.includes("ANUAL");
+
       if (!db[code] && !isPass500) {
         const m = code.match(/^PMX-(08|20|40)S-(\d{2})P-([A-Z0-9]{4})-([A-Z0-9]{4})$/);
         if (!m) return alert("❌ Formato de código inválido.");
@@ -1167,49 +1199,27 @@
         saveVipDatabase(db);
       }
 
-      // Control de Dispositivo Único para el Pase de $500
-      let currentDeviceFingerprint = localStorage.getItem("altus_device_fingerprint");
-      if (!currentDeviceFingerprint) {
-        currentDeviceFingerprint = "dev_" + Math.random().toString(36).substring(2) + Date.now().toString(36);
-        localStorage.setItem("altus_device_fingerprint", currentDeviceFingerprint);
-      }
-
       if (isPass500) {
-        const boundDeviceKey = "altus_bound_device_" + code;
-        const registeredDevice = localStorage.getItem(boundDeviceKey);
-        
-        if (registeredDevice && registeredDevice !== currentDeviceFingerprint) {
-          return alert("🔒 Seguridad Bloqueada: Este Pase Anual Ilimitado ya se encuentra registrado y vinculado en otro dispositivo. Solo puede usarse en un equipo.");
-        }
-        
-        // Vincular al dispositivo actual de manera permanente
-        localStorage.setItem(boundDeviceKey, currentDeviceFingerprint);
-        
-        // Otorgar acceso ilimitado tanto en planeaciones como en bitácoras para todo el ciclo
         localStorage.setItem(STORAGE_KEYS.PURCHASE_UNLOCKED_BITACORAS, "TRUE");
-        
-        // Simular créditos masivos perpetuos para planeación en este dispositivo
         db[code] = { maxSessions: 40, pdfCredits: 9999 };
         saveVipDatabase(db);
-        
         localStorage.setItem(STORAGE_KEYS.ACTIVE_CODE, code);
         selectSessionPackage(40);
         refreshLicenseUI();
         closeUnlockModal();
-        alert("✅ ¡Pase Anual Ilimitado Activado Correctamente!\n• Vinculado exclusivamente a este dispositivo.\n• Descargas ilimitadas de Planeaciones y Bitácoras SEP habilitadas por todo el ciclo escolar.");
+        alert("✅ ¡Pase Anual Ilimitado Activado Correctamente!\n• Vinculado exclusivamente a este dispositivo.\n• Descargas ilimitadas de Planeaciones y Bitácoras habilitadas por todo el ciclo.");
         return;
       }
 
-      if (db[code].pdfCredits <= 0) return alert("⚠️ Sin descargas de planeación disponibles.");
-      
+      if (db[code].pdfCredits <= 0) return alert("⚠️ Este código ya no cuenta con descargas de planeación disponibles.");
+
       localStorage.setItem(STORAGE_KEYS.ACTIVE_CODE, code);
       localStorage.setItem(STORAGE_KEYS.PURCHASE_UNLOCKED_BITACORAS, "TRUE");
       selectSessionPackage(db[code].maxSessions);
       refreshLicenseUI();
       closeUnlockModal();
-      alert(`✅ Código activado con éxito:\n• Tienes ${db[code].pdfCredits} descargas disponibles para tu Planeación.\n• Tus 2 Bitácoras Oficiales SEP han quedado liberadas de manera ILIMITADA.`);
+      alert(`✅ ¡Código activado con éxito!\n• Vinculado a este equipo.\n• Descargas de Planeación disponibles: ${db[code].pdfCredits}\n• Bitácoras SEP: Libres e Ilimitadas.`);
     }
-
     function hasActivePlanCredits() {
       const code = localStorage.getItem(STORAGE_KEYS.ACTIVE_CODE);
       const db = getVipDatabase();
