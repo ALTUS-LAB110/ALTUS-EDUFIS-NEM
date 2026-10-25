@@ -553,44 +553,61 @@
 
   </main>
 
-  <!-- ========================================================== -->
+ <!-- ========================================================== -->
   <!-- MODAL CLIENTE: CANJEAR CÓDIGO VIP                          -->
   <!-- ========================================================== -->
- <!-- Cuadro Informativo de Métodos de Pago (Dinámico) -->
-      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 my-2 text-left space-y-2">
-        <h4 class="font-display font-extrabold text-slate-900 text-xs uppercase tracking-wide text-center">💳 Opciones de Pago y Transferencia</h4>
-        <div class="grid grid-cols-1 gap-2 text-[11px] text-slate-700">
-          <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm space-y-1">
-            <p class="font-bold text-slate-800">🏦 Transferencia Bancaria (SPEI)</p>
-            <p class="text-slate-600">• Banco: <span id="lblBankName" class="font-semibold text-slate-900">BBVA / Banorte</span></p>
-            <p class="text-slate-600">• CLABE Interbancaria: <span id="lblClabe" class="font-mono text-slate-900 font-bold">012345678901234567</span></p>
-            <p class="text-slate-600">• Beneficiario: <span id="lblBeneficiary" class="font-semibold text-slate-900">Servicios Educativos</span></p>
+  <div id="unlockModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 border-2 border-amber-400 space-y-3 max-h-[92vh] overflow-y-auto shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+        <h3 class="font-display font-black text-base md:text-lg text-slate-900">🔑 Activar Código / Adquirir Acceso</h3>
+        <button onclick="closeUnlockModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 font-bold text-slate-600">✕</button>
+      </div>
+
+      <!-- Cuadro Informativo de Paquetes (1 solo dispositivo) -->
+      <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 text-left space-y-1.5">
+        <h4 class="font-display font-extrabold text-sky-950 text-[11px] uppercase tracking-wide text-center">📋 Paquetes y Licencias Disponibles</h4>
+        <div class="grid grid-cols-1 gap-1.5 text-[11px] text-slate-700">
+          <div class="bg-white p-2 rounded-lg border border-sky-100 shadow-sm">
+            <span class="font-bold text-sky-900">• Paquetes de 8 ($100), 20 ($200) o 40 Sesiones ($300):</span> Incluyen 3 descargas de Planeación (PDF/Word) + <strong>2 Bitácoras Oficiales SEP ilimitadas</strong>.
           </div>
+          <div class="bg-emerald-50/70 p-2 rounded-lg border border-emerald-300 shadow-sm">
+            <span class="font-bold text-emerald-900">• Pase Anual Ilimitado ($500 MXN):</span> Planeaciones y Bitácoras SEP ilimitadas durante todo el ciclo escolar 2026-2027.
+          </div>
+          <p class="text-[10px] text-center font-extrabold text-rose-700 pt-0.5">🔒 LICENCIA INDIVIDUAL: El código queda bloqueado exclusivamente al primer dispositivo donde se ingresa.</p>
         </div>
       </div>
-  
-  <div id="unlockModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-center justify-center p-4 no-print">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 border-2 border-amber-400 space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-display font-black text-lg">🔑 Activar Código de Compra</h3>
-        <button onclick="closeUnlockModal()" class="font-bold text-slate-500">✕</button>
+
+      <!-- Cuadro Informativo de Métodos de Pago (Dinámico desde Panel Maestro) -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-left space-y-1.5">
+        <h4 class="font-display font-extrabold text-slate-900 text-[11px] uppercase tracking-wide text-center">💳 Datos Oficiales para Transferencia (SPEI)</h4>
+        <div class="bg-white p-2.5 rounded-lg border border-slate-200 shadow-sm space-y-1 text-[11px] text-slate-700">
+          <p>• <strong>Banco:</strong> <span id="lblBankName" class="font-bold text-slate-900">Por definir en Panel Maestro</span></p>
+          <p>• <strong>CLABE Interbancaria:</strong> <span id="lblClabe" class="font-mono text-slate-900 font-extrabold select-all">Por definir en Panel Maestro</span></p>
+          <p>• <strong>Beneficiario:</strong> <span id="lblBeneficiary" class="font-bold text-slate-900">Por definir en Panel Maestro</span></p>
+        </div>
       </div>
-      <p class="text-xs text-slate-600">Ingresa tu código adquirido. Activa <strong>3 descargas para tu Planeación</strong> (en PDF o Word) y libera de manera <strong>ilimitada las 2 Bitácoras Oficiales SEP</strong>.</p>
-      <input id="inpClientCode" type="text" placeholder="PMX-08S-03P-XXXX-XXXX" class="w-full rounded-xl border-2 border-slate-300 px-3 py-2.5 font-mono font-bold text-center uppercase text-xs" />
-      <button onclick="redeemClientCode()" class="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-display font-black text-xs">ACTIVAR CÓDIGO Y LIBERAR BITÁCORAS ILIMITADAS</button>
+
+      <!-- Ingreso de Código -->
+      <div class="space-y-2 pt-1">
+        <label class="block text-[11px] font-extrabold text-slate-700 text-center">Ingresa tu código para vincularlo a este dispositivo:</label>
+        <input id="inpClientCode" type="text" placeholder="PMX-08S-03P-XXXX-XXXX o PASS-500-XXXX" class="w-full rounded-xl border-2 border-slate-300 px-3 py-2.5 font-mono font-bold text-center uppercase text-xs" />
+        <button onclick="redeemClientCode()" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-black text-xs shadow">
+          🔒 VINCULAR Y ACTIVAR EN ESTE DISPOSITIVO
+        </button>
+      </div>
+
+      <!-- Botón de Solicitud Rápida para el Cliente -->
+      <div class="pt-2 border-t border-slate-200 text-center space-y-1.5">
+        <p class="text-[10.5px] text-slate-500">Envía tu comprobante de transferencia para recibir tu código de activación:</p>
+        <a href="https://wa.me/525623601422?text=Hola,%20solicito%20información%20o%20envío%20comprobante%20para%20adquirir%20mi%20código%20de%20acceso%20en%20ALTUS%20EDUFIS%20•%20NEM."
+           target="_blank"
+           class="block w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs text-center shadow">
+          💬 Enviar Comprobante / Solicitar Código por WhatsApp
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Botón de Solicitud Rápida para el Cliente -->
-      <div class="pt-3 border-t border-slate-200 text-center space-y-2">
-        <p class="text-[11px] text-slate-500">¿Aún no tienes tu código de descarga o deseas adquirir el Pase Anual Ilimitado?</p>
-        <a href="https://wa.me/525623601422?text=Hola,%20solicito%20información%20sobre%20los%20códigos%20de%20descarga%20y%20el%20Pase%20Anual%20para%20ALTUS%20EDUFIS%20•%20NEM." 
-   target="_blank" 
-   class="block w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs text-center shadow">
-  💬 Solicitar Código / Adquirir Pase Anual por WhatsApp
-</a>
-      </div>
-  
   <!-- ========================================================== -->
   <!-- MODAL OCULTO DEL ADMINISTRADOR (5 CLICS EN AEF)            -->
   <!-- ========================================================== -->
@@ -600,24 +617,23 @@
         <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro Exclusivo (Oculto al Cliente)</h3>
         <button onclick="closeMasterModal()" class="font-bold text-slate-400">✕</button>
       </div>
-      
+
       <!-- Configuración de Datos Bancarios en el Panel Maestro -->
-      <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 space-y-2 mt-3 text-left">
+      <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 space-y-2 text-left">
         <h5 class="font-display font-bold text-amber-400 text-xs uppercase">💳 Configuración de Datos de Pago</h5>
-        <div>
-          <label class="block text-[10px] text-slate-300 mb-0.5">Banco / Método:</label>
-          <input type="text" id="masterBankName" placeholder="Ej. BBVA / Banorte" 
-                 class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs" />
-        </div>
-        <div>
-          <label class="block text-[10px] text-slate-300 mb-0.5">CLABE Interbancaria:</label>
-          <input type="text" id="masterClabe" placeholder="Ej. 012345678901234567" 
-                 class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs font-mono" />
-        </div>
-        <div>
-          <label class="block text-[10px] text-slate-300 mb-0.5">Beneficiario / Titular:</label>
-          <input type="text" id="masterBeneficiary" placeholder="Ej. Nombre del Titular" 
-                 class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs" />
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div>
+            <label class="block text-[10px] text-slate-300 mb-0.5">Banco / Método:</label>
+            <input type="text" id="masterBankName" placeholder="Ingresa el Banco..." class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs" />
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-300 mb-0.5">CLABE Interbancaria:</label>
+            <input type="text" id="masterClabe" placeholder="Ingresa los 18 dígitos..." class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs font-mono" />
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-300 mb-0.5">Beneficiario / Titular:</label>
+            <input type="text" id="masterBeneficiary" placeholder="Ingresa el Beneficiario..." class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs" />
+          </div>
         </div>
         <button onclick="saveMasterBankInfo()" class="w-full py-2 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow mt-1">
           💾 Guardar Datos Bancarios
@@ -639,7 +655,7 @@
             ✅ Guardar Permanentemente en Navegador
           </button>
           <button onclick="exportHtmlWithEmbeddedKey()" class="py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold">
-            💾 Descargar HTML con Llave Pre-Incrustada
+            💾 Descargar HTML con Llave y Banco Pre-Incrustados
           </button>
         </div>
       </div>
@@ -653,15 +669,16 @@
       </div>
 
       <div class="p-3.5 rounded-xl bg-slate-800 border border-emerald-500/40 space-y-3">
-        <label class="font-extrabold text-emerald-300 uppercase block">3. Emitir Código VIP (3 Impresiones de Planeación + Bitácoras Ilimitadas)</label>
+        <label class="font-extrabold text-emerald-300 uppercase block">3. Emitir Código VIP (Exclusivo para 1 Dispositivo)</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <select id="selVipMaxSessions" class="rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 font-bold text-white">
             <option value="08">Paquete 8 Sesiones ($100)</option>
             <option value="20">Paquete 20 Sesiones ($200)</option>
             <option value="40">Paquete 40 Sesiones ($300)</option>
+            <option value="ANUAL">⭐ Pase Anual Ilimitado ($500)</option>
           </select>
           <input id="inpVipPdfLimit" type="number" min="1" max="99" value="3" class="rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 font-bold text-amber-300" title="Impresiones de Planeación (Por defecto: 3)" />
-          <button onclick="issueSignedVipCode()" class="py-2 rounded-lg bg-emerald-500 text-slate-950 font-extrabold">🎲 Generar Código (3 Créditos)</button>
+          <button onclick="issueSignedVipCode()" class="py-2 rounded-lg bg-emerald-500 text-slate-950 font-extrabold">🎲 Generar Código</button>
         </div>
         <div id="newlyGeneratedCodeBox" class="hidden p-2.5 rounded-lg bg-emerald-950 border border-emerald-400 flex items-center justify-between">
           <span id="newlyGeneratedCodeText" class="font-mono font-black text-sm text-white"></span>
@@ -671,7 +688,6 @@
       </div>
     </div>
   </div>
-
   <script>
     const PRE_EMBEDDED_ENGINE_KEY = "";
     const PRE_EMBEDDED_PROVIDER = "AUTO";
@@ -1137,15 +1153,25 @@
 
     function issueSignedVipCode() {
       const pkgStr = document.getElementById("selVipMaxSessions").value;
-      const pdfLimit = Math.min(99, Math.max(1, parseInt(document.getElementById("inpVipPdfLimit").value, 10) || 3));
-      const pdfStr = String(pdfLimit).padStart(2, "0");
       const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
       let nonce = "";
       for (let i = 0; i < 4; i++) nonce += chars.charAt(Math.floor(Math.random() * chars.length));
-      const sig = computeCodeSignature(pkgStr, pdfStr, nonce);
-      const code = `PMX-${pkgStr}S-${pdfStr}P-${nonce}-${sig}`;
+
       const db = getVipDatabase();
-      db[code] = { maxSessions: parseInt(pkgStr, 10), pdfCredits: pdfLimit };
+      let code = "";
+
+      if (pkgStr === "ANUAL") {
+        const sig = computeCodeSignature("40", "99", nonce);
+        code = `PASS-500-${nonce}-${sig}`;
+        db[code] = { maxSessions: 40, pdfCredits: 9999 };
+      } else {
+        const pdfLimit = Math.min(99, Math.max(1, parseInt(document.getElementById("inpVipPdfLimit").value, 10) || 3));
+        const pdfStr = String(pdfLimit).padStart(2, "0");
+        const sig = computeCodeSignature(pkgStr, pdfStr, nonce);
+        code = `PMX-${pkgStr}S-${pdfStr}P-${nonce}-${sig}`;
+        db[code] = { maxSessions: parseInt(pkgStr, 10), pdfCredits: pdfLimit };
+      }
+
       saveVipDatabase(db);
       document.getElementById("newlyGeneratedCodeText").textContent = code;
       document.getElementById("newlyGeneratedCodeBox").classList.remove("hidden");
@@ -1376,7 +1402,10 @@
     }
 
     function printBitacorasUnlimited() {
-      // 1. Generar las bitácoras automáticamente si aún no están en pantalla
+      if (!hasUnlimitedBitacorasAccess()) {
+        openUnlockModal();
+        return alert("🔒 Acceso Restringido: Ingresa y activa tu código en este dispositivo para liberar la impresión ilimitada de las Bitácoras Oficiales SEP.");
+      }
       if (typeof renderBitacorasSEP === "function") {
         renderBitacorasSEP();
       }
@@ -1384,7 +1413,6 @@
       if (!out || !out.innerHTML.trim()) {
         return alert("⚠️ Presiona primero el botón '1. Estructurar Redacción Oficial SEP' para generar los formatos.");
       }
-      // 2. Asegurar que cada formato tenga la clase print-sheet para que el PDF no salga en blanco
       Array.from(out.children).forEach(el => el.classList.add("print-sheet"));
       out.classList.remove("hidden");
       
@@ -1394,7 +1422,10 @@
     }
 
     function downloadBitacorasWordUnlimited() {
-      // 1. Generar las bitácoras automáticamente antes de descargar
+      if (!hasUnlimitedBitacorasAccess()) {
+        openUnlockModal();
+        return alert("🔒 Acceso Restringido: Ingresa y activa tu código en este dispositivo para descargar las Bitácoras Oficiales SEP en Word.");
+      }
       if (typeof renderBitacorasSEP === "function") {
         renderBitacorasSEP();
       }
@@ -1402,7 +1433,6 @@
       if (!out || !out.innerHTML.trim()) {
         return alert("⚠️ Presiona primero el botón '1. Estructurar Redacción Oficial SEP'.");
       }
-      // 2. Asegurar clase print-sheet y extraer todo el HTML de las 2 bitácoras
       Array.from(out.children).forEach(el => el.classList.add("print-sheet"));
       
       exportHtmlToWordDoc(out.innerHTML, "Bitacoras_Oficiales_SEP_Educacion_Fisica.doc");
