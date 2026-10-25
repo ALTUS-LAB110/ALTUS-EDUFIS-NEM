@@ -6,7 +6,7 @@
   <title>ALTUS EDUFIS • NEM | Sistema Integral de Planeación y Gestión en Educación Física</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
-      <style>
+        <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#d1fae5 100%); color:#0f172a; min-height:100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     .hero-gradient { background: linear-gradient(125deg,#0f172a 0%,#1e1b4b 38%,#065f46 78%,#0284c7 100%); }
@@ -29,56 +29,60 @@
       background:#ffffff;
       border:2px solid #cbd5e1;
       border-radius:0.85rem;
-      padding:1.1rem;
+      padding:1.25rem;
       margin-bottom:1.25rem;
       page-break-inside:avoid;
     }
 
-    /* REGLA DE IMPRESIÓN CORREGIDA: OCULTA CONSOLAS PERO MANTIENE VISIBLES LAS HOJAS */
+    /* IMPRESIÓN EN HORIZONTAL (LANDSCAPE) AJUSTADA AL 100% DE LA HOJA CARTA */
     @media print {
       @page {
-        size: letter portrait;
-        margin: 6mm 8mm;
+        size: letter landscape;
+        margin: 10mm 12mm;
       }
-      body {
-        background:#ffffff !important;
-        color:#000000 !important;
-        font-size:7.6pt !important;
-        line-height:1.16 !important;
-        margin:0 !important;
-        padding:0 !important;
+      html, body {
+        width: 100% !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 9.5pt !important;
+        line-height: 1.32 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
-      /* Ocultar cabecera principal, modales, elementos marcados con .no-print y las tarjetas de formulario (.card-box) */
+      /* Ocultar menús, consolas y controles */
       header, nav, .no-print, #unlockModal, #masterModal, .card-box {
         display: none !important;
       }
-      /* Asegurar que el contenedor principal y la sección activa no tengan márgenes ni estén ocultos */
       main, section {
         padding: 0 !important;
         margin: 0 !important;
         max-width: 100% !important;
+        width: 100% !important;
       }
-      /* Respetar las pestañas que están ocultas con la clase .hidden de Tailwind */
       .hidden {
         display: none !important;
       }
-      /* Mostrar de forma limpia los contenedores de salida y sus hojas */
       #planOutputContainer, #bitacorasOutput {
         display: block !important;
+        width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
       }
+      /* Cada ficha ocupa exactamente 1 página horizontal completa */
       .print-sheet {
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
+        width: 100% !important;
+        height: 192mm !important;
+        max-height: 192mm !important;
         box-shadow: none !important;
         border: 1.5px solid #1e293b !important;
-        border-radius: 0.35rem !important;
-        padding: 4.5mm 6mm !important;
+        border-radius: 0.4rem !important;
+        padding: 6mm 8mm !important;
         margin: 0 !important;
-        height: auto !important;
-        max-height: 248mm !important;
         box-sizing: border-box !important;
         overflow: hidden !important;
         page-break-after: always !important;
@@ -95,12 +99,13 @@
         break-after: auto !important;
       }
       .eval-table th, .eval-table td {
-        padding: 1px 3px !important;
-        font-size: 6.8pt !important;
-        line-height: 1.05 !important;
+        padding: 3px 5px !important;
+        font-size: 8.5pt !important;
+        line-height: 1.2 !important;
       }
     }
-  </style></>
+  </style>
+
 </head>
 <body class="antialiased">
 
@@ -1232,13 +1237,28 @@
       exportHtmlToWordDoc(cleanHtml, `Planeacion_Educacion_Fisica_${selectedPackageSessions}_Sesiones.doc`);
     }
 
-            function printBitacorasUnlimited() {
+    function printBitacorasPDF() {
+      printBitacorasUnlimited();
+    }
+
+    function printBitacorasUnlimited() {
       if (!hasUnlimitedBitacorasAccess()) {
         openUnlockModal();
         return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
       }
-      renderBitacorasSEP();
-      setTimeout(() => window.print(), 150);
+      // Cambiar temporalmente a la pestaña de bitácoras y generar el documento si no se ha generado
+      const bitacorasSection = document.getElementById("view-bitacoras");
+      if (bitacorasSection && bitacorasSection.classList.contains("hidden")) {
+        switchMainTab("bitacoras");
+      }
+      if (typeof renderBitacorasSEP === "function") {
+        renderBitacorasSEP();
+      }
+      const out = document.getElementById("bitacorasOutput");
+      if (out) out.classList.remove("hidden");
+      setTimeout(() => {
+        window.print();
+      }, 250);
     }
 
     function downloadBitacorasWordUnlimited() {
@@ -1246,7 +1266,9 @@
         openUnlockModal();
         return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
       }
-      renderBitacorasSEP();
+      if (typeof renderBitacorasSEP === "function") {
+        renderBitacorasSEP();
+      }
       const sheets = document.querySelectorAll("#bitacorasOutput .print-sheet");
       let cleanHtml = "";
       sheets.forEach(sh => cleanHtml += sh.outerHTML);
@@ -1259,15 +1281,20 @@
         <head>
           <meta charset="utf-8">
           <style>
-            @page { size: 21.59cm 27.94cm; margin: 1.2cm 1.4cm; }
-            body { font-family: Arial, sans-serif; font-size: 9.5pt; color: #000; line-height: 1.25; }
-            .print-sheet { page-break-after: always; border: 1px solid #333; padding: 12px; margin-bottom: 12px; height: 26cm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+            @page WordSection1 {
+              size: 27.94cm 21.59cm;
+              mso-page-orientation: landscape;
+              margin: 1.2cm 1.4cm;
+            }
+            div.WordSection1 { page: WordSection1; }
+            body { font-family: Arial, sans-serif; font-size: 10pt; color: #000; line-height: 1.3; }
+            .print-sheet { page-break-after: always; border: 1.5px solid #1e293b; padding: 14px; margin-bottom: 12px; box-sizing: border-box; }
             table { width: 100%; border-collapse: collapse; margin-top: 6px; }
-            th, td { border: 1px solid #444; padding: 3px 5px; font-size: 8pt; }
+            th, td { border: 1px solid #444; padding: 4px 6px; font-size: 9pt; }
             h1, h2, h3 { margin: 4px 0; }
           </style>
         </head>
-        <body>${innerHtml}</body>
+        <body><div class="WordSection1">${innerHtml}</div></body>
         </html>
       `;
       const blob = new Blob(['\ufeff', wordDoc], { type: 'application/msword' });
@@ -1280,6 +1307,7 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+
 
 
 
