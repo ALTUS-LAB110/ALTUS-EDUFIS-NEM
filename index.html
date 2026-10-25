@@ -581,9 +581,9 @@
       <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-left space-y-1.5">
         <h4 class="font-display font-extrabold text-slate-900 text-[11px] uppercase tracking-wide text-center">💳 Datos Oficiales para Transferencia (SPEI)</h4>
         <div class="bg-white p-2.5 rounded-lg border border-slate-200 shadow-sm space-y-1 text-[11px] text-slate-700">
-          <p>• <strong>Banco:</strong> <span id="lblBankName" class="font-bold text-slate-900">Por definir en Panel Maestro</span></p>
-          <p>• <strong>CLABE Interbancaria:</strong> <span id="lblClabe" class="font-mono text-slate-900 font-extrabold select-all">Por definir en Panel Maestro</span></p>
-          <p>• <strong>Beneficiario:</strong> <span id="lblBeneficiary" class="font-bold text-slate-900">Por definir en Panel Maestro</span></p>
+          <p>• <strong>Banco:</strong> <span id="lblBankName" class="font-bold text-slate-900">Banorte</span></p>
+          <p>• <strong>CLABE Interbancaria:</strong> <span id="lblClabe" class="font-mono text-slate-900 font-extrabold select-all">072180013595403086</span></p>
+          <p>• <strong>Beneficiario:</strong> <span id="lblBeneficiary" class="font-bold text-slate-900">Raúl Prado Pérez</span></p>
         </div>
       </div>
 
@@ -688,9 +688,12 @@
       </div>
     </div>
   </div>
-  <script>
+ <script>
     const PRE_EMBEDDED_ENGINE_KEY = "";
     const PRE_EMBEDDED_PROVIDER = "AUTO";
+    const PRE_EMBEDDED_BANK_NAME = "Banorte";
+    const PRE_EMBEDDED_BANK_CLABE = "072180013595403086";
+    const PRE_EMBEDDED_BANK_BEN = "Raúl Prado Pérez";
 
     // =========================================================================
     // 1. CURRÍCULO NEM INVARIABLE Y CASCADA METODOLÓGICA
@@ -1123,15 +1126,27 @@
     }
 
     function exportHtmlWithEmbeddedKey() {
-      const k = document.getElementById("inpMasterApiKey").value.trim();
-      const prov = document.getElementById("selAiProvider").value;
-      if (!k) return alert("Primero pega tu llave en el recuadro 1.");
-      localStorage.setItem(STORAGE_KEYS.API_KEY, k);
-      localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, prov);
+      const k = document.getElementById("inpMasterApiKey").value.trim() || localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY;
+      const prov = document.getElementById("selAiProvider").value || "AUTO";
+      const bank = document.getElementById("masterBankName")?.value.trim() || localStorage.getItem("altus_bank_name") || PRE_EMBEDDED_BANK_NAME;
+      const clabe = document.getElementById("masterClabe")?.value.trim() || localStorage.getItem("altus_bank_clabe") || PRE_EMBEDDED_BANK_CLABE;
+      const ben = document.getElementById("masterBeneficiary")?.value.trim() || localStorage.getItem("altus_bank_beneficiary") || PRE_EMBEDDED_BANK_BEN;
+
+      if (k) {
+        localStorage.setItem(STORAGE_KEYS.API_KEY, k);
+        localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, prov);
+      }
+      localStorage.setItem("altus_bank_name", bank);
+      localStorage.setItem("altus_bank_clabe", clabe);
+      localStorage.setItem("altus_bank_beneficiary", ben);
+      updateBankInfoUI();
 
       let fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
       fullHtml = fullHtml.replace(/const PRE_EMBEDDED_ENGINE_KEY = ".*?";/, `const PRE_EMBEDDED_ENGINE_KEY = "${k}";`);
       fullHtml = fullHtml.replace(/const PRE_EMBEDDED_PROVIDER = ".*?";/, `const PRE_EMBEDDED_PROVIDER = "${prov}";`);
+      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_BANK_NAME = ".*?";/, `const PRE_EMBEDDED_BANK_NAME = "${bank}";`);
+      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_BANK_CLABE = ".*?";/, `const PRE_EMBEDDED_BANK_CLABE = "${clabe}";`);
+      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_BANK_BEN = ".*?";/, `const PRE_EMBEDDED_BANK_BEN = "${ben}";`);
 
       const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -1140,7 +1155,7 @@
       a.download = "index.html";
       a.click();
       URL.revokeObjectURL(url);
-      alert("✅ Se descargó tu archivo 'index.html' con la llave pre-incrustada permanentemente.");
+      alert("✅ Se descargó tu archivo 'index.html' con tu Llave y tus Datos Bancarios pre-incrustados para todos los dispositivos.");
     }
 
     function updateMasterPassword() {
@@ -1271,35 +1286,31 @@
     }
     // Guardar desde el Panel Maestro
     function saveMasterBankInfo() {
-      const bank = document.getElementById("masterBankName")?.value.trim() || "BBVA / Banorte";
-      const clabe = document.getElementById("masterClabe")?.value.trim() || "012345678901234567";
-      const ben = document.getElementById("masterBeneficiary")?.value.trim() || "Servicios Educativos";
+      const bank = document.getElementById("masterBankName")?.value.trim() || PRE_EMBEDDED_BANK_NAME;
+      const clabe = document.getElementById("masterClabe")?.value.trim() || PRE_EMBEDDED_BANK_CLABE;
+      const ben = document.getElementById("masterBeneficiary")?.value.trim() || PRE_EMBEDDED_BANK_BEN;
 
       localStorage.setItem("altus_bank_name", bank);
       localStorage.setItem("altus_bank_clabe", clabe);
       localStorage.setItem("altus_bank_beneficiary", ben);
 
       updateBankInfoUI();
-      alert("✅ ¡Datos bancarios actualizados con éxito!");
+      alert("✅ ¡Datos bancarios actualizados! Si deseas que este cambio se vea en otros celulares, presiona '💾 Descargar HTML con Llave y Banco Pre-Incrustados' y súbelo a GitHub.");
     }
 
-    // Cargar y actualizar la vista del cuadro de pagos
     function updateBankInfoUI() {
-      const bank = localStorage.getItem("altus_bank_name") || "BBVA / Banorte";
-      const clabe = localStorage.getItem("altus_bank_clabe") || "012345678901234567";
-      const ben = localStorage.getItem("altus_bank_beneficiary") || "Servicios Educativos";
+      const bank = localStorage.getItem("altus_bank_name") || PRE_EMBEDDED_BANK_NAME;
+      const clabe = localStorage.getItem("altus_bank_clabe") || PRE_EMBEDDED_BANK_CLABE;
+      const ben = localStorage.getItem("altus_bank_beneficiary") || PRE_EMBEDDED_BANK_BEN;
 
-      // Actualizar en el cuadro de pagos del usuario
       if (document.getElementById("lblBankName")) document.getElementById("lblBankName").innerText = bank;
       if (document.getElementById("lblClabe")) document.getElementById("lblClabe").innerText = clabe;
       if (document.getElementById("lblBeneficiary")) document.getElementById("lblBeneficiary").innerText = ben;
 
-      // Rellenar también los inputs del panel maestro al abrirlos
       if (document.getElementById("masterBankName")) document.getElementById("masterBankName").value = bank;
       if (document.getElementById("masterClabe")) document.getElementById("masterClabe").value = clabe;
       if (document.getElementById("masterBeneficiary")) document.getElementById("masterBeneficiary").value = ben;
     }
-
     // Ejecutar al cargar la página
     window.addEventListener("DOMContentLoaded", () => {
       updateBankInfoUI();
