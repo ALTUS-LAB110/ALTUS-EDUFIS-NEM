@@ -6,7 +6,7 @@
   <title>ALTUS EDUFIS • NEM | Sistema Integral de Planeación y Gestión en Educación Física</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
-  <style>
+    <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#d1fae5 100%); color:#0f172a; min-height:100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     .hero-gradient { background: linear-gradient(125deg,#0f172a 0%,#1e1b4b 38%,#065f46 78%,#0284c7 100%); }
@@ -34,7 +34,8 @@
       page-break-inside:avoid;
     }
 
-    @    @media print {
+    /* AISLAMIENTO ABSOLUTO PARA IMPRESIÓN PDF */
+    @media print {
       @page {
         size: letter portrait;
         margin: 6mm 8mm;
@@ -45,7 +46,18 @@
         font-size:7.6pt !important;
         line-height:1.16 !important;
       }
-      .no-print { display:none !important; }
+      header, nav, .no-print, input, select, textarea, button, .card-box {
+        display: none !important;
+      }
+      body > main > section {
+        display: none !important;
+      }
+      /* Muestra exclusivamente las hojas impresas limpias */
+      #planOutputContainer, #bitacorasOutput, 
+      #planOutputContainer .print-sheet, #bitacorasOutput .print-sheet {
+        display: block !important;
+        visibility: visible !important;
+      }
       .print-sheet {
         box-shadow:none !important;
         border:1.5px solid #1e293b !important;
@@ -1189,7 +1201,7 @@
     }
 
     // Exportación a Word (.doc) para Planeación (consume 1 de las 3 descargas de planeación)
-    function consumeCreditAndDownloadWord() {
+        function consumeCreditAndDownloadWord() {
       if (!currentGeneratedSessions.length) return alert("⚠️ Primero genera la vista previa de tu planeación con el botón 1.");
       if (!hasActivePlanCredits()) {
         openUnlockModal();
@@ -1201,17 +1213,13 @@
         return alert(`⚠️ Tu código cubre paquetes de hasta ${db[code].maxSessions} sesiones.`);
       }
       deductOnePlanningCredit();
-      const content = document.getElementById("planOutputContainer").innerHTML;
-      exportHtmlToWordDoc(content, `Planeacion_Educacion_Fisica_${selectedPackageSessions}_Sesiones.doc`);
-    }
-
-    // Bitácoras SEP: 100% ILIMITADAS después de haber activado la compra (no descuentan créditos)
-    function printBitacorasUnlimitedAfterPurchase() {
-      if (!hasUnlimitedBitacorasAccess()) {
-        openUnlockModal();
-        return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
-      }
-      window.print();
+      
+      // Extrae únicamente las hojas limpias del contenedor de planeación
+      const sheets = document.querySelectorAll("#planOutputContainer .print-sheet");
+      let cleanHtml = "";
+      sheets.forEach(sh => cleanHtml += sh.outerHTML);
+      
+      exportHtmlToWordDoc(cleanHtml, `Planeacion_Educacion_Fisica_${selectedPackageSessions}_Sesiones.doc`);
     }
 
     function downloadBitacorasWordUnlimited() {
@@ -1219,8 +1227,13 @@
         openUnlockModal();
         return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
       }
-      const content = document.getElementById("bitacorasOutput").innerHTML;
-      exportHtmlToWordDoc(content, "Bitacoras_Oficiales_SEP_Educacion_Fisica.doc");
+      
+      // Extrae únicamente las hojas limpias de las bitácoras
+      const sheets = document.querySelectorAll("#bitacorasOutput .print-sheet");
+      let cleanHtml = "";
+      sheets.forEach(sh => cleanHtml += sh.outerHTML);
+      
+      exportHtmlToWordDoc(cleanHtml, "Bitacoras_Oficiales_SEP_Educacion_Fisica.doc");
     }
 
     function exportHtmlToWordDoc(innerHtml, filename) {
@@ -1231,7 +1244,7 @@
           <style>
             @page { size: 21.59cm 27.94cm; margin: 1.2cm 1.4cm; }
             body { font-family: Arial, sans-serif; font-size: 9.5pt; color: #000; line-height: 1.25; }
-            .print-sheet { page-break-after: always; border: 1px solid #333; padding: 10px; margin-bottom: 12px; }
+            .print-sheet { page-break-after: always; border: 1px solid #333; padding: 12px; margin-bottom: 12px; height: 26cm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
             table { width: 100%; border-collapse: collapse; margin-top: 6px; }
             th, td { border: 1px solid #444; padding: 3px 5px; font-size: 8pt; }
             h1, h2, h3 { margin: 4px 0; }
@@ -1250,6 +1263,7 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+
 
     // =========================================================================
     // 6. GENERACIÓN DE LA PLANEACIÓN EN VISTA PREVIA (SIN REVELAR ESTRUCTURA INTERNA)
