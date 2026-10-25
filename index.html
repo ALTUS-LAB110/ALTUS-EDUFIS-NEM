@@ -556,12 +556,12 @@
   <!-- ========================================================== -->
   <!-- MODAL CLIENTE: CANJEAR CÓDIGO VIP                          -->
   <!-- ========================================================== -->
-  <!-- Cuadro Informativo de Paquetes y Licenciamiento -->
+ <!-- Cuadro Informativo General -->
       <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 my-2 text-left space-y-2">
-        <h4 class="font-display font-extrabold text-sky-900 text-xs uppercase tracking-wide text-center">📋 Opciones de Acceso y Paquetes</h4>
+        <h4 class="font-display font-extrabold text-sky-900 text-xs uppercase tracking-wide text-center">📋 Opciones de Acceso y Licenciamiento</h4>
         <div class="grid grid-cols-1 gap-1.5 text-[11px] text-slate-700">
           <div class="bg-white p-2 rounded-lg border border-sky-100 shadow-sm">
-            <span class="font-bold text-sky-800">• Paquetes por Sesiones (8, 20 o 40):</span> Incluyen descargas de Planeación oficial + Bitácoras SEP ilimitadas.
+            <span class="font-bold text-sky-800">• Paquetes por Sesiones (8, 20 o 40):</span> Incluyen planeación + bitácoras ilimitadas. <span class="underline font-semibold">Exclusivo para 1 solo dispositivo</span>.
           </div>
           <div class="bg-white p-2 rounded-lg border border-emerald-200 bg-emerald-50/40 shadow-sm">
             <span class="font-bold text-emerald-800">• Pase Anual Ilimitado ($500):</span> Acceso total por todo el ciclo escolar. <span class="underline font-semibold">Exclusivo y bloqueado para 1 solo dispositivo</span>.
@@ -1169,7 +1169,7 @@
       const exhausted = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXHAUSTED_CODES) || "[]");
       if (exhausted.includes(code)) return alert("⚠️ Este código ya agotó sus descargas autorizadas.");
 
-      // --- CONTROL DE DISPOSITIVO ÚNICO (HUELLA DIGITAL) ---
+      // --- SEGURIDAD: BLOQUEO ESTRICTO A 1 SOLO DISPOSITIVO PARA CUALQUIER CÓDIGO ---
       let deviceId = localStorage.getItem("altus_device_fingerprint");
       if (!deviceId) {
         deviceId = "dev_" + Math.random().toString(36).substring(2) + Date.now().toString(36);
@@ -1180,12 +1180,12 @@
       const registeredDevice = localStorage.getItem(boundKey);
 
       if (registeredDevice && registeredDevice !== deviceId) {
-        return alert("🔒 Seguridad Bloqueada: Este código ya se encuentra vinculado y activo en otro dispositivo. Cada código está protegido para usarse en un solo equipo.");
+        return alert("🔒 Seguridad Bloqueada: Este código ya se encuentra vinculado y activo en otro dispositivo. Por seguridad, cada licencia está restringida para usarse en un solo equipo.");
       }
 
       // Vincular permanentemente al dispositivo actual
       localStorage.setItem(boundKey, deviceId);
-      // -----------------------------------------------------
+      // --------------------------------------------------------------------------
 
       const db = getVipDatabase();
       const isPass500 = code.startsWith("PASS-500") || code.includes("ANUAL");
@@ -1218,7 +1218,7 @@
       selectSessionPackage(db[code].maxSessions);
       refreshLicenseUI();
       closeUnlockModal();
-      alert(`✅ ¡Código activado con éxito!\n• Vinculado a este equipo.\n• Descargas de Planeación disponibles: ${db[code].pdfCredits}\n• Bitácoras SEP: Libres e Ilimitadas.`);
+      alert(`✅ ¡Código activado con éxito!\n• Vinculado a este equipo (Uso de 1 solo dispositivo).\n• Descargas de Planeación disponibles: ${db[code].pdfCredits}\n• Bitácoras SEP: Libres e Ilimitadas.`);
     }
     function hasActivePlanCredits() {
       const code = localStorage.getItem(STORAGE_KEYS.ACTIVE_CODE);
