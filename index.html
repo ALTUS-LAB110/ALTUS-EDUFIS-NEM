@@ -573,15 +573,15 @@
         </div>
       </div>
   
-  <!-- Cuadro Informativo General -->
-      <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 my-2 text-left space-y-2">
-        <h4 class="font-display font-extrabold text-sky-900 text-xs uppercase tracking-wide text-center">📋 Opciones de Acceso y Licenciamiento</h4>
-        <div class="grid grid-cols-1 gap-1.5 text-[11px] text-slate-700">
-          <div class="bg-white p-2 rounded-lg border border-sky-100 shadow-sm">
-            <span class="font-bold text-sky-800">• Paquetes por Sesiones (8, 20 o 40):</span> Incluyen planeación + bitácoras ilimitadas. <span class="underline font-semibold">Exclusivo para 1 solo dispositivo</span>.
-          </div>
-          <div class="bg-white p-2 rounded-lg border border-emerald-200 bg-emerald-50/40 shadow-sm">
-            <span class="font-bold text-emerald-800">• Pase Anual Ilimitado ($500):</span> Acceso total por todo el ciclo escolar. <span class="underline font-semibold">Exclusivo y bloqueado para 1 solo dispositivo</span>.
+ <!-- Cuadro Informativo de Métodos de Pago (Dinámico) -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 my-2 text-left space-y-2">
+        <h4 class="font-display font-extrabold text-slate-900 text-xs uppercase tracking-wide text-center">💳 Opciones de Pago y Transferencia</h4>
+        <div class="grid grid-cols-1 gap-2 text-[11px] text-slate-700">
+          <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm space-y-1">
+            <p class="font-bold text-slate-800">🏦 Transferencia Bancaria (SPEI)</p>
+            <p class="text-slate-600">• Banco: <span id="lblBankName" class="font-semibold text-slate-900">BBVA / Banorte</span></p>
+            <p class="text-slate-600">• CLABE Interbancaria: <span id="lblClabe" class="font-mono text-slate-900 font-bold">012345678901234567</span></p>
+            <p class="text-slate-600">• Beneficiario: <span id="lblBeneficiary" class="font-semibold text-slate-900">Servicios Educativos</span></p>
           </div>
         </div>
       </div>
@@ -616,6 +616,29 @@
       <div class="flex justify-between items-center border-b border-slate-700 pb-2">
         <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro Exclusivo (Oculto al Cliente)</h3>
         <button onclick="closeMasterModal()" class="font-bold text-slate-400">✕</button>
+      </div>
+      
+      <!-- Configuración de Datos Bancarios en el Panel Maestro -->
+      <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 space-y-2 mt-3 text-left">
+        <h5 class="font-display font-bold text-amber-400 text-xs uppercase">💳 Configuración de Datos de Pago</h5>
+        <div>
+          <label class="block text-[10px] text-slate-300 mb-0.5">Banco / Método:</label>
+          <input type="text" id="masterBankName" placeholder="Ej. BBVA / Banorte" 
+                 class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs" />
+        </div>
+        <div>
+          <label class="block text-[10px] text-slate-300 mb-0.5">CLABE Interbancaria:</label>
+          <input type="text" id="masterClabe" placeholder="Ej. 012345678901234567" 
+                 class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs font-mono" />
+        </div>
+        <div>
+          <label class="block text-[10px] text-slate-300 mb-0.5">Beneficiario / Titular:</label>
+          <input type="text" id="masterBeneficiary" placeholder="Ej. Nombre del Titular" 
+                 class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-white text-xs" />
+        </div>
+        <button onclick="saveMasterBankInfo()" class="w-full py-2 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow mt-1">
+          💾 Guardar Datos Bancarios
+        </button>
       </div>
 
       <div class="p-3.5 rounded-xl bg-slate-800 border border-cyan-500/40 space-y-2.5">
@@ -1237,6 +1260,42 @@
       closeUnlockModal();
       alert(`✅ ¡Código activado con éxito!\n• Vinculado a este equipo (Uso de 1 solo dispositivo).\n• Descargas de Planeación disponibles: ${db[code].pdfCredits}\n• Bitácoras SEP: Libres e Ilimitadas.`);
     }
+    // Guardar desde el Panel Maestro
+    function saveMasterBankInfo() {
+      const bank = document.getElementById("masterBankName")?.value.trim() || "BBVA / Banorte";
+      const clabe = document.getElementById("masterClabe")?.value.trim() || "012345678901234567";
+      const ben = document.getElementById("masterBeneficiary")?.value.trim() || "Servicios Educativos";
+
+      localStorage.setItem("altus_bank_name", bank);
+      localStorage.setItem("altus_bank_clabe", clabe);
+      localStorage.setItem("altus_bank_beneficiary", ben);
+
+      updateBankInfoUI();
+      alert("✅ ¡Datos bancarios actualizados con éxito!");
+    }
+
+    // Cargar y actualizar la vista del cuadro de pagos
+    function updateBankInfoUI() {
+      const bank = localStorage.getItem("altus_bank_name") || "BBVA / Banorte";
+      const clabe = localStorage.getItem("altus_bank_clabe") || "012345678901234567";
+      const ben = localStorage.getItem("altus_bank_beneficiary") || "Servicios Educativos";
+
+      // Actualizar en el cuadro de pagos del usuario
+      if (document.getElementById("lblBankName")) document.getElementById("lblBankName").innerText = bank;
+      if (document.getElementById("lblClabe")) document.getElementById("lblClabe").innerText = clabe;
+      if (document.getElementById("lblBeneficiary")) document.getElementById("lblBeneficiary").innerText = ben;
+
+      // Rellenar también los inputs del panel maestro al abrirlos
+      if (document.getElementById("masterBankName")) document.getElementById("masterBankName").value = bank;
+      if (document.getElementById("masterClabe")) document.getElementById("masterClabe").value = clabe;
+      if (document.getElementById("masterBeneficiary")) document.getElementById("masterBeneficiary").value = ben;
+    }
+
+    // Ejecutar al cargar la página
+    window.addEventListener("DOMContentLoaded", () => {
+      updateBankInfoUI();
+    });
+    
     function hasActivePlanCredits() {
       const code = localStorage.getItem(STORAGE_KEYS.ACTIVE_CODE);
       const db = getVipDatabase();
@@ -1398,9 +1457,6 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
-
-
-
 
     // =========================================================================
     // 6. GENERACIÓN DE LA PLANEACIÓN EN VISTA PREVIA (SIN REVELAR ESTRUCTURA INTERNA)
