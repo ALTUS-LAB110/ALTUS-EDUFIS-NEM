@@ -1232,7 +1232,7 @@
       exportHtmlToWordDoc(cleanHtml, `Planeacion_Educacion_Fisica_${selectedPackageSessions}_Sesiones.doc`);
     }
 
-        function printBitacorasUnlimited() {
+            function printBitacorasUnlimited() {
       if (!hasUnlimitedBitacorasAccess()) {
         openUnlockModal();
         return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
@@ -1241,12 +1241,15 @@
       setTimeout(() => window.print(), 150);
     }
 
-      
-      // Extrae únicamente las hojas limpias de las bitácoras
+    function downloadBitacorasWordUnlimited() {
+      if (!hasUnlimitedBitacorasAccess()) {
+        openUnlockModal();
+        return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
+      }
+      renderBitacorasSEP();
       const sheets = document.querySelectorAll("#bitacorasOutput .print-sheet");
       let cleanHtml = "";
       sheets.forEach(sh => cleanHtml += sh.outerHTML);
-      
       exportHtmlToWordDoc(cleanHtml, "Bitacoras_Oficiales_SEP_Educacion_Fisica.doc");
     }
 
@@ -1277,6 +1280,7 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+
 
 
     // =========================================================================
