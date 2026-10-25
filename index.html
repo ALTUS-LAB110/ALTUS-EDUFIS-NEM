@@ -379,12 +379,12 @@
             <button id="btnFormalizeBitacorasAI" onclick="formalizeBitacorasWithAI()" class="px-4 py-2 rounded-xl text-white font-display font-black text-xs btn-gen shadow">
               ✨ 1. Estructurar Redacción Oficial SEP
             </button>
-            <button onclick="printBitacorasUnlimitedAfterPurchase()" class="px-3.5 py-2 rounded-xl bg-slate-900 text-amber-300 font-display font-black text-xs border border-amber-400 shadow">
-              🖨️ 2. Imprimir PDF (Ilimitado)
-            </button>
-            <button onclick="downloadBitacorasWordUnlimited()" class="px-3.5 py-2 rounded-xl bg-blue-700 text-white font-display font-black text-xs border border-blue-400 shadow">
-              📄 3. Descargar Word (Ilimitado)
-            </button>
+            <button onclick="printBitacorasUnlimited()" class="px-3.5 py-2 rounded-xl bg-slate-900 text-amber-300 font-display font-black text-xs border border-amber-400 shadow">
+  🖨️ 2. Imprimir PDF (Ilimitado)
+</button>
+<button onclick="downloadBitacorasWordUnlimited()" class="px-3.5 py-2 rounded-xl bg-blue-700 text-white font-display font-black text-xs border border-blue-400 shadow">
+  📄 3. Descargar Word (Ilimitado)
+</button>
           </div>
         </div>
 
@@ -1242,37 +1242,36 @@
     }
 
     function printBitacorasUnlimited() {
-      if (!hasUnlimitedBitacorasAccess()) {
-        openUnlockModal();
-        return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
-      }
-      // Cambiar temporalmente a la pestaña de bitácoras y generar el documento si no se ha generado
-      const bitacorasSection = document.getElementById("view-bitacoras");
-      if (bitacorasSection && bitacorasSection.classList.contains("hidden")) {
-        switchMainTab("bitacoras");
-      }
+      // 1. Generar las bitácoras automáticamente si aún no están en pantalla
       if (typeof renderBitacorasSEP === "function") {
         renderBitacorasSEP();
       }
       const out = document.getElementById("bitacorasOutput");
-      if (out) out.classList.remove("hidden");
+      if (!out || !out.innerHTML.trim()) {
+        return alert("⚠️ Presiona primero el botón '1. Estructurar Redacción Oficial SEP' para generar los formatos.");
+      }
+      // 2. Asegurar que cada formato tenga la clase print-sheet para que el PDF no salga en blanco
+      Array.from(out.children).forEach(el => el.classList.add("print-sheet"));
+      out.classList.remove("hidden");
+      
       setTimeout(() => {
         window.print();
-      }, 250);
+      }, 200);
     }
 
     function downloadBitacorasWordUnlimited() {
-      if (!hasUnlimitedBitacorasAccess()) {
-        openUnlockModal();
-        return alert("🔒 Las Bitácoras Oficiales SEP se liberan de manera ilimitada una vez activado tu código de compra.");
-      }
+      // 1. Generar las bitácoras automáticamente antes de descargar
       if (typeof renderBitacorasSEP === "function") {
         renderBitacorasSEP();
       }
-      const sheets = document.querySelectorAll("#bitacorasOutput .print-sheet");
-      let cleanHtml = "";
-      sheets.forEach(sh => cleanHtml += sh.outerHTML);
-      exportHtmlToWordDoc(cleanHtml, "Bitacoras_Oficiales_SEP_Educacion_Fisica.doc");
+      const out = document.getElementById("bitacorasOutput");
+      if (!out || !out.innerHTML.trim()) {
+        return alert("⚠️ Presiona primero el botón '1. Estructurar Redacción Oficial SEP'.");
+      }
+      // 2. Asegurar clase print-sheet y extraer todo el HTML de las 2 bitácoras
+      Array.from(out.children).forEach(el => el.classList.add("print-sheet"));
+      
+      exportHtmlToWordDoc(out.innerHTML, "Bitacoras_Oficiales_SEP_Educacion_Fisica.doc");
     }
 
     function exportHtmlToWordDoc(innerHtml, filename) {
