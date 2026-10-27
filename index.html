@@ -1132,36 +1132,86 @@
       alert("✅ Llave guardada de forma permanente en este navegador.");
     }
 
-    function exportHtmlWithEmbeddedKey() {
-      const k = document.getElementById("inpMasterApiKey").value.trim() || localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY;
-      const prov = document.getElementById("selAiProvider").value || "AUTO";
-      const bank = document.getElementById("masterBankName")?.value.trim() || localStorage.getItem("altus_bank_name") || PRE_EMBEDDED_BANK_NAME;
-      const clabe = document.getElementById("masterClabe")?.value.trim() || localStorage.getItem("altus_bank_clabe") || PRE_EMBEDDED_BANK_CLABE;
-      const ben = document.getElementById("masterBeneficiary")?.value.trim() || localStorage.getItem("altus_bank_beneficiary") || PRE_EMBEDDED_BANK_BEN;
+        function exportHtmlToWordDoc(innerHtml, filename) {
+      // Convertir etiquetas HTML5 y limpiar clases de Tailwind que dañan el lector de Word móvil
+      let clean = innerHtml
+        .replace(/<article[^>]*class="[^"]*print-sheet[^"]*"[^>]*>/gi, '<div class="word-page">')
+        .replace(/<\/article>/gi, '</div>')
+        .replace(/class="[^"]*"/gi, '');
 
-      if (k) {
-        localStorage.setItem(STORAGE_KEYS.API_KEY, k);
-        localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, prov);
-      }
-      localStorage.setItem("altus_bank_name", bank);
-      localStorage.setItem("altus_bank_clabe", clabe);
-      localStorage.setItem("altus_bank_beneficiary", ben);
-      updateBankInfoUI();
+      const wordDoc = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>${filename}</title>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+      <w:DoNotOptimizeForBrowser/>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
+  <style>
+    @page WordSection1 {
+      size: 27.94cm 21.59cm;
+      mso-page-orientation: landscape;
+      margin: 1.0cm 1.2cm;
+    }
+    div.WordSection1 { page: WordSection1; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11pt;
+      color: #000000;
+      line-height: 1.38;
+    }
+    .word-page {
+      border: 1.5pt solid #0f172a;
+      padding: 12pt;
+      margin-bottom: 14pt;
+      page-break-after: always;
+    }
+    h1, h2, h3 {
+      font-size: 13pt;
+      color: #0f172a;
+      margin: 4pt 0;
+    }
+    p, div {
+      margin: 3pt 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6pt;
+    }
+    th, td {
+      border: 1pt solid #334155;
+      padding: 4pt 6pt;
+      font-size: 9.5pt;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="WordSection1">
+    ${clean}
+  </div>
+</body>
+</html>`;
 
-      let fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_ENGINE_KEY = ".*?";/, `const PRE_EMBEDDED_ENGINE_KEY = "${k}";`);
-      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_PROVIDER = ".*?";/, `const PRE_EMBEDDED_PROVIDER = "${prov}";`);
-      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_BANK_NAME = ".*?";/, `const PRE_EMBEDDED_BANK_NAME = "${bank}";`);
-      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_BANK_CLABE = ".*?";/, `const PRE_EMBEDDED_BANK_CLABE = "${clabe}";`);
-      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_BANK_BEN = ".*?";/, `const PRE_EMBEDDED_BANK_BEN = "${ben}";`);
-
-      const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+      const blob = new Blob([wordDoc], { type: "application/msword" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "index.html";
+      a.download = filename;
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
       alert("✅ Se descargó tu archivo 'index.html' con tu Llave y tus Datos Bancarios pre-incrustados para todos los dispositivos.");
     }
 
