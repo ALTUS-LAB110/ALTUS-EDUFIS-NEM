@@ -6,7 +6,7 @@
   <title>ALTUS EDUFIS • NEM | Sistema Integral de Planeación y Gestión en Educación Física</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
-            <style>
+              <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#d1fae5 100%); color:#0f172a; min-height:100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     .hero-gradient { background: linear-gradient(125deg,#0f172a 0%,#1e1b4b 38%,#065f46 78%,#0284c7 100%); }
@@ -34,18 +34,19 @@
       page-break-inside:avoid;
     }
 
-    /* AJUSTE ELÁSTICO DE PÁGINA COMPLETA SIN DESBORDAR A OTRA HOJA */
+    /* AJUSTE PROPORCIONAL Y LLENADO TOTAL DE LA PÁGINA */
     @media print {
       @page {
-        margin: 6mm 8mm;
+        size: letter landscape;
+        margin: 5mm 6mm;
       }
       html, body {
         width: 100% !important;
         height: 100% !important;
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 9.8pt !important;
-        line-height: 1.38 !important;
+        font-size: 9.2pt !important;
+        line-height: 1.35 !important;
         margin: 0 !important;
         padding: 0 !important;
         -webkit-print-color-adjust: exact !important;
@@ -69,18 +70,18 @@
         margin: 0 !important;
         padding: 0 !important;
       }
-      /* 92vh estira el cuadro hasta abajo dejando el margen exacto para no saltar de hoja */
+      /* Forzar que cada sesión ocupe exactamente el alto completo de la hoja horizontal */
       .print-sheet {
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         width: 100% !important;
-        min-height: 92vh !important;
-        max-height: 93vh !important;
+        height: 194mm !important;
+        max-height: 194mm !important;
         box-shadow: none !important;
         border: 1.5px solid #0f172a !important;
-        border-radius: 0.35rem !important;
-        padding: 5mm 6.5mm !important;
+        border-radius: 0.25rem !important;
+        padding: 4mm 5.5mm !important;
         margin: 0 !important;
         box-sizing: border-box !important;
         page-break-after: always !important;
@@ -88,12 +89,12 @@
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
-      /* Distribuir proporcionalmente los bloques internos en todo el alto de la hoja */
+      /* Estirar y distribuir uniformemente el contenido interno para que no sobre espacio */
       .print-sheet > div:first-child {
         flex-grow: 1 !important;
         display: flex !important;
         flex-direction: column !important;
-        justify-content: space-evenly !important;
+        justify-content: space-between !important;
       }
       .print-sheet .space-y-2,
       .print-sheet .space-y-2\.5,
@@ -103,26 +104,12 @@
         flex-direction: column !important;
         justify-content: space-evenly !important;
       }
-      .print-sheet .p-2\.5,
-      .print-sheet .p-2 {
-        padding: 7px 9px !important;
-      }
-      .print-sheet .pt-4,
-      .print-sheet .pt-3 {
-        padding-top: 8px !important;
-        margin-top: 6px !important;
-      }
-      .print-sheet .h-4,
-      .print-sheet .h-3\.5 {
-        height: 16px !important;
-      }
       .print-sheet * {
         font-size: inherit;
         page-break-inside: avoid !important;
-        break-inside: avoid !important;
       }
       .print-sheet h1, .print-sheet h2, .print-sheet h3 {
-        font-size: 11.5pt !important;
+        font-size: 11pt !important;
         line-height: 1.2 !important;
         margin: 0 !important;
       }
@@ -134,9 +121,9 @@
         break-after: auto !important;
       }
       .eval-table th, .eval-table td {
-        padding: 3.5px 5px !important;
-        font-size: 8.2pt !important;
-        line-height: 1.2 !important;
+        padding: 3px 4px !important;
+        font-size: 8pt !important;
+        line-height: 1.15 !important;
       }
     }
   </style>
