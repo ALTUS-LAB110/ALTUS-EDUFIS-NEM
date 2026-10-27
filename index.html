@@ -6,7 +6,7 @@
   <title>ALTUS EDUFIS • NEM | Sistema Integral de Planeación y Gestión en Educación Física</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
-        <style>
+          <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#d1fae5 100%); color:#0f172a; min-height:100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     .hero-gradient { background: linear-gradient(125deg,#0f172a 0%,#1e1b4b 38%,#065f46 78%,#0284c7 100%); }
@@ -34,24 +34,24 @@
       page-break-inside:avoid;
     }
 
-    /* AUTO-AJUSTE ELÁSTICO AL 100% DE LA PÁGINA (VERTICAL U HORIZONTAL) */
+    /* IMPRESIÓN COMPACTA A 1 SOLA PÁGINA POR SESIÓN (CERO DESBORDAMIENTO DE FIRMAS) */
     @media print {
       @page {
-        margin: 8mm 10mm;
+        size: letter landscape;
+        margin: 5mm 7mm;
       }
       html, body {
         width: 100% !important;
-        height: 100% !important;
+        height: auto !important;
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 10.5pt !important;
-        line-height: 1.42 !important;
+        font-size: 8.5pt !important;
+        line-height: 1.2 !important;
         margin: 0 !important;
         padding: 0 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
-      /* Ocultar menús, consolas y controles */
       header, nav, .no-print, #unlockModal, #masterModal, .card-box {
         display: none !important;
       }
@@ -70,18 +70,17 @@
         margin: 0 !important;
         padding: 0 !important;
       }
-      /* Cada hoja ocupa exactamente el 98% del alto disponible de la página impresa */
+      /* Sin height fijo que empuje las firmas a una 2da hoja */
       .print-sheet {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
+        display: block !important;
         width: 100% !important;
-        min-height: 96vh !important;
-        height: 96vh !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
         box-shadow: none !important;
-        border: 2px solid #0f172a !important;
-        border-radius: 0.4rem !important;
-        padding: 7mm 9mm !important;
+        border: 1.5px solid #0f172a !important;
+        border-radius: 0.3rem !important;
+        padding: 3.5mm 5mm !important;
         margin: 0 !important;
         box-sizing: border-box !important;
         page-break-after: always !important;
@@ -89,34 +88,46 @@
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
-      /* Hacer que el cuerpo central de la sesión o bitácora se estire para llenar toda la hoja */
-      .print-sheet > div:nth-child(2),
-      .print-sheet .space-y-2,
-      .print-sheet .space-y-1\.5 {
-        flex-grow: 1 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-evenly !important;
+      /* Compactar todos los bloques internos automáticamente al imprimir */
+      .print-sheet .space-y-2\.5 > * + *,
+      .print-sheet .space-y-2 > * + *,
+      .print-sheet .space-y-1\.5 > * + * {
+        margin-top: 4px !important;
+      }
+      .print-sheet .p-2\.5,
+      .print-sheet .p-2 {
+        padding: 4px 6px !important;
+      }
+      .print-sheet .pt-4,
+      .print-sheet .pt-3 {
+        padding-top: 6px !important;
+        margin-top: 4px !important;
+      }
+      .print-sheet .h-4,
+      .print-sheet .h-3\.5 {
+        height: 10px !important;
       }
       .print-sheet * {
         font-size: inherit;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
       .print-sheet h1, .print-sheet h2, .print-sheet h3 {
-        font-size: 12.5pt !important;
-        line-height: 1.25 !important;
+        font-size: 10pt !important;
+        line-height: 1.15 !important;
+        margin: 0 !important;
+      }
+      .print-sheet p {
+        margin: 0 !important;
       }
       .print-sheet:last-child {
         page-break-after: auto !important;
         break-after: auto !important;
       }
-      .eval-table {
-        flex-grow: 1 !important;
-        height: 100% !important;
-      }
       .eval-table th, .eval-table td {
-        padding: 5px 6px !important;
-        font-size: 9.5pt !important;
-        line-height: 1.3 !important;
+        padding: 1.5px 3px !important;
+        font-size: 7.2pt !important;
+        line-height: 1.05 !important;
       }
     }
   </style>
