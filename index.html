@@ -6,7 +6,7 @@
   <title>ALTUS EDUFIS • NEM | Sistema Integral de Planeación y Gestión en Educación Física</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
-                <style>
+               <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#d1fae5 100%); color:#0f172a; min-height:100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     .hero-gradient { background: linear-gradient(125deg,#0f172a 0%,#1e1b4b 38%,#065f46 78%,#0284c7 100%); }
@@ -34,7 +34,7 @@
       page-break-inside:avoid;
     }
 
-    /* AJUSTE DE PÁGINA COMPLETA: LETRA GRANDE, CERO HUECOS Y 1 SOLA HOJA POR SESIÓN */
+    /* AUTO-ESCALADO DE FUENTE Y CAJAS AL 100% DE CADA PÁGINA */
     @media print {
       @page {
         size: letter landscape;
@@ -45,8 +45,6 @@
         height: auto !important;
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 10.5pt !important;
-        line-height: 1.38 !important;
         margin: 0 !important;
         padding: 0 !important;
         -webkit-print-color-adjust: exact !important;
@@ -55,32 +53,27 @@
       header, nav, .no-print, #unlockModal, #masterModal, .card-box {
         display: none !important;
       }
-      main, section {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important;
+      main, section, #planOutputContainer, #bitacorasOutput {
+        display: block !important;
         width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       .hidden {
         display: none !important;
       }
-      #planOutputContainer, #bitacorasOutput {
-        display: block !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      /* 190mm garantiza llenar la hoja completa sin empujar las firmas a otra página */
+      /* Cada página mide exactamente 188mm de alto y distribuye sus elementos de arriba a abajo */
       .print-sheet {
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         width: 100% !important;
-        height: 190mm !important;
-        max-height: 190mm !important;
+        height: 188mm !important;
+        max-height: 188mm !important;
         box-shadow: none !important;
-        border: 1.5px solid #0f172a !important;
-        border-radius: 0.3rem !important;
+        border: 2px solid #0f172a !important;
+        border-radius: 0.35rem !important;
         padding: 4.5mm 6mm !important;
         margin: 0 !important;
         box-sizing: border-box !important;
@@ -90,51 +83,51 @@
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
-      /* Estira proporcionalmente las cajas internas para que no queden espacios en blanco */
-      .print-sheet > div:first-child {
-        flex-grow: 1 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-      }
-      .print-sheet .space-y-2,
-      .print-sheet .space-y-2\.5,
-      .print-sheet .space-y-1\.5 {
-        flex-grow: 1 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-evenly !important;
-      }
-      .print-sheet .p-2\.5,
-      .print-sheet .p-2,
-      .print-sheet .p-3 {
-        padding: 7px 10px !important;
-      }
-      .print-sheet .pt-4,
-      .print-sheet .pt-3 {
-        padding-top: 8px !important;
-        margin-top: 4px !important;
-      }
-      .print-sheet * {
-        font-size: inherit;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-      .print-sheet h1, .print-sheet h2, .print-sheet h3 {
-        font-size: 12.5pt !important;
-        line-height: 1.2 !important;
-        margin: 0 !important;
-      }
-      .print-sheet p {
-        margin: 0 !important;
-      }
       .print-sheet:last-child {
         page-break-after: auto !important;
         break-after: auto !important;
       }
-      .eval-table th, .eval-table td {
-        padding: 3px 5px !important;
-        font-size: 8.8pt !important;
+      .sheet-body {
+        flex: 1 1 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        gap: 3mm !important;
+        overflow: hidden !important;
+      }
+      .sheet-box-grow {
+        flex: 1 1 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+      }
+      .sheet-title-main { font-size: 15pt !important; line-height: 1.15 !important; font-weight: 900 !important; }
+      .sheet-title-sub { font-size: 10.5pt !important; line-height: 1.2 !important; font-weight: 800 !important; }
+      .sheet-text-lg { font-size: 12pt !important; line-height: 1.45 !important; }
+      .sheet-text-md { font-size: 11pt !important; line-height: 1.38 !important; }
+      .sheet-text-sm { font-size: 10pt !important; line-height: 1.3 !important; }
+
+      .rubric-full-table {
+        width: 100% !important;
+        height: 100% !important;
+        flex: 1 1 auto !important;
+        border-collapse: collapse !important;
+      }
+      .rubric-full-table th, .rubric-full-table td {
+        padding: 8px 10px !important;
+        font-size: 10.5pt !important;
+        line-height: 1.35 !important;
+        vertical-align: middle !important;
+      }
+      .eval-full-table {
+        width: 100% !important;
+        height: 100% !important;
+        flex: 1 1 auto !important;
+        border-collapse: collapse !important;
+      }
+      .eval-full-table th, .eval-full-table td {
+        padding: 3.5px 6px !important;
+        font-size: 9.5pt !important;
         line-height: 1.2 !important;
       }
     }
@@ -1637,17 +1630,17 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
 
     function renderThreeSignaturesBlock(meta) {
       return `
-        <div class="pt-4 border-t border-slate-400 grid grid-cols-3 gap-4 text-center text-[9.5px] leading-tight">
+        <div class="pt-3 mt-2 border-t-2 border-slate-800 grid grid-cols-3 gap-6 text-center sheet-text-sm leading-tight shrink-0">
           <div>
-            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
+            <div class="border-b border-slate-700 w-11/12 mx-auto mb-1 h-5"></div>
             <strong>${meta.docente}</strong><br>Docente de Educación Física
           </div>
           <div>
-            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
+            <div class="border-b border-slate-700 w-11/12 mx-auto mb-1 h-5"></div>
             <strong>${meta.director}</strong><br>Dirección del Plantel
           </div>
           <div>
-            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
+            <div class="border-b border-slate-700 w-11/12 mx-auto mb-1 h-5"></div>
             <strong>${meta.supervisor}</strong><br>Supervisión de Educación Física
           </div>
         </div>
@@ -1665,185 +1658,232 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
       for (let i = 1; i <= 15; i++) {
         const j = i + 15;
         rows30Html += `
-          <tr class="border-b border-slate-300">
-            <td class="border-r border-slate-300 text-center font-bold">${i}</td>
-            <td class="border-r border-slate-300"></td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
-            <td class="border-r-2 border-slate-800 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
-            <td class="border-r border-slate-300 text-center font-bold">${j}</td>
-            <td class="border-r border-slate-300"></td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
-            <td class="text-center text-[6.5pt] text-slate-400">4 | 3 | 2 | 1</td>
+          <tr class="border-b border-slate-400">
+            <td class="border border-slate-400 text-center font-bold">${i}</td>
+            <td class="border border-slate-400"></td>
+            <td class="border border-slate-400 text-center text-slate-500">4 | 3 | 2 | 1</td>
+            <td class="border border-slate-400 text-center text-slate-500">4 | 3 | 2 | 1</td>
+            <td class="border-r-2 border-slate-900 border-y border-slate-400 text-center text-slate-500">4 | 3 | 2 | 1</td>
+            <td class="border border-slate-400 text-center font-bold">${j}</td>
+            <td class="border border-slate-400"></td>
+            <td class="border border-slate-400 text-center text-slate-500">4 | 3 | 2 | 1</td>
+            <td class="border border-slate-400 text-center text-slate-500">4 | 3 | 2 | 1</td>
+            <td class="border border-slate-400 text-center text-slate-500">4 | 3 | 2 | 1</td>
           </tr>
         `;
       }
 
+      // =========================================================================
+      // PÁGINA 1: DATOS INSTITUCIONALES Y ELEMENTOS DEL PROGRAMA SINTÉTICO NEM
+      // =========================================================================
       let html = `
-        <article class="print-sheet space-y-2.5">
-          <div class="space-y-2">
-            <div class="border-b-2 border-slate-900 pb-2 text-center">
-              <div class="text-[9px] font-extrabold uppercase tracking-widest text-slate-600">SECRETARÍA DE EDUCACIÓN PÚBLICA • NUEVA ESCUELA MEXICANA • CICLO ESCOLAR 2026-2027</div>
-              <h1 class="font-display font-black text-base md:text-lg text-slate-900">PLANEACIÓN DIDÁCTICA Y PRAXIOLÓGICA EN EDUCACIÓN FÍSICA</h1>
-              <div class="text-[10px] font-bold text-emerald-800">CAMPO FORMATIVO: DE LO HUMANO Y LO COMUNITARIO</div>
+        <article class="print-sheet">
+          <div class="sheet-body">
+            <div class="border-b-2 border-slate-900 pb-2 text-center shrink-0">
+              <div class="sheet-title-sub uppercase tracking-widest text-slate-600">SECRETARÍA DE EDUCACIÓN PÚBLICA • NUEVA ESCUELA MEXICANA • CICLO ESCOLAR 2026-2027</div>
+              <h1 class="font-display sheet-title-main text-slate-900 mt-1">PLANEACIÓN DIDÁCTICA Y PRAXIOLÓGICA EN EDUCACIÓN FÍSICA</h1>
+              <div class="sheet-title-sub text-emerald-800 mt-0.5">CAMPO FORMATIVO: DE LO HUMANO Y LO COMUNITARIO</div>
             </div>
 
-            <div class="grid grid-cols-3 gap-2 text-[10.5px] bg-slate-50 p-2.5 rounded-xl border border-slate-300">
-              <div><strong>Escuela / Plantel:</strong> ${meta.escuela}</div>
-              <div><strong>CCT y Zona:</strong> ${meta.cct}</div>
-              <div><strong>Docente:</strong> ${meta.docente}</div>
-              <div><strong>Fase y Grupo:</strong> ${meta.fase} (${meta.grupo})</div>
-              <div><strong>Periodo SEP:</strong> ${dates[0] || ""} al ${dates[dates.length - 1] || ""}</div>
-              <div><strong>Sesiones:</strong> ${sessions.length} sesiones efectivas</div>
+            <div class="sheet-box-grow bg-slate-50 p-4 rounded-xl border-2 border-slate-300 sheet-text-lg">
+              <div class="font-display font-black uppercase text-slate-900 border-b border-slate-300 pb-1 mb-2">1. Datos de Identificación Institucional</div>
+              <div class="grid grid-cols-3 gap-4">
+                <div><strong>Escuela / Plantel:</strong><br>${meta.escuela}</div>
+                <div><strong>CCT y Zona Escolar:</strong><br>${meta.cct}</div>
+                <div><strong>Docente de E.F.:</strong><br>${meta.docente}</div>
+                <div><strong>Fase, Grado y Grupo:</strong><br>${meta.fase} (${meta.grupo})</div>
+                <div><strong>Periodo de Aplicación SEP:</strong><br>Del ${dates[0] || ""} al ${dates[dates.length - 1] || ""}</div>
+                <div><strong>Total de Sesiones:</strong><br>${sessions.length} sesiones hábiles</div>
+              </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2.5 text-[10.5px]">
-              <div class="p-2.5 rounded-xl bg-violet-50 border border-violet-300 space-y-1">
-                <div class="font-display font-extrabold text-violet-950 uppercase text-[10px]">Elementos Curriculares NEM</div>
-                <div><strong>Estructura:</strong> ${meta.modalidad} (${meta.entorno})</div>
-                <div><strong>Contenido:</strong> ${meta.contenido}</div>
-                <div><strong>PDA Vinculado:</strong> <em>${meta.pda}</em></div>
+            <div class="sheet-box-grow grid grid-cols-2 gap-4 sheet-text-lg">
+              <div class="p-4 rounded-xl bg-violet-50 border-2 border-violet-300 flex flex-col justify-between">
+                <div class="font-display font-black text-violet-950 uppercase border-b border-violet-300 pb-1">2. Programa Sintético NEM</div>
+                <div><strong>Estructura Didáctica:</strong> ${meta.modalidad} (${meta.entorno})</div>
+                <div><strong>Contenido Nacional:</strong> ${meta.contenido}</div>
+                <div><strong>PDA Oficial Vinculado:</strong> <em>${meta.pda}</em></div>
                 <div><strong>Ejes Articuladores:</strong> ${meta.eje}</div>
               </div>
-              <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-300 space-y-1">
-                <div class="font-display font-extrabold text-sky-950 uppercase text-[10px]">Fundamentación Metodológica y Praxiológica</div>
+              <div class="p-4 rounded-xl bg-sky-50 border-2 border-sky-300 flex flex-col justify-between">
+                <div class="font-display font-black text-sky-950 uppercase border-b border-sky-300 pb-1">3. Ingeniería Didáctica y Praxiológica</div>
                 <div><strong>Modelos Pedagógicos:</strong> ${meta.modeloBase} ${meta.modeloSec}</div>
-                <div><strong>Dominio [CAI]:</strong> ${meta.dominioCAI}</div>
-                <div><strong>Lógica Interna:</strong> ${meta.conflicto}</div>
-                <div><strong>Evaluación Formativa:</strong> ${meta.instrumento}</div>
+                <div><strong>Dominio de Acción Motriz [CAI]:</strong> ${meta.dominioCAI}</div>
+                <div><strong>Enfoque Táctico / Lógica Interna:</strong> ${meta.conflicto}</div>
+                <div><strong>Instrumento Formativo:</strong> ${meta.instrumento}</div>
               </div>
             </div>
+          </div>
+          ${renderThreeSignaturesBlock(meta)}
+        </article>
 
-            <div class="p-2.5 rounded-xl bg-amber-50/90 border-l-4 border-amber-600 text-[10.5px] leading-snug space-y-1">
-              <strong class="text-amber-950 uppercase block">Contextualización y Diagnóstico Socioeducativo del Grupo:</strong>
-              <p class="text-slate-900 text-justify">${diagFormal}</p>
-              <div class="text-[10px] text-slate-700"><strong>Recursos e Instalaciones:</strong> ${meta.problematica}</div>
+        <!-- ===================================================================== -->
+        <!-- PÁGINA 2: CONTEXTUALIZACIÓN SOCIOEDUCATIVA Y CRONOGRAMA DE SESIONES   -->
+        <!-- ===================================================================== -->
+        <article class="print-sheet">
+          <div class="sheet-body">
+            <div class="border-b-2 border-slate-900 pb-1.5 flex justify-between items-center shrink-0">
+              <div>
+                <div class="sheet-text-sm font-extrabold uppercase text-slate-600">EXPEDIENTE TÉCNICO NEM 2026-2027 • ${meta.escuela} (${meta.cct})</div>
+                <h2 class="font-display sheet-title-main text-slate-900 uppercase">CONTEXTUALIZACIÓN SOCIOEDUCATIVA Y CRONOGRAMA OFICIAL DE SESIONES</h2>
+              </div>
+              <span class="sheet-text-sm font-extrabold bg-emerald-100 text-emerald-950 px-3 py-1 rounded border border-emerald-500">${meta.grupo}</span>
             </div>
 
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-[10px] space-y-1">
-              <strong class="uppercase text-slate-900 block">Cronograma Oficial de Sesiones (Calendario SEP 2026-2027):</strong>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-1 text-[9px]">
-                ${sessions.slice(0, 20).map((s, idx) => `
-                  <div class="p-1 rounded bg-white border border-slate-200 truncate">
+            <div class="sheet-box-grow p-4 rounded-xl bg-amber-50 border-l-4 border-amber-600 border border-amber-300 sheet-text-lg space-y-2">
+              <div class="font-display font-black text-amber-950 uppercase border-b border-amber-200 pb-1">1. Diagnóstico Socioeducativo, Praxiológico y Lectura de la Realidad</div>
+              <p class="text-slate-900 text-justify">${diagFormal}</p>
+              <div class="pt-1 border-t border-amber-200"><strong>Instalaciones, Espacios y Materiales Disponibles:</strong> ${meta.problematica}</div>
+            </div>
+
+            <div class="sheet-box-grow p-3.5 rounded-xl bg-slate-50 border-2 border-slate-300 sheet-text-sm flex flex-col justify-between">
+              <div class="font-display font-black uppercase text-slate-900 border-b border-slate-300 pb-1 mb-1">2. Cronograma Oficial de Sesiones (Calendario Escolar SEP 2026-2027)</div>
+              <div class="grid ${sessions.length > 20 ? 'grid-cols-4' : 'grid-cols-2'} gap-1.5">
+                ${sessions.map((s, idx) => `
+                  <div class="p-1.5 rounded bg-white border border-slate-300 truncate">
                     <strong>S${idx + 1} (${dates[idx] || ""}):</strong> ${s.titulo_tactico}
                   </div>
                 `).join("")}
               </div>
             </div>
           </div>
-
           ${renderThreeSignaturesBlock(meta)}
         </article>
       `;
 
+      // =========================================================================
+      // PÁGINAS DE SESIONES: 1 SESIÓN COMPLETA POR PÁGINA
+      // =========================================================================
       html += sessions.map((s, i) => `
-        <article class="print-sheet space-y-2">
-          <div class="space-y-2">
-            <div class="border-b-2 border-slate-900 pb-1.5 flex justify-between items-center">
+        <article class="print-sheet">
+          <div class="sheet-body">
+            <div class="border-b-2 border-slate-900 pb-1.5 flex justify-between items-center shrink-0">
               <div>
-                <div class="text-[9px] font-extrabold uppercase text-slate-500">EXPEDIENTE DIDÁCTICO NEM 2026-2027 • ${meta.escuela} (${meta.cct})</div>
-                <h2 class="font-display font-black text-sm md:text-base text-slate-900">SESIÓN ${s.numero || i + 1} DE ${sessions.length}: ${s.titulo_tactico}</h2>
+                <div class="sheet-text-sm font-extrabold uppercase text-slate-600">EXPEDIENTE DIDÁCTICO NEM 2026-2027 • ${meta.escuela} (${meta.cct})</div>
+                <h2 class="font-display sheet-title-main text-slate-900">SESIÓN ${s.numero || i + 1} DE ${sessions.length}: ${s.titulo_tactico}</h2>
               </div>
-              <span class="text-[10.5px] font-extrabold bg-slate-100 px-2.5 py-1 rounded border border-slate-400">FECHA: ${dates[i] || ""}</span>
+              <span class="sheet-text-md font-extrabold bg-slate-100 px-3 py-1 rounded border-2 border-slate-400">FECHA: ${dates[i] || ""}</span>
             </div>
 
-            <div class="grid grid-cols-3 gap-1.5 text-[10px] bg-slate-50 p-2 rounded-xl border border-slate-300">
+            <div class="grid grid-cols-3 gap-2 sheet-text-sm bg-slate-50 p-2.5 rounded-xl border border-slate-300 shrink-0">
               <div><strong>Docente:</strong> ${meta.docente}</div>
               <div><strong>Grado y Grupo:</strong> ${meta.grupo}</div>
               <div><strong>Metodología:</strong> ${meta.modalidad} • ${meta.modeloBase}</div>
               <div><strong>Dominio [CAI]:</strong> ${meta.dominioCAI}</div>
               <div><strong>Eje Articulador:</strong> ${meta.eje}</div>
               <div><strong>Lógica Interna:</strong> ${meta.conflicto}</div>
-              <div class="col-span-3"><strong>PDA Oficial:</strong> <em>${meta.pda}</em></div>
+              <div class="col-span-3 border-t border-slate-200 pt-1"><strong>PDA Oficial:</strong> <em>${meta.pda}</em></div>
             </div>
 
-            <div class="space-y-2 text-[10.5px] leading-snug">
-              <div class="p-2.5 rounded-xl bg-sky-50 border-l-4 border-sky-700">
+            <div class="sheet-box-grow flex flex-col justify-between gap-2.5 sheet-text-md">
+              <div class="sheet-box-grow p-3 rounded-xl bg-sky-50 border-l-4 border-sky-700 border border-sky-200">
                 <strong class="text-sky-950 uppercase block mb-0.5">1. Fase Inicial • Activación Morfofuncional y Perceptiva (10 min):</strong>
                 <p class="text-justify">${s.inicial}</p>
               </div>
-              <div class="p-2.5 rounded-xl bg-emerald-50 border-l-4 border-emerald-700">
+              <div class="sheet-box-grow p-3 rounded-xl bg-emerald-50 border-l-4 border-emerald-700 border border-emerald-200">
                 <strong class="text-emerald-950 uppercase block mb-0.5">2. Fase Medular • Praxis Sociomotriz, Lógica Interna y Variantes (30 min):</strong>
                 <p class="text-justify">${s.medular}</p>
               </div>
-              <div class="p-2.5 rounded-xl bg-violet-50 border-l-4 border-violet-700">
+              <div class="sheet-box-grow p-3 rounded-xl bg-violet-50 border-l-4 border-violet-700 border border-violet-200">
                 <strong class="text-violet-950 uppercase block mb-0.5">3. Fase Cierre • Vuelta a la Calma, Mayéutica y Consenso (10 min):</strong>
                 <p class="text-justify">${s.cierre}</p>
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 text-[10px] bg-amber-50 p-2 rounded-xl border border-amber-300">
+            <div class="grid grid-cols-2 gap-3 sheet-text-sm bg-amber-50 p-2.5 rounded-xl border border-amber-400 shrink-0">
               <div><strong>Ajuste Razonable (DUA / BAP):</strong> ${s.adecuacion_bap}</div>
               <div><strong>Indicador de Evaluación (${meta.instrumento}):</strong> ${s.indicador_evaluacion}</div>
             </div>
           </div>
-
           ${renderThreeSignaturesBlock(meta)}
         </article>
       `).join("");
 
+      // =========================================================================
+      // PENÚLTIMA PÁGINA: RÚBRICA DE EVALUACIÓN FORMATIVA EN 1 PÁGINA COMPLETA
+      // =========================================================================
       html += `
-        <article class="print-sheet space-y-2">
-          <div class="space-y-1.5">
-            <div class="border-b-2 border-slate-900 pb-1 flex justify-between items-center">
+        <article class="print-sheet">
+          <div class="sheet-body">
+            <div class="border-b-2 border-slate-900 pb-2 flex justify-between items-center shrink-0">
               <div>
-                <h2 class="font-display font-black text-sm text-slate-900 uppercase">INSTRUMENTO DE EVALUACIÓN FORMATIVA Y REGISTRO DE DESEMPEÑO</h2>
-                <div class="text-[9.5px] text-slate-600"><strong>Plantel:</strong> ${meta.escuela} (${meta.cct}) | <strong>Grupo:</strong> ${meta.grupo} | <strong>PDA:</strong> ${meta.pda}</div>
+                <div class="sheet-text-sm font-extrabold uppercase text-slate-600">INSTRUMENTO DE EVALUACIÓN FORMATIVA NEM 2026-2027 • ${meta.escuela} (${meta.cct})</div>
+                <h2 class="font-display sheet-title-main text-slate-900 uppercase">MATRIZ Y RÚBRICA DE VALORACIÓN DE CONDUCTAS MOTRICES (${meta.instrumento})</h2>
               </div>
-              <span class="text-[9.5px] font-extrabold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded border border-emerald-400">EVALUACIÓN FORMATIVA</span>
+              <span class="sheet-text-sm font-extrabold bg-emerald-100 text-emerald-950 px-3 py-1 rounded border border-emerald-500">${meta.grupo}</span>
             </div>
 
-            <table class="w-full border-collapse border border-slate-400 text-[8.5px] leading-tight">
-              <thead>
-                <tr class="bg-slate-900 text-white">
-                  <th class="border border-slate-400 p-1 text-left w-1/5">Criterio / Dimensión</th>
-                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 4: Destacado</th>
-                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 3: Satisfactorio</th>
-                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 2: En Proceso</th>
-                  <th class="border border-slate-400 p-1 text-left w-1/5">Nivel 1: Requiere Apoyo</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="border border-slate-400 p-1 font-bold bg-slate-50">C1. ${r.criterio_1.indicador}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_1.destacado}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_1.satisfactorio}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_1.en_proceso}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_1.requiere_apoyo}</td>
-                </tr>
-                <tr>
-                  <td class="border border-slate-400 p-1 font-bold bg-slate-50">C2. ${r.criterio_2.indicador}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_2.destacado}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_2.satisfactorio}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_2.en_proceso}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_2.requiere_apoyo}</td>
-                </tr>
-                <tr>
-                  <td class="border border-slate-400 p-1 font-bold bg-slate-50">C3. ${r.criterio_3.indicador}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_3.destacado}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_3.satisfactorio}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_3.en_proceso}</td>
-                  <td class="border border-slate-400 p-1">${r.criterio_3.requiere_apoyo}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-300 sheet-text-sm shrink-0">
+              <strong>PDA Evaluado:</strong> <em>${meta.pda}</em> &nbsp;|&nbsp; <strong>Dominio [CAI]:</strong> ${meta.dominioCAI} &nbsp;|&nbsp; <strong>Ejes:</strong> ${meta.eje}
+            </div>
 
-            <div class="pt-1">
-              <div class="text-[9px] font-extrabold uppercase text-slate-800 mb-0.5">Registro Nominal de Desempeño del Alumnado (Marque Nivel 4, 3, 2 o 1):</div>
-              <table class="eval-table w-full border-collapse border border-slate-400 text-[8px]">
+            <div class="sheet-box-grow flex flex-col">
+              <table class="rubric-full-table border-2 border-slate-800">
+                <thead>
+                  <tr class="bg-slate-900 text-white">
+                    <th class="border border-slate-500 text-left w-1/5">Criterio / Dimensión Pedagógica</th>
+                    <th class="border border-slate-500 text-left w-1/5">Nivel 4: Destacado (Autónomo)</th>
+                    <th class="border border-slate-500 text-left w-1/5">Nivel 3: Satisfactorio (Resuelve)</th>
+                    <th class="border border-slate-500 text-left w-1/5">Nivel 2: En Proceso (Con Apoyo)</th>
+                    <th class="border border-slate-500 text-left w-1/5">Nivel 1: Requiere Apoyo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="border border-slate-400 font-bold bg-sky-50">C1. ${r.criterio_1.indicador}</td>
+                    <td class="border border-slate-400">${r.criterio_1.destacado}</td>
+                    <td class="border border-slate-400">${r.criterio_1.satisfactorio}</td>
+                    <td class="border border-slate-400">${r.criterio_1.en_proceso}</td>
+                    <td class="border border-slate-400">${r.criterio_1.requiere_apoyo}</td>
+                  </tr>
+                  <tr>
+                    <td class="border border-slate-400 font-bold bg-emerald-50">C2. ${r.criterio_2.indicador}</td>
+                    <td class="border border-slate-400">${r.criterio_2.destacado}</td>
+                    <td class="border border-slate-400">${r.criterio_2.satisfactorio}</td>
+                    <td class="border border-slate-400">${r.criterio_2.en_proceso}</td>
+                    <td class="border border-slate-400">${r.criterio_2.requiere_apoyo}</td>
+                  </tr>
+                  <tr>
+                    <td class="border border-slate-400 font-bold bg-violet-50">C3. ${r.criterio_3.indicador}</td>
+                    <td class="border border-slate-400">${r.criterio_3.destacado}</td>
+                    <td class="border border-slate-400">${r.criterio_3.satisfactorio}</td>
+                    <td class="border border-slate-400">${r.criterio_3.en_proceso}</td>
+                    <td class="border border-slate-400">${r.criterio_3.requiere_apoyo}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          ${renderThreeSignaturesBlock(meta)}
+        </article>
+
+        <!-- ========================================================================= -->
+        <!-- ÚLTIMA PÁGINA: LISTA DE EVALUACIÓN NOMINAL (30 ALUMNOS) EN 1 PÁGINA SOLA  -->
+        <!-- ========================================================================= -->
+        <article class="print-sheet">
+          <div class="sheet-body">
+            <div class="border-b-2 border-slate-900 pb-1.5 flex justify-between items-center shrink-0">
+              <div>
+                <div class="sheet-text-sm font-extrabold uppercase text-slate-600">REGISTRO DE EVALUACIÓN FORMATIVA • ${meta.escuela} (${meta.cct})</div>
+                <h2 class="font-display sheet-title-main text-slate-900 uppercase">LISTA NOMINAL DE DESEMPEÑO MOTRIZ Y SOCIOMOTRIZ DEL ALUMNADO (30 ESTUDIANTES)</h2>
+              </div>
+              <span class="sheet-text-sm font-extrabold bg-amber-100 text-amber-950 px-3 py-1 rounded border border-amber-500">Escala: 4=Destacado | 3=Satisfactorio | 2=En Proceso | 1=Apoyo</span>
+            </div>
+
+            <div class="sheet-box-grow flex flex-col">
+              <table class="eval-full-table border-2 border-slate-800">
                 <thead>
                   <tr class="bg-slate-200 text-slate-900">
-                    <th class="border border-slate-400 w-6">N°</th>
-                    <th class="border border-slate-400 text-left">Nombre del Alumno(a)</th>
-                    <th class="border border-slate-400 w-12">C1</th>
-                    <th class="border border-slate-400 w-12">C2</th>
-                    <th class="border-r-2 border-slate-800 w-12">C3</th>
-                    <th class="border border-slate-400 w-6">N°</th>
-                    <th class="border border-slate-400 text-left">Nombre del Alumno(a)</th>
-                    <th class="border border-slate-400 w-12">C1</th>
-                    <th class="border border-slate-400 w-12">C2</th>
-                    <th class="border border-slate-400 w-12">C3</th>
+                    <th class="border border-slate-500 w-8 text-center">N°</th>
+                    <th class="border border-slate-500 text-left">Nombre del Estudiante (1 al 15)</th>
+                    <th class="border border-slate-500 w-16 text-center">C1</th>
+                    <th class="border border-slate-500 w-16 text-center">C2</th>
+                    <th class="border-r-2 border-slate-900 border-y border-slate-500 w-16 text-center">C3</th>
+                    <th class="border border-slate-500 w-8 text-center">N°</th>
+                    <th class="border border-slate-500 text-left">Nombre del Estudiante (16 al 30)</th>
+                    <th class="border border-slate-500 w-16 text-center">C1</th>
+                    <th class="border border-slate-500 w-16 text-center">C2</th>
+                    <th class="border border-slate-500 w-16 text-center">C3</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1852,14 +1892,12 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
               </table>
             </div>
           </div>
-
           ${renderThreeSignaturesBlock(meta)}
         </article>
       `;
 
       document.getElementById("planOutputContainer").innerHTML = html;
     }
-
     // =========================================================================
     // 7. LAS 2 BITÁCORAS OFICIALES SEP
     // =========================================================================
