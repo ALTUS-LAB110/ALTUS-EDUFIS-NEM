@@ -31,49 +31,61 @@
       border-radius:0.85rem;
       padding:1.1rem;
       margin-bottom:1.25rem;
+      break-inside:avoid;
       page-break-inside:avoid;
     }
-
+  </style>
+  <style id="dynamicPrintStyles">
     @media print {
       @page {
         size: letter portrait;
         margin: 8mm 9mm;
       }
-      body {
-        background:#ffffff !important;
-        color:#000000 !important;
-        font-size:7.4pt !important;
-        line-height:1.15 !important;
+      html, body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 8.2pt !important;
+        line-height: 1.22 !important;
+        height: auto !important;
+        overflow: visible !important;
       }
-      .no-print { display:none !important; }
+      .no-print { display: none !important; }
+      #planOutputContainer, #bitacorasOutput {
+        display: block !important;
+        overflow: visible !important;
+      }
       .print-sheet {
-        box-shadow:none !important;
-        border:1.5px solid #1e293b !important;
-        border-radius:0.35rem !important;
-        padding:4mm 5.5mm !important;
-        margin:0 !important;
-        height:auto !important;
-        max-height:none !important;
-        box-sizing:border-box !important;
-        display:block !important;
-        overflow:visible !important;
-        page-break-after:always !important;
-        break-after:page !important;
-        page-break-inside:avoid !important;
-        break-inside:avoid !important;
-      }
-      .print-sheet p, .print-sheet div {
-        margin-top: 0 !important;
-        margin-bottom: 1.5px !important;
+        display: block !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: 1px solid #334155 !important;
+        border-radius: 0.25rem !important;
+        padding: 5mm 6mm !important;
+        margin: 0 0 6mm 0 !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        break-after: page !important;
+        page-break-after: always !important;
       }
       .print-sheet:last-child {
-        page-break-after:auto !important;
-        break-after:auto !important;
+        break-after: auto !important;
+        page-break-after: auto !important;
+      }
+      .print-sheet p, .print-sheet div {
+        overflow: visible !important;
+        text-overflow: clip !important;
+        white-space: normal !important;
+      }
+      .eval-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
       }
       .eval-table th, .eval-table td {
-        padding: 1.5px 3px !important;
-        font-size: 6.7pt !important;
-        line-height: 1.08 !important;
+        padding: 2px 3px !important;
+        font-size: 7.2pt !important;
+        line-height: 1.12 !important;
       }
     }
   </style>
@@ -86,7 +98,7 @@
   <header class="hero-gradient text-white sticky top-0 z-40 shadow-xl border-b border-white/15 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-3">
-        <!-- 5 clics rápidos aquí para abrir el Panel Maestro (PIN: 2026) -->
+        <!-- 5 clics rápidos aquí para abrir el Panel Maestro (PIN: 28082021) -->
         <button id="secretTriggerBtn" onclick="handleSecretCreatorClick()"
           class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-cyan-500 to-indigo-600 flex items-center justify-center font-display font-black text-base text-white shadow-lg select-none active:scale-95 transition">
           AEF
@@ -360,7 +372,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Captura Formato 1 -->
           <div class="p-4 rounded-xl bg-sky-50/70 border-2 border-sky-200 space-y-2.5">
             <h3 class="font-display font-extrabold text-sky-950 uppercase">Formato 1: Observación de la Comunidad, Espacios y Cobertura</h3>
             <div class="grid grid-cols-2 gap-2">
@@ -384,7 +395,6 @@
             </div>
           </div>
 
-          <!-- Captura Formato 2 -->
           <div class="p-4 rounded-xl bg-amber-50/70 border-2 border-amber-200 space-y-2.5">
             <h3 class="font-display font-extrabold text-amber-950 uppercase">Formato 2: Acta Descriptiva de Incidencia, Salvaguarda y Convivencia</h3>
             <div class="grid grid-cols-2 gap-2">
@@ -525,12 +535,12 @@
   </div>
 
   <!-- ========================================================== -->
-  <!-- MODAL OCULTO DEL ADMINISTRADOR (5 CLICS EN AEF)            -->
+  <!-- MODAL OCULTO DEL ADMINISTRADOR (5 CLICS EN AEF • PIN 28082021) -->
   <!-- ========================================================== -->
   <div id="masterModal" class="fixed inset-0 bg-slate-950/90 z-50 hidden items-center justify-center p-4 no-print">
     <div class="bg-slate-900 text-white rounded-3xl max-w-3xl w-full p-5 border-2 border-fuchsia-500 space-y-4 max-h-[90vh] overflow-y-auto text-xs">
       <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-        <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro Exclusivo (PIN: 2026)</h3>
+        <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro Exclusivo (PIN Activo: 28082021)</h3>
         <button onclick="closeMasterModal()" class="font-bold text-slate-400">✕</button>
       </div>
 
@@ -555,9 +565,9 @@
       </div>
 
       <div class="p-3.5 rounded-xl bg-slate-800 border border-fuchsia-500/40 space-y-2">
-        <label class="font-extrabold text-fuchsia-300 uppercase block">2. Cambiar Contraseña de este Panel Maestro (Mín. 4 caracteres)</label>
+        <label class="font-extrabold text-fuchsia-300 uppercase block">2. Cambiar Contraseña de este Panel Maestro (Actual por defecto: 28082021)</label>
         <div class="flex gap-2">
-          <input id="inpNewMasterPass" type="text" placeholder="Nueva contraseña del panel..." class="flex-1 rounded-lg bg-slate-950 border border-slate-700 px-3 py-1.5 font-mono text-white" />
+          <input id="inpNewMasterPass" type="text" value="28082021" placeholder="Nueva contraseña del panel..." class="flex-1 rounded-lg bg-slate-950 border border-slate-700 px-3 py-1.5 font-mono text-white" />
           <button onclick="updateMasterPassword()" class="px-3 py-1.5 rounded-lg bg-fuchsia-500 text-white font-extrabold">Actualizar Clave</button>
         </div>
       </div>
@@ -580,24 +590,27 @@
         <div id="vipCodesTableContainer" class="max-h-36 overflow-y-auto rounded-lg border border-slate-700 bg-slate-950 p-2 space-y-1"></div>
       </div>
 
-      <!-- 4. EDITOR DE CÓDIGO POR BLOQUES DENTRO DEL PANEL MAESTRO -->
+      <!-- 4. EDITOR DE CÓDIGO POR BLOQUES SIN ENTRAR A GITHUB -->
       <div class="p-3.5 rounded-xl bg-slate-800 border border-amber-400/50 space-y-2.5">
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <label class="font-extrabold text-amber-300 uppercase block">4. Editor de Código por Bloques (Sin Entrar a GitHub)</label>
+          <label class="font-extrabold text-amber-300 uppercase">4. Editor de Código por Bloques (Sin Ir a GitHub)</label>
           <select id="selCodeBlockTarget" onchange="loadSelectedCodeBlock()" class="rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-bold text-cyan-300">
-            <option value="CLINIC_30_CONFLICTS">Bloque: Clínica 30 Conflictos (JSON)</option>
-            <option value="STATIC_NEM_CURRICULUM">Bloque: Currículo PDA NEM (JSON)</option>
-            <option value="CUSTOM_SCRIPT_PATCH">Bloque: Parche JS Extra (Se ejecuta al cargar)</option>
+            <option value="PRINT_CSS">Bloque A: CSS de Impresión PDF (@media print)</option>
+            <option value="CURRICULUM">Bloque B: Currículo y PDA NEM (JSON)</option>
+            <option value="CLINIC_30">Bloque C: 30 Casos de Clínica / Pizarra (JSON)</option>
+            <option value="VIP_CODES">Bloque D: Códigos VIP y Créditos (JSON)</option>
           </select>
         </div>
-        <p class="text-[11px] text-slate-300">Edita el bloque seleccionado y aplícalo al instante en memoria o descarga un <code>index.html</code> listo para subir.</p>
-        <textarea id="txtBlockEditor" rows="7" class="w-full rounded-lg bg-slate-950 border border-slate-700 p-2.5 font-mono text-[11px] text-emerald-300"></textarea>
+        <textarea id="txtCodeBlockEditor" rows="7" class="w-full rounded-lg bg-slate-950 border border-slate-700 p-2.5 font-mono text-[11px] text-emerald-300"></textarea>
         <div class="flex flex-wrap gap-2">
-          <button onclick="applyBlockEditorChanges()" class="px-3.5 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold">
-            ⚡ Aplicar Bloque en la App
+          <button onclick="applyCodeBlockChanges()" class="px-3.5 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold">
+            ⚡ Aplicar Bloque en Vivo
           </button>
-          <button onclick="exportHtmlWithBlockEdits()" class="px-3.5 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold">
-            💾 Descargar index.html con Cambios
+          <button onclick="resetCodeBlockDefault()" class="px-3.5 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-bold">
+            ↺ Restaurar Bloque
+          </button>
+          <button onclick="exportHtmlWithEmbeddedKey()" class="px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold">
+            💾 Descargar HTML Final Listo
           </button>
         </div>
       </div>
@@ -607,8 +620,11 @@
   <script>
     const PRE_EMBEDDED_ENGINE_KEY = "";
     const PRE_EMBEDDED_PROVIDER = "AUTO";
-    let CUSTOM_JS_PATCH_CODE = "";
+    const DEFAULT_MASTER_PIN = "28082021";
 
+    // =========================================================================
+    // 1. CURRÍCULO NEM INVARIABLE Y CASCADA METODOLÓGICA
+    // =========================================================================
     let STATIC_NEM_CURRICULUM = {
       f2_pre: [
         "Explora movimientos de locomoción, manipulación y estabilidad en juegos colectivos para reconocer sus posibilidades motrices.",
@@ -749,6 +765,9 @@
       }
     };
 
+    // =========================================================================
+    // 2. CLÍNICA DE PATIO Y AULA (30 PROBLEMÁTICAS Y SOLUCIONES REALES)
+    // =========================================================================
     let CLINIC_30_CONFLICTS = [
       { id: 1, tipo: "PATIO", visualMode: "swarm", titulo: "1. Efecto Enjambre (Amontonamiento tras el móvil)", problema: "Los 30 alumnos corren detrás de una sola pelota sin ocupar el espacio libre, generando choques fortuitos y nula lectura táctica.", solucion: "Subdividir la cancha en 4 cuadrantes (4v4 simultáneo) e imponer la regla de 'Cuadrantes de Cristal': máximo 2 jugadores por zona y prohibido botar.", bitacoraTarget: 2 },
       { id: 2, tipo: "PATIO", visualMode: "monopoly", titulo: "2. Monopolio del Móvil y Exclusión por Habilidad", problema: "2 o 3 alumnos con mayor destreza acaparan los pases y excluyen sistemáticamente a compañeros con menor competencia motriz.", solucion: "Modificar la Lógica Interna (Red de Comunicación): el punto solo es válido si todos los integrantes del equipo tocaron el móvil antes de anotar.", bitacoraTarget: 2 },
@@ -811,9 +830,7 @@
       ACTIVE_CODE: "altus_permanent_active_code",
       EXHAUSTED_CODES: "altus_permanent_exhausted_codes",
       PURCHASE_UNLOCKED_BITACORAS: "altus_permanent_bitacoras_unlocked",
-      BLOCK_CLINIC: "altus_block_clinic_30",
-      BLOCK_NEM: "altus_block_nem_pda",
-      BLOCK_JS_PATCH: "altus_block_js_patch"
+      CUSTOM_BLOCKS: "altus_custom_code_blocks_v1"
     };
 
     function migratePreviousKeysIfNeeded() {
@@ -824,15 +841,23 @@
       if (!localStorage.getItem(STORAGE_KEYS.AI_PROVIDER) && PRE_EMBEDDED_PROVIDER) {
         localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, PRE_EMBEDDED_PROVIDER);
       }
+    }
+
+    function applySavedCustomBlocks() {
       try {
-        const savedClinic = localStorage.getItem(STORAGE_KEYS.BLOCK_CLINIC);
-        if (savedClinic) CLINIC_30_CONFLICTS = JSON.parse(savedClinic);
-        const savedNem = localStorage.getItem(STORAGE_KEYS.BLOCK_NEM);
-        if (savedNem) STATIC_NEM_CURRICULUM = JSON.parse(savedNem);
-        const savedPatch = localStorage.getItem(STORAGE_KEYS.BLOCK_JS_PATCH);
-        if (savedPatch) {
-          CUSTOM_JS_PATCH_CODE = savedPatch;
-          new Function(CUSTOM_JS_PATCH_CODE)();
+        const blocks = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_BLOCKS) || "{}");
+        if (blocks.PRINT_CSS) {
+          const styleEl = document.getElementById("dynamicPrintStyles");
+          if (styleEl) styleEl.textContent = blocks.PRINT_CSS;
+        }
+        if (blocks.CURRICULUM) {
+          STATIC_NEM_CURRICULUM = JSON.parse(blocks.CURRICULUM);
+        }
+        if (blocks.CLINIC_30) {
+          CLINIC_30_CONFLICTS = JSON.parse(blocks.CLINIC_30);
+        }
+        if (blocks.VIP_CODES) {
+          localStorage.setItem(STORAGE_KEYS.VIP_DB, blocks.VIP_CODES);
         }
       } catch (e) {}
     }
@@ -849,14 +874,14 @@
 
     function initApp() {
       migratePreviousKeysIfNeeded();
-      if (!localStorage.getItem(STORAGE_KEYS.MASTER_PASS)) {
-        localStorage.setItem(STORAGE_KEYS.MASTER_PASS, "2026");
-      }
+      // Sincroniza el PIN maestro a 28082021 para garantizar acceso inmediato
+      localStorage.setItem(STORAGE_KEYS.MASTER_PASS, DEFAULT_MASTER_PIN);
       if (!localStorage.getItem(STORAGE_KEYS.VIP_DB)) {
         const sig = computeCodeSignature("08", "03", "7K9M");
         const code = `PMX-08S-03P-7K9M-${sig}`;
         localStorage.setItem(STORAGE_KEYS.VIP_DB, JSON.stringify({ [code]: { maxSessions: 8, pdfCredits: 3 } }));
       }
+      applySavedCustomBlocks();
       updateStaticCurriculum();
       onMethodologyCascadeChange();
       updateCalendarPreview();
@@ -865,6 +890,9 @@
       initClinicAndBoard();
     }
 
+    // =========================================================================
+    // 3. MOTOR DE GENERACIÓN EN TIEMPO REAL
+    // =========================================================================
     async function callInternalPedagogicalEngine(systemInstruction, userPrompt) {
       const apiKey = (localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY || "").trim();
       if (!apiKey) {
@@ -921,6 +949,9 @@
       return JSON.parse(clean);
     }
 
+    // =========================================================================
+    // 4. NAVEGACIÓN, CASCADA Y CALENDARIO ESCOLAR 2026-2027
+    // =========================================================================
     function updateStaticCurriculum() {
       const fase = document.getElementById("selFase").value;
       const idx = parseInt(document.getElementById("selContenido").value, 10) || 0;
@@ -993,6 +1024,9 @@
       }
     }
 
+    // =========================================================================
+    // 5. PANEL MAESTRO (PIN 28082021), CÓDIGOS VIP Y EDITOR POR BLOQUES
+    // =========================================================================
     function getVipDatabase() {
       try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.VIP_DB)) || {}; } catch { return {}; }
     }
@@ -1008,18 +1042,20 @@
       secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 2200);
       if (secretClickCount >= 5) {
         secretClickCount = 0;
-        const storedPass = localStorage.getItem(STORAGE_KEYS.MASTER_PASS) || "2026";
+        const storedPass = localStorage.getItem(STORAGE_KEYS.MASTER_PASS) || DEFAULT_MASTER_PIN;
         const inputPass = prompt("🔐 PANEL MAESTRO\nIngresa tu Clave de Administrador:");
-        if (inputPass && (inputPass === storedPass || inputPass === "2026")) {
+        if (inputPass && (inputPass === DEFAULT_MASTER_PIN || inputPass === storedPass)) {
+          localStorage.setItem(STORAGE_KEYS.MASTER_PASS, inputPass);
           document.getElementById("creatorTopBtn").classList.remove("hidden");
           openMasterCreatorModal();
-        } else if (inputPass !== null) alert("❌ Clave incorrecta.");
+        } else if (inputPass !== null) alert("❌ Clave incorrecta. El PIN configurado es 28082021.");
       }
     }
 
     function openMasterCreatorModal() {
       document.getElementById("inpMasterApiKey").value = localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY || "";
       document.getElementById("selAiProvider").value = localStorage.getItem(STORAGE_KEYS.AI_PROVIDER) || PRE_EMBEDDED_PROVIDER || "AUTO";
+      document.getElementById("inpNewMasterPass").value = localStorage.getItem(STORAGE_KEYS.MASTER_PASS) || DEFAULT_MASTER_PIN;
       renderVipCodesTable();
       loadSelectedCodeBlock();
       document.getElementById("masterModal").classList.remove("hidden");
@@ -1038,27 +1074,20 @@
       alert("✅ Llave guardada de forma permanente en este navegador.");
     }
 
-    function buildUpdatedHtmlString() {
-      const k = document.getElementById("inpMasterApiKey").value.trim() || (localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY || "");
-      const prov = document.getElementById("selAiProvider").value || (localStorage.getItem(STORAGE_KEYS.AI_PROVIDER) || PRE_EMBEDDED_PROVIDER || "AUTO");
-
-      let fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_ENGINE_KEY = ".*?";/, `const PRE_EMBEDDED_ENGINE_KEY = "${k.replace(/"/g, '\\"')}";`);
-      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_PROVIDER = ".*?";/, `const PRE_EMBEDDED_PROVIDER = "${prov}";`);
-      fullHtml = fullHtml.replace(/let CUSTOM_JS_PATCH_CODE = ".*?";/, `let CUSTOM_JS_PATCH_CODE = ${JSON.stringify(CUSTOM_JS_PATCH_CODE)};`);
-      fullHtml = fullHtml.replace(/let CLINIC_30_CONFLICTS = \[[\s\S]*?\];/, `let CLINIC_30_CONFLICTS = ${JSON.stringify(CLINIC_30_CONFLICTS, null, 2)};`);
-      fullHtml = fullHtml.replace(/let STATIC_NEM_CURRICULUM = \{[\s\S]*?\n    \};/, `let STATIC_NEM_CURRICULUM = ${JSON.stringify(STATIC_NEM_CURRICULUM, null, 2)};`);
-      return fullHtml;
-    }
-
     function exportHtmlWithEmbeddedKey() {
       const k = document.getElementById("inpMasterApiKey").value.trim();
       const prov = document.getElementById("selAiProvider").value;
-      if (!k) return alert("Primero pega tu llave en el recuadro 1.");
-      localStorage.setItem(STORAGE_KEYS.API_KEY, k);
-      localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, prov);
+      const activePin = localStorage.getItem(STORAGE_KEYS.MASTER_PASS) || DEFAULT_MASTER_PIN;
+      if (k) {
+        localStorage.setItem(STORAGE_KEYS.API_KEY, k);
+        localStorage.setItem(STORAGE_KEYS.AI_PROVIDER, prov);
+      }
 
-      const fullHtml = buildUpdatedHtmlString();
+      let fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_ENGINE_KEY = ".*?";/, `const PRE_EMBEDDED_ENGINE_KEY = "${k}";`);
+      fullHtml = fullHtml.replace(/const PRE_EMBEDDED_PROVIDER = ".*?";/, `const PRE_EMBEDDED_PROVIDER = "${prov}";`);
+      fullHtml = fullHtml.replace(/const DEFAULT_MASTER_PIN = ".*?";/, `const DEFAULT_MASTER_PIN = "${activePin}";`);
+
       const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1066,68 +1095,85 @@
       a.download = "index.html";
       a.click();
       URL.revokeObjectURL(url);
-      alert("✅ Se descargó tu archivo 'index.html' con la llave pre-incrustada permanentemente.");
-    }
-
-    function loadSelectedCodeBlock() {
-      const target = document.getElementById("selCodeBlockTarget").value;
-      const editor = document.getElementById("txtBlockEditor");
-      if (target === "CLINIC_30_CONFLICTS") {
-        editor.value = JSON.stringify(CLINIC_30_CONFLICTS, null, 2);
-      } else if (target === "STATIC_NEM_CURRICULUM") {
-        editor.value = JSON.stringify(STATIC_NEM_CURRICULUM, null, 2);
-      } else {
-        editor.value = CUSTOM_JS_PATCH_CODE || "// Escribe aquí código JavaScript adicional para personalizar comportamientos\n";
-      }
-    }
-
-    function applyBlockEditorChanges() {
-      const target = document.getElementById("selCodeBlockTarget").value;
-      const rawVal = document.getElementById("txtBlockEditor").value;
-      try {
-        if (target === "CLINIC_30_CONFLICTS") {
-          const parsed = JSON.parse(rawVal);
-          if (!Array.isArray(parsed)) throw new Error("Debe ser un arreglo JSON.");
-          CLINIC_30_CONFLICTS = parsed;
-          localStorage.setItem(STORAGE_KEYS.BLOCK_CLINIC, JSON.stringify(CLINIC_30_CONFLICTS));
-          initClinicAndBoard();
-          alert("✅ Bloque de 30 Conflictos actualizado en la aplicación.");
-        } else if (target === "STATIC_NEM_CURRICULUM") {
-          const parsed = JSON.parse(rawVal);
-          if (typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("Debe ser un objeto JSON.");
-          STATIC_NEM_CURRICULUM = parsed;
-          localStorage.setItem(STORAGE_KEYS.BLOCK_NEM, JSON.stringify(STATIC_NEM_CURRICULUM));
-          updateStaticCurriculum();
-          alert("✅ Bloque de PDA NEM actualizado en la aplicación.");
-        } else {
-          new Function(rawVal)();
-          CUSTOM_JS_PATCH_CODE = rawVal;
-          localStorage.setItem(STORAGE_KEYS.BLOCK_JS_PATCH, CUSTOM_JS_PATCH_CODE);
-          alert("✅ Parche JS aplicado y guardado en el navegador.");
-        }
-      } catch (err) {
-        alert("❌ Error en el bloque: " + err.message);
-      }
-    }
-
-    function exportHtmlWithBlockEdits() {
-      const fullHtml = buildUpdatedHtmlString();
-      const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "index.html";
-      a.click();
-      URL.revokeObjectURL(url);
-      alert("✅ Se descargó 'index.html' con los cambios de bloque aplicados.");
+      alert("✅ Se descargó tu archivo 'index.html' con el PIN y ajustes aplicados.");
     }
 
     function updateMasterPassword() {
       const p = document.getElementById("inpNewMasterPass").value.trim();
       if (p.length < 4) return alert("⚠️ Usa al menos 4 caracteres.");
       localStorage.setItem(STORAGE_KEYS.MASTER_PASS, p);
-      document.getElementById("inpNewMasterPass").value = "";
-      alert("✅ Contraseña del Panel Maestro actualizada.");
+      alert(`✅ Contraseña del Panel Maestro actualizada a: ${p}`);
+    }
+
+    // Editor de Código por Bloques desde el Panel Maestro
+    function getDefaultCodeBlockValue(target) {
+      if (target === "PRINT_CSS") {
+        return document.getElementById("dynamicPrintStyles")?.textContent.trim() || "";
+      }
+      if (target === "CURRICULUM") {
+        return JSON.stringify(STATIC_NEM_CURRICULUM, null, 2);
+      }
+      if (target === "CLINIC_30") {
+        return JSON.stringify(CLINIC_30_CONFLICTS, null, 2);
+      }
+      if (target === "VIP_CODES") {
+        return JSON.stringify(getVipDatabase(), null, 2);
+      }
+      return "";
+    }
+
+    function loadSelectedCodeBlock() {
+      const target = document.getElementById("selCodeBlockTarget")?.value || "PRINT_CSS";
+      const savedBlocks = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_BLOCKS) || "{}");
+      const editor = document.getElementById("txtCodeBlockEditor");
+      if (editor) {
+        editor.value = savedBlocks[target] || getDefaultCodeBlockValue(target);
+      }
+    }
+
+    function applyCodeBlockChanges() {
+      const target = document.getElementById("selCodeBlockTarget").value;
+      const rawVal = document.getElementById("txtCodeBlockEditor").value;
+      const savedBlocks = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_BLOCKS) || "{}");
+
+      try {
+        if (target === "PRINT_CSS") {
+          const styleEl = document.getElementById("dynamicPrintStyles");
+          if (styleEl) styleEl.textContent = rawVal;
+          savedBlocks.PRINT_CSS = rawVal;
+        } else if (target === "CURRICULUM") {
+          const parsed = JSON.parse(rawVal);
+          STATIC_NEM_CURRICULUM = parsed;
+          savedBlocks.CURRICULUM = JSON.stringify(parsed);
+          updateStaticCurriculum();
+        } else if (target === "CLINIC_30") {
+          const parsed = JSON.parse(rawVal);
+          if (!Array.isArray(parsed)) throw new Error("Debe ser un arreglo JSON [...]");
+          CLINIC_30_CONFLICTS = parsed;
+          savedBlocks.CLINIC_30 = JSON.stringify(parsed);
+          initClinicAndBoard();
+        } else if (target === "VIP_CODES") {
+          const parsed = JSON.parse(rawVal);
+          saveVipDatabase(parsed);
+          savedBlocks.VIP_CODES = JSON.stringify(parsed);
+        }
+
+        localStorage.setItem(STORAGE_KEYS.CUSTOM_BLOCKS, JSON.stringify(savedBlocks));
+        alert("✅ Bloque aplicado en vivo en tu plataforma.");
+      } catch (err) {
+        alert("❌ Error al aplicar el bloque: " + err.message);
+      }
+    }
+
+    function resetCodeBlockDefault() {
+      const target = document.getElementById("selCodeBlockTarget").value;
+      const savedBlocks = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_BLOCKS) || "{}");
+      delete savedBlocks[target];
+      localStorage.setItem(STORAGE_KEYS.CUSTOM_BLOCKS, JSON.stringify(savedBlocks));
+      document.getElementById("txtCodeBlockEditor").value = getDefaultCodeBlockValue(target);
+      if (target === "CURRICULUM") updateStaticCurriculum();
+      if (target === "CLINIC_30") initClinicAndBoard();
+      alert("↺ Bloque restaurado a su valor original.");
     }
 
     function issueSignedVipCode() {
@@ -1266,6 +1312,7 @@
         return alert(`⚠️ Tu código cubre paquetes de hasta ${db[code].maxSessions} sesiones.`);
       }
       deductOnePlanningCredit();
+      alert("💡 Sugerencia para PDF sin cortes: en la ventana de impresión de Chrome selecciona Tamaño 'Carta', Márgenes 'Mínimos' y Escala 'Predeterminada' o '90%'.");
       setTimeout(() => window.print(), 250);
     }
 
@@ -1330,6 +1377,9 @@
       URL.revokeObjectURL(url);
     }
 
+    // =========================================================================
+    // 6. GENERACIÓN DE LA PLANEACIÓN EN VISTA PREVIA
+    // =========================================================================
     async function generateSessionsWithAI() {
       const btn = document.getElementById("btnGenerateAI");
       const output = document.getElementById("planOutputContainer");
@@ -1413,17 +1463,17 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
 
     function renderThreeSignaturesBlock(meta) {
       return `
-        <div class="pt-3 border-t border-slate-400 grid grid-cols-3 gap-4 text-center text-[9px] leading-tight">
+        <div class="pt-3 mt-2 border-t border-slate-400 grid grid-cols-3 gap-4 text-center text-[9px] leading-tight">
           <div>
-            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-3.5"></div>
+            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
             <strong>${meta.docente}</strong><br>Docente de Educación Física
           </div>
           <div>
-            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-3.5"></div>
+            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
             <strong>${meta.director}</strong><br>Dirección del Plantel
           </div>
           <div>
-            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-3.5"></div>
+            <div class="border-b border-slate-600 w-11/12 mx-auto mb-1 h-4"></div>
             <strong>${meta.supervisor}</strong><br>Supervisión de Educación Física
           </div>
         </div>
@@ -1444,28 +1494,28 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
           <tr class="border-b border-slate-300">
             <td class="border-r border-slate-300 text-center font-bold">${i}</td>
             <td class="border-r border-slate-300"></td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-500">4|3|2|1</td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-500">4|3|2|1</td>
-            <td class="border-r-2 border-slate-800 text-center text-[6.5pt] text-slate-500">4|3|2|1</td>
+            <td class="border-r border-slate-300 text-center text-[6.8pt] text-slate-600">4 | 3 | 2 | 1</td>
+            <td class="border-r border-slate-300 text-center text-[6.8pt] text-slate-600">4 | 3 | 2 | 1</td>
+            <td class="border-r-2 border-slate-800 text-center text-[6.8pt] text-slate-600">4 | 3 | 2 | 1</td>
             <td class="border-r border-slate-300 text-center font-bold">${j}</td>
             <td class="border-r border-slate-300"></td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-500">4|3|2|1</td>
-            <td class="border-r border-slate-300 text-center text-[6.5pt] text-slate-500">4|3|2|1</td>
-            <td class="text-center text-[6.5pt] text-slate-500">4|3|2|1</td>
+            <td class="border-r border-slate-300 text-center text-[6.8pt] text-slate-600">4 | 3 | 2 | 1</td>
+            <td class="border-r border-slate-300 text-center text-[6.8pt] text-slate-600">4 | 3 | 2 | 1</td>
+            <td class="text-center text-[6.8pt] text-slate-600">4 | 3 | 2 | 1</td>
           </tr>
         `;
       }
 
       let html = `
-        <article class="print-sheet space-y-2">
-          <div class="space-y-1.5">
-            <div class="border-b-2 border-slate-900 pb-1.5 text-center">
-              <div class="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-600">SECRETARÍA DE EDUCACIÓN PÚBLICA • NUEVA ESCUELA MEXICANA • CICLO ESCOLAR 2026-2027</div>
-              <h1 class="font-display font-black text-base text-slate-900">PLANEACIÓN DIDÁCTICA Y PRAXIOLÓGICA EN EDUCACIÓN FÍSICA</h1>
-              <div class="text-[9.5px] font-bold text-emerald-800">CAMPO FORMATIVO: DE LO HUMANO Y LO COMUNITARIO</div>
+        <article class="print-sheet space-y-2.5">
+          <div class="space-y-2">
+            <div class="border-b-2 border-slate-900 pb-2 text-center">
+              <div class="text-[9px] font-extrabold uppercase tracking-widest text-slate-600">SECRETARÍA DE EDUCACIÓN PÚBLICA • NUEVA ESCUELA MEXICANA • CICLO ESCOLAR 2026-2027</div>
+              <h1 class="font-display font-black text-base md:text-lg text-slate-900">PLANEACIÓN DIDÁCTICA Y PRAXIOLÓGICA EN EDUCACIÓN FÍSICA</h1>
+              <div class="text-[10px] font-bold text-emerald-800">CAMPO FORMATIVO: DE LO HUMANO Y LO COMUNITARIO</div>
             </div>
 
-            <div class="grid grid-cols-3 gap-1.5 text-[9.5px] bg-slate-50 p-2 rounded-xl border border-slate-300">
+            <div class="grid grid-cols-3 gap-2 text-[10px] bg-slate-50 p-2.5 rounded-xl border border-slate-300">
               <div><strong>Escuela / Plantel:</strong> ${meta.escuela}</div>
               <div><strong>CCT y Zona:</strong> ${meta.cct}</div>
               <div><strong>Docente:</strong> ${meta.docente}</div>
@@ -1474,16 +1524,16 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
               <div><strong>Sesiones:</strong> ${sessions.length} sesiones efectivas</div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 text-[9.5px]">
-              <div class="p-2 rounded-xl bg-violet-50 border border-violet-300 space-y-0.5">
-                <div class="font-display font-extrabold text-violet-950 uppercase text-[9px]">Elementos Curriculares NEM</div>
+            <div class="grid grid-cols-2 gap-2.5 text-[10px]">
+              <div class="p-2.5 rounded-xl bg-violet-50 border border-violet-300 space-y-1">
+                <div class="font-display font-extrabold text-violet-950 uppercase text-[10px]">Elementos Curriculares NEM</div>
                 <div><strong>Estructura:</strong> ${meta.modalidad} (${meta.entorno})</div>
                 <div><strong>Contenido:</strong> ${meta.contenido}</div>
                 <div><strong>PDA Vinculado:</strong> <em>${meta.pda}</em></div>
                 <div><strong>Ejes Articuladores:</strong> ${meta.eje}</div>
               </div>
-              <div class="p-2 rounded-xl bg-sky-50 border border-sky-300 space-y-0.5">
-                <div class="font-display font-extrabold text-sky-950 uppercase text-[9px]">Fundamentación Metodológica y Praxiológica</div>
+              <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-300 space-y-1">
+                <div class="font-display font-extrabold text-sky-950 uppercase text-[10px]">Fundamentación Metodológica y Praxiológica</div>
                 <div><strong>Modelos Pedagógicos:</strong> ${meta.modeloBase} ${meta.modeloSec}</div>
                 <div><strong>Dominio [CAI]:</strong> ${meta.dominioCAI}</div>
                 <div><strong>Lógica Interna:</strong> ${meta.conflicto}</div>
@@ -1491,17 +1541,17 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
               </div>
             </div>
 
-            <div class="p-2 rounded-xl bg-amber-50/90 border-l-4 border-amber-600 text-[9.5px] leading-snug space-y-0.5">
+            <div class="p-2.5 rounded-xl bg-amber-50/90 border-l-4 border-amber-600 text-[10px] leading-snug space-y-1">
               <strong class="text-amber-950 uppercase block">Contextualización y Diagnóstico Socioeducativo del Grupo:</strong>
               <p class="text-slate-900 text-justify">${diagFormal}</p>
-              <div class="text-[9px] text-slate-700"><strong>Recursos e Instalaciones:</strong> ${meta.problematica}</div>
+              <div class="text-[9.5px] text-slate-700"><strong>Recursos e Instalaciones:</strong> ${meta.problematica}</div>
             </div>
 
-            <div class="p-2 rounded-xl bg-slate-50 border border-slate-300 text-[9px] space-y-1">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-[9.5px] space-y-1">
               <strong class="uppercase text-slate-900 block">Cronograma Oficial de Sesiones (Calendario SEP 2026-2027):</strong>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-1 text-[8.5px]">
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-1 text-[8.8px]">
                 ${sessions.slice(0, 20).map((s, idx) => `
-                  <div class="p-1 rounded bg-white border border-slate-200 truncate">
+                  <div class="p-1 rounded bg-white border border-slate-200">
                     <strong>S${idx + 1} (${dates[idx] || ""}):</strong> ${s.titulo_tactico}
                   </div>
                 `).join("")}
@@ -1514,17 +1564,17 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
       `;
 
       html += sessions.map((s, i) => `
-        <article class="print-sheet space-y-1.5">
+        <article class="print-sheet space-y-2">
           <div class="space-y-1.5">
-            <div class="border-b-2 border-slate-900 pb-1 flex justify-between items-center gap-2">
+            <div class="border-b-2 border-slate-900 pb-1.5 flex justify-between items-center gap-2">
               <div>
-                <div class="text-[8.5px] font-extrabold uppercase text-slate-500">EXPEDIENTE DIDÁCTICO NEM 2026-2027 • ${meta.escuela} (${meta.cct})</div>
-                <h2 class="font-display font-black text-sm text-slate-900">SESIÓN ${s.numero || i + 1} DE ${sessions.length}: ${s.titulo_tactico}</h2>
+                <div class="text-[9px] font-extrabold uppercase text-slate-500">EXPEDIENTE DIDÁCTICO NEM 2026-2027 • ${meta.escuela} (${meta.cct})</div>
+                <h2 class="font-display font-black text-sm md:text-base text-slate-900">SESIÓN ${s.numero || i + 1} DE ${sessions.length}: ${s.titulo_tactico}</h2>
               </div>
-              <span class="text-[9.5px] font-extrabold bg-slate-100 px-2 py-0.5 rounded border border-slate-400 shrink-0">FECHA: ${dates[i] || ""}</span>
+              <span class="text-[10px] font-extrabold bg-slate-100 px-2 py-1 rounded border border-slate-400 shrink-0">FECHA: ${dates[i] || ""}</span>
             </div>
 
-            <div class="grid grid-cols-3 gap-1 text-[9px] bg-slate-50 p-1.5 rounded-xl border border-slate-300">
+            <div class="grid grid-cols-3 gap-1.5 text-[9.5px] bg-slate-50 p-2 rounded-xl border border-slate-300">
               <div><strong>Docente:</strong> ${meta.docente}</div>
               <div><strong>Grado y Grupo:</strong> ${meta.grupo}</div>
               <div><strong>Metodología:</strong> ${meta.modalidad} • ${meta.modeloBase}</div>
@@ -1534,22 +1584,22 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
               <div class="col-span-3"><strong>PDA Oficial:</strong> <em>${meta.pda}</em></div>
             </div>
 
-            <div class="space-y-1.5 text-[9.5px] leading-snug">
-              <div class="p-2 rounded-xl bg-sky-50 border-l-4 border-sky-700">
+            <div class="space-y-1.5 text-[10px] leading-snug">
+              <div class="p-2.5 rounded-xl bg-sky-50 border-l-4 border-sky-700">
                 <strong class="text-sky-950 uppercase block mb-0.5">1. Fase Inicial • Activación Morfofuncional y Perceptiva (10 min):</strong>
                 <p class="text-justify">${s.inicial}</p>
               </div>
-              <div class="p-2 rounded-xl bg-emerald-50 border-l-4 border-emerald-700">
+              <div class="p-2.5 rounded-xl bg-emerald-50 border-l-4 border-emerald-700">
                 <strong class="text-emerald-950 uppercase block mb-0.5">2. Fase Medular • Praxis Sociomotriz, Lógica Interna y Variantes (30 min):</strong>
                 <p class="text-justify">${s.medular}</p>
               </div>
-              <div class="p-2 rounded-xl bg-violet-50 border-l-4 border-violet-700">
+              <div class="p-2.5 rounded-xl bg-violet-50 border-l-4 border-violet-700">
                 <strong class="text-violet-950 uppercase block mb-0.5">3. Fase Cierre • Vuelta a la Calma, Mayéutica y Consenso (10 min):</strong>
                 <p class="text-justify">${s.cierre}</p>
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-1.5 text-[9px] bg-amber-50 p-1.5 rounded-xl border border-amber-300">
+            <div class="grid grid-cols-2 gap-2 text-[9.5px] bg-amber-50 p-2 rounded-xl border border-amber-300">
               <div><strong>Ajuste Razonable (DUA / BAP):</strong> ${s.adecuacion_bap}</div>
               <div><strong>Indicador de Evaluación (${meta.instrumento}):</strong> ${s.indicador_evaluacion}</div>
             </div>
@@ -1560,17 +1610,17 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
       `).join("");
 
       html += `
-        <article class="print-sheet space-y-1.5">
-          <div class="space-y-1">
-            <div class="border-b-2 border-slate-900 pb-1 flex justify-between items-center">
+        <article class="print-sheet space-y-2">
+          <div class="space-y-1.5">
+            <div class="border-b-2 border-slate-900 pb-1 flex justify-between items-center gap-2">
               <div>
                 <h2 class="font-display font-black text-sm text-slate-900 uppercase">INSTRUMENTO DE EVALUACIÓN FORMATIVA Y REGISTRO DE DESEMPEÑO</h2>
-                <div class="text-[8.5px] text-slate-600"><strong>Plantel:</strong> ${meta.escuela} (${meta.cct}) | <strong>Grupo:</strong> ${meta.grupo} | <strong>PDA:</strong> ${meta.pda}</div>
+                <div class="text-[9px] text-slate-600"><strong>Plantel:</strong> ${meta.escuela} (${meta.cct}) | <strong>Grupo:</strong> ${meta.grupo} | <strong>PDA:</strong> ${meta.pda}</div>
               </div>
-              <span class="text-[8.5px] font-extrabold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded border border-emerald-400">EVALUACIÓN FORMATIVA</span>
+              <span class="text-[9px] font-extrabold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded border border-emerald-400 shrink-0">EVALUACIÓN FORMATIVA</span>
             </div>
 
-            <table class="w-full border-collapse border border-slate-400 text-[8px] leading-tight">
+            <table class="w-full border-collapse border border-slate-400 text-[8.2px] leading-tight">
               <thead>
                 <tr class="bg-slate-900 text-white">
                   <th class="border border-slate-400 p-1 text-left w-1/5">Criterio / Dimensión</th>
@@ -1605,21 +1655,21 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
               </tbody>
             </table>
 
-            <div class="pt-0.5">
-              <div class="text-[8.5px] font-extrabold uppercase text-slate-800 mb-0.5">Registro Nominal de Desempeño del Alumnado (Marque Nivel 4, 3, 2 o 1):</div>
-              <table class="eval-table w-full border-collapse border border-slate-400 text-[7.5px]">
+            <div class="pt-1">
+              <div class="text-[8.8px] font-extrabold uppercase text-slate-800 mb-0.5">Registro Nominal de Desempeño del Alumnado (Marque Nivel 4, 3, 2 o 1):</div>
+              <table class="eval-table w-full border-collapse border border-slate-400 text-[7.8px]">
                 <thead>
                   <tr class="bg-slate-200 text-slate-900">
                     <th class="border border-slate-400 w-6">N°</th>
                     <th class="border border-slate-400 text-left">Nombre del Alumno(a)</th>
-                    <th class="border border-slate-400 w-12">C1</th>
-                    <th class="border border-slate-400 w-12">C2</th>
-                    <th class="border-r-2 border-slate-800 w-12">C3</th>
+                    <th class="border border-slate-400 w-14">C1</th>
+                    <th class="border border-slate-400 w-14">C2</th>
+                    <th class="border-r-2 border-slate-800 w-14">C3</th>
                     <th class="border border-slate-400 w-6">N°</th>
                     <th class="border border-slate-400 text-left">Nombre del Alumno(a)</th>
-                    <th class="border border-slate-400 w-12">C1</th>
-                    <th class="border border-slate-400 w-12">C2</th>
-                    <th class="border border-slate-400 w-12">C3</th>
+                    <th class="border border-slate-400 w-14">C1</th>
+                    <th class="border border-slate-400 w-14">C2</th>
+                    <th class="border border-slate-400 w-14">C3</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1636,6 +1686,9 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
       document.getElementById("planOutputContainer").innerHTML = html;
     }
 
+    // =========================================================================
+    // 7. LAS 2 BITÁCORAS OFICIALES SEP
+    // =========================================================================
     async function formalizeBitacorasWithAI() {
       const btn = document.getElementById("btnFormalizeBitacorasAI");
       const raw1 = document.getElementById("b1Raw").value;
@@ -1850,6 +1903,9 @@ Devuelve EXCLUSIVAMENTE un JSON con esta estructura:
       `;
     }
 
+    // =========================================================================
+    // 8. CLÍNICA DE PATIO (30 CONFLICTOS) + PIZARRA TÁCTICA INTERACTIVA
+    // =========================================================================
     function initClinicAndBoard() {
       const sel = document.getElementById("selBoardScenario");
       if (sel) {
