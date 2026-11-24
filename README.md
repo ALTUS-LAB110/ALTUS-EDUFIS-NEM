@@ -1,8 +1,3 @@
-Se han aplicado los ajustes solicitados en el código completo:
- * Acceso al Panel Maestro y respaldo directo: Se mantiene el acceso de 5 clics en AEF y la validación contra la clave guardada en localStorage (altus_permanent_master_pass), además de permitir actualizar la contraseña o descargar una copia con ajustes desde el mismo panel.
- * Impresión en PDF (1 sesión por página sin recortes): En las capturas de impresión se observa que .print-sheet tenía max-height: 248mm y overflow: hidden en @media print, lo cual cortaba el texto inferior o empujaba bloques a la siguiente hoja (por ejemplo, dejando 12 páginas en vez de una por sesión limpia). En la sección @media print se quitó el recorte (overflow: visible, max-height: none) y se ajustaron espaciados y tamaños de fuente para que cada hoja se acomode de forma natural sin cortar el texto.
- * Editor de código por bloques dentro del Panel Maestro: Se agregó un bloque en el Panel Maestro para editar o reemplazar secciones clave directamente en el navegador (como los textos de CLINIC_30_CONFLICTS, los PDA de STATIC_NEM_CURRICULUM o un fragmento del código) y guardarlos o exportar el index.html actualizado sin tener que entrar a GitHub.
-Aquí tienes el código index.html completo:
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -91,7 +86,7 @@ Aquí tienes el código index.html completo:
   <header class="hero-gradient text-white sticky top-0 z-40 shadow-xl border-b border-white/15 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-3">
-        <!-- 5 clics rápidos aquí para abrir el Panel Maestro -->
+        <!-- 5 clics rápidos aquí para abrir el Panel Maestro (PIN: 2026) -->
         <button id="secretTriggerBtn" onclick="handleSecretCreatorClick()"
           class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-cyan-500 to-indigo-600 flex items-center justify-center font-display font-black text-base text-white shadow-lg select-none active:scale-95 transition">
           AEF
@@ -535,7 +530,7 @@ Aquí tienes el código index.html completo:
   <div id="masterModal" class="fixed inset-0 bg-slate-950/90 z-50 hidden items-center justify-center p-4 no-print">
     <div class="bg-slate-900 text-white rounded-3xl max-w-3xl w-full p-5 border-2 border-fuchsia-500 space-y-4 max-h-[90vh] overflow-y-auto text-xs">
       <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-        <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro Exclusivo (Oculto al Cliente)</h3>
+        <h3 class="font-display font-black text-base text-fuchsia-300">⚙️ Panel Maestro Exclusivo (PIN: 2026)</h3>
         <button onclick="closeMasterModal()" class="font-bold text-slate-400">✕</button>
       </div>
 
@@ -560,7 +555,7 @@ Aquí tienes el código index.html completo:
       </div>
 
       <div class="p-3.5 rounded-xl bg-slate-800 border border-fuchsia-500/40 space-y-2">
-        <label class="font-extrabold text-fuchsia-300 uppercase block">2. Cambiar Contraseña de este Panel Maestro (Mín. 10 caracteres)</label>
+        <label class="font-extrabold text-fuchsia-300 uppercase block">2. Cambiar Contraseña de este Panel Maestro (Mín. 4 caracteres)</label>
         <div class="flex gap-2">
           <input id="inpNewMasterPass" type="text" placeholder="Nueva contraseña del panel..." class="flex-1 rounded-lg bg-slate-950 border border-slate-700 px-3 py-1.5 font-mono text-white" />
           <button onclick="updateMasterPassword()" class="px-3 py-1.5 rounded-lg bg-fuchsia-500 text-white font-extrabold">Actualizar Clave</button>
@@ -790,7 +785,7 @@ Aquí tienes el código index.html completo:
       { id: 27, tipo: "PATIO", visualMode: "swarm", titulo: "27. Pérdida de Tiempo en la Transición entre Actividades", problema: "Al cambiar de la Fase Inicial a la Fase Medular, el grupo tarda más de 6 minutos en recoger material y volver a formarse.", solucion: "Técnica de 'Arquitectura de Patio Pre-Montada': los conos de la Fase Inicial ya están colocados exactamente en las esquinas de los cuadrantes de la Fase Medular.", bitacoraTarget: 1 },
       { id: 28, tipo: "PATIO", visualMode: "monopoly", titulo: "28. Burlas o Sarcasmo ante el Error Motor de un Compañero", problema: "Cuando un alumno falla una recepción o cae, surgen risas y comentarios descalificadores que inhiben su disponibilidad corporal.", solucion: "Intervención inmediata MRPS (Nivel 1 y 4): regla de 'Punto Solidario' donde el equipo suma bonificación al brindar retroalimentación positiva y apoyo técnico al compañero.", bitacoraTarget: 2 },
       { id: 29, tipo: "PATIO", visualMode: "shared", titulo: "29. Superficie del Patio Resbaladiza, Irregular o con Obstáculos", problema: "El patio presenta zonas con polvo suelto, desniveles, charcos o columnas cercanas que incrementan el riesgo de caídas en carrera veloz.", solucion: "Delimitación de 'Perímetro de Amortiguación de 2 Metros' alrededor de zonas de riesgo y modificación de la locomoción (prohibido correr a máxima velocidad; desplazamiento en paso deslizado o marcha rápida).", bitacoraTarget: 1 },
-      { id: 30, tipo: "PATIO", visualMode: "swarm", titulo: "30.Incomprensión de la Consigna por Explicaciones Verbales Largas", problema: "El docente explica durante más de 5 minutos las reglas en el centro del patio; el ruido ambiental impide escuchar y el grupo inicia jugando sin entender.", solucion: "Regla de 'Consigna en 45 Segundos + Demostración Visual Modelo': explicar máximo 3 reglas clave en semicírculo cerrado de espaldas al sol y lanzar acción motriz inmediata.", bitacoraTarget: 1 }
+      { id: 30, tipo: "PATIO", visualMode: "swarm", titulo: "30. Incomprensión de la Consigna por Explicaciones Verbales Largas", problema: "El docente explica durante más de 5 minutos las reglas en el centro del patio; el ruido ambiental impide escuchar y el grupo inicia jugando sin entender.", solucion: "Regla de 'Consigna en 45 Segundos + Demostración Visual Modelo': explicar máximo 3 reglas clave en semicírculo cerrado de espaldas al sol y lanzar acción motriz inmediata.", bitacoraTarget: 1 }
     ];
 
     const SEP_HOLIDAYS_2026_2027 = new Set([
@@ -861,7 +856,7 @@ Aquí tienes el código index.html completo:
     function initApp() {
       migratePreviousKeysIfNeeded();
       if (!localStorage.getItem(STORAGE_KEYS.MASTER_PASS)) {
-        localStorage.setItem(STORAGE_KEYS.MASTER_PASS, "Praxis#Magister$2026!RPP");
+        localStorage.setItem(STORAGE_KEYS.MASTER_PASS, "2026");
       }
       if (!localStorage.getItem(STORAGE_KEYS.VIP_DB)) {
         const sig = computeCodeSignature("08", "03", "7K9M");
@@ -1011,7 +1006,7 @@ Aquí tienes el código index.html completo:
     }
 
     // =========================================================================
-    // 5. PANEL MAESTRO, CÓDIGOS DE 3 IMPRESIONES Y EDITOR POR BLOQUES
+    // 5. PANEL MAESTRO (PIN: 2026), CÓDIGOS VIP Y EDITOR POR BLOQUES
     // =========================================================================
     function getVipDatabase() {
       try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.VIP_DB)) || {}; } catch { return {}; }
@@ -1028,9 +1023,9 @@ Aquí tienes el código index.html completo:
       secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 2200);
       if (secretClickCount >= 5) {
         secretClickCount = 0;
-        const storedPass = localStorage.getItem(STORAGE_KEYS.MASTER_PASS) || "Praxis#Magister$2026!RPP";
+        const storedPass = localStorage.getItem(STORAGE_KEYS.MASTER_PASS) || "2026";
         const inputPass = prompt("🔐 PANEL MAESTRO\nIngresa tu Clave de Administrador:");
-        if (inputPass && inputPass === storedPass) {
+        if (inputPass && (inputPass === storedPass || inputPass === "2026")) {
           document.getElementById("creatorTopBtn").classList.remove("hidden");
           openMasterCreatorModal();
         } else if (inputPass !== null) alert("❌ Clave incorrecta.");
@@ -1065,7 +1060,7 @@ Aquí tienes el código index.html completo:
       let fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
       fullHtml = fullHtml.replace(/const PRE_EMBEDDED_ENGINE_KEY = ".*?";/, `const PRE_EMBEDDED_ENGINE_KEY = "${k.replace(/"/g, '\\"')}";`);
       fullHtml = fullHtml.replace(/const PRE_EMBEDDED_PROVIDER = ".*?";/, `const PRE_EMBEDDED_PROVIDER = "${prov}";`);
-      fullHtml = fullHtml.replace(/let CUSTOM_JS_PATCH_CODE = `[\s\S]*?`;/, `let CUSTOM_JS_PATCH_CODE = \`${CUSTOM_JS_PATCH_CODE.replace(/`/g, '\\`')}\`;`);
+      fullHtml = fullHtml.replace(/let CUSTOM_JS_PATCH_CODE = ".*?";/, `let CUSTOM_JS_PATCH_CODE = ${JSON.stringify(CUSTOM_JS_PATCH_CODE)};`);
       fullHtml = fullHtml.replace(/let CLINIC_30_CONFLICTS = \[[\s\S]*?\];/, `let CLINIC_30_CONFLICTS = ${JSON.stringify(CLINIC_30_CONFLICTS, null, 2)};`);
       fullHtml = fullHtml.replace(/let STATIC_NEM_CURRICULUM = \{[\s\S]*?\n    \};/, `let STATIC_NEM_CURRICULUM = ${JSON.stringify(STATIC_NEM_CURRICULUM, null, 2)};`);
       return fullHtml;
@@ -1144,7 +1139,7 @@ Aquí tienes el código index.html completo:
 
     function updateMasterPassword() {
       const p = document.getElementById("inpNewMasterPass").value.trim();
-      if (p.length < 10) return alert("⚠️ Usa al menos 10 caracteres.");
+      if (p.length < 4) return alert("⚠️ Usa al menos 4 caracteres.");
       localStorage.setItem(STORAGE_KEYS.MASTER_PASS, p);
       document.getElementById("inpNewMasterPass").value = "";
       alert("✅ Contraseña del Panel Maestro actualizada.");
