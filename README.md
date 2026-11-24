@@ -609,9 +609,6 @@
     const PRE_EMBEDDED_PROVIDER = "AUTO";
     let CUSTOM_JS_PATCH_CODE = "";
 
-    // =========================================================================
-    // 1. CURRÍCULO NEM INVARIABLE Y CASCADA METODOLÓGICA
-    // =========================================================================
     let STATIC_NEM_CURRICULUM = {
       f2_pre: [
         "Explora movimientos de locomoción, manipulación y estabilidad en juegos colectivos para reconocer sus posibilidades motrices.",
@@ -752,9 +749,6 @@
       }
     };
 
-    // =========================================================================
-    // 2. CLÍNICA DE PATIO Y AULA (30 PROBLEMÁTICAS Y SOLUCIONES REALES)
-    // =========================================================================
     let CLINIC_30_CONFLICTS = [
       { id: 1, tipo: "PATIO", visualMode: "swarm", titulo: "1. Efecto Enjambre (Amontonamiento tras el móvil)", problema: "Los 30 alumnos corren detrás de una sola pelota sin ocupar el espacio libre, generando choques fortuitos y nula lectura táctica.", solucion: "Subdividir la cancha en 4 cuadrantes (4v4 simultáneo) e imponer la regla de 'Cuadrantes de Cristal': máximo 2 jugadores por zona y prohibido botar.", bitacoraTarget: 2 },
       { id: 2, tipo: "PATIO", visualMode: "monopoly", titulo: "2. Monopolio del Móvil y Exclusión por Habilidad", problema: "2 o 3 alumnos con mayor destreza acaparan los pases y excluyen sistemáticamente a compañeros con menor competencia motriz.", solucion: "Modificar la Lógica Interna (Red de Comunicación): el punto solo es válido si todos los integrantes del equipo tocaron el móvil antes de anotar.", bitacoraTarget: 2 },
@@ -871,9 +865,6 @@
       initClinicAndBoard();
     }
 
-    // =========================================================================
-    // 3. MOTOR DE GENERACIÓN EN TIEMPO REAL
-    // =========================================================================
     async function callInternalPedagogicalEngine(systemInstruction, userPrompt) {
       const apiKey = (localStorage.getItem(STORAGE_KEYS.API_KEY) || PRE_EMBEDDED_ENGINE_KEY || "").trim();
       if (!apiKey) {
@@ -930,9 +921,6 @@
       return JSON.parse(clean);
     }
 
-    // =========================================================================
-    // 4. NAVEGACIÓN, CASCADA Y CALENDARIO ESCOLAR 2026-2027
-    // =========================================================================
     function updateStaticCurriculum() {
       const fase = document.getElementById("selFase").value;
       const idx = parseInt(document.getElementById("selContenido").value, 10) || 0;
@@ -1005,9 +993,6 @@
       }
     }
 
-    // =========================================================================
-    // 5. PANEL MAESTRO (PIN: 2026), CÓDIGOS VIP Y EDITOR POR BLOQUES
-    // =========================================================================
     function getVipDatabase() {
       try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.VIP_DB)) || {}; } catch { return {}; }
     }
@@ -1345,9 +1330,6 @@
       URL.revokeObjectURL(url);
     }
 
-    // =========================================================================
-    // 6. GENERACIÓN DE LA PLANEACIÓN EN VISTA PREVIA
-    // =========================================================================
     async function generateSessionsWithAI() {
       const btn = document.getElementById("btnGenerateAI");
       const output = document.getElementById("planOutputContainer");
@@ -1654,9 +1636,6 @@ Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura:
       document.getElementById("planOutputContainer").innerHTML = html;
     }
 
-    // =========================================================================
-    // 7. LAS 2 BITÁCORAS OFICIALES SEP
-    // =========================================================================
     async function formalizeBitacorasWithAI() {
       const btn = document.getElementById("btnFormalizeBitacorasAI");
       const raw1 = document.getElementById("b1Raw").value;
@@ -1871,9 +1850,6 @@ Devuelve EXCLUSIVAMENTE un JSON con esta estructura:
       `;
     }
 
-    // =========================================================================
-    // 8. CLÍNICA DE PATIO (30 CONFLICTOS) + PIZARRA TÁCTICA INTERACTIVA
-    // =========================================================================
     function initClinicAndBoard() {
       const sel = document.getElementById("selBoardScenario");
       if (sel) {
